@@ -47,6 +47,20 @@ class CreateUsersTable extends Migration
                 'constraint' => ['active', 'inactive', 'suspended'],
                 'default' => 'active',
             ],
+            'remember_token' => [
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+                'null' => true,
+            ],
+            'reset_token' => [
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+                'null' => true,
+            ],
+            'reset_token_expires' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => false,
