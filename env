@@ -20,7 +20,11 @@
 # APP
 #--------------------------------------------------------------------
 
+<<<<<<< HEAD
 app.baseURL = 'http://localhost/ITE311-ALALAWI/public/'
+=======
+# app.baseURL = ''
+>>>>>>> c212a5a72b4470defcf7277e12ebf0882ecde156
 # If you have trouble with `.`, you could also use `_`.
 # app_baseURL = ''
 # app.forceGlobalSecureRequests = false

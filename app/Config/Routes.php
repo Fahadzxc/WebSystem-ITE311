@@ -8,8 +8,11 @@ use CodeIgniter\Router\RouteCollection;
 
 // Home route
 $routes->get('/', 'Home::index');
+<<<<<<< HEAD
 $routes->get('about', 'Home::about');
 $routes->get('contact', 'Home::contact');
+=======
+>>>>>>> c212a5a72b4470defcf7277e12ebf0882ecde156
 
 // Authentication routes
 $routes->group('auth', function($routes) {

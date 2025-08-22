@@ -6,6 +6,7 @@ class Home extends BaseController
 {
     public function index()
     {
+<<<<<<< HEAD
         return view('index');  // loads app/Views/index.php
     }
 
@@ -17,5 +18,8 @@ class Home extends BaseController
     public function contact()
     {
         return view('contact');
+=======
+        return view('template');  // loads app/Views/home.php
+>>>>>>> c212a5a72b4470defcf7277e12ebf0882ecde156
     }
 }
