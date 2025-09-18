@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Disable directory browsing
 Options -Indexes
 
@@ -53,3 +54,9 @@ Options -Indexes
 # Disable server signature start
 ServerSignature Off
 # Disable server signature end
+=======
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$1 [L]
+>>>>>>> 6792f4b9228d9b5d4ba0e8ffb7ffe8aadfd2764c

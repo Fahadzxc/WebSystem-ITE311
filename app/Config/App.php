@@ -16,7 +16,11 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
+<<<<<<< HEAD
     public string $baseURL = 'http://localhost/ITE311-ALALAWI/';
+=======
+    public string $baseURL = 'http://localhost/ITE311-ALALAWI/public/';
+>>>>>>> 6792f4b9228d9b5d4ba0e8ffb7ffe8aadfd2764c
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
@@ -40,7 +44,11 @@ class App extends BaseConfig
      * something else. If you have configured your web server to remove this file
      * from your site URIs, set this variable to an empty string.
      */
+<<<<<<< HEAD
     public string $indexPage = '';
+=======
+    public string $indexPage = 'index.php';
+>>>>>>> 6792f4b9228d9b5d4ba0e8ffb7ffe8aadfd2764c
 
     /**
      * --------------------------------------------------------------------------
