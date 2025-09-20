@@ -1,0 +1,12 @@
+# Block direct access to public folder
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteRule ^(.*)$ - [R=404,L]
+</IfModule>
+
+# Disable directory browsing
+Options -Indexes
+
+# Disable server signature start
+ServerSignature Off
+# Disable server signature end
