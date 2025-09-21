@@ -1,0 +1,16 @@
+ERROR - 2025-09-21 13:49:20 --> mysqli_sql_exception: MySQL server has gone away in C:\xampp\htdocs\ITE311-ALALAWI\system\Database\MySQLi\Connection.php:327
+Stack trace:
+#0 C:\xampp\htdocs\ITE311-ALALAWI\system\Database\MySQLi\Connection.php(327): mysqli->query('DROP TABLE `cou...', 0)
+#1 C:\xampp\htdocs\ITE311-ALALAWI\system\Database\BaseConnection.php(729): CodeIgniter\Database\MySQLi\Connection->execute('DROP TABLE `cou...')
+#2 C:\xampp\htdocs\ITE311-ALALAWI\system\Database\BaseConnection.php(646): CodeIgniter\Database\BaseConnection->simpleQuery('DROP TABLE `cou...')
+#3 C:\xampp\htdocs\ITE311-ALALAWI\system\Database\Forge.php(663): CodeIgniter\Database\BaseConnection->query('DROP TABLE `cou...')
+#4 C:\xampp\htdocs\ITE311-ALALAWI\app\Database\Migrations\2025-08-29-184217_CreateCoursesTable.php(80): CodeIgniter\Database\Forge->dropTable('courses')
+#5 C:\xampp\htdocs\ITE311-ALALAWI\system\Database\MigrationRunner.php(876): App\Database\Migrations\CreateCoursesTable->down()
+#6 C:\xampp\htdocs\ITE311-ALALAWI\system\Database\MigrationRunner.php(289): CodeIgniter\Database\MigrationRunner->migrate('down', Object(stdClass))
+#7 C:\xampp\htdocs\ITE311-ALALAWI\system\Commands\Database\MigrateRollback.php(101): CodeIgniter\Database\MigrationRunner->regress(0)
+#8 C:\xampp\htdocs\ITE311-ALALAWI\system\CLI\Commands.php(74): CodeIgniter\Commands\Database\MigrateRollback->run(Array)
+#9 C:\xampp\htdocs\ITE311-ALALAWI\system\CLI\Console.php(47): CodeIgniter\CLI\Commands->run('migrate:rollbac...', Array)
+#10 C:\xampp\htdocs\ITE311-ALALAWI\system\Boot.php(388): CodeIgniter\CLI\Console->run()
+#11 C:\xampp\htdocs\ITE311-ALALAWI\system\Boot.php(133): CodeIgniter\Boot::runCommand(Object(CodeIgniter\CLI\Console))
+#12 C:\xampp\htdocs\ITE311-ALALAWI\spark(87): CodeIgniter\Boot::bootSpark(Object(Config\Paths))
+#13 {main}

@@ -6,11 +6,7 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
-<<<<<<< HEAD
 $routes->get('home', 'Home::index');
-=======
-<<<<<<< HEAD
->>>>>>> 2a1255e1316aafca65d8a252d51d233eaa4e2b96
 $routes->get('about', 'Home::about');
 $routes->get('contact', 'Home::contact');
 
@@ -21,12 +17,21 @@ $routes->get('login', 'Auth::login');
 $routes->post('login', 'Auth::login');
 $routes->get('logout', 'Auth::logout');
 $routes->get('dashboard', 'Auth::dashboard');
-<<<<<<< HEAD
-=======
-=======
-$routes->get('home', 'Home::index');
-$routes->get('about', 'Home::about');
-$routes->get('contact', 'Home::contact');
-$routes->setAutoRoute(true);
->>>>>>> 6792f4b9228d9b5d4ba0e8ffb7ffe8aadfd2764c
->>>>>>> 2a1255e1316aafca65d8a252d51d233eaa4e2b96
+
+// Role-based Dashboard Routes
+$routes->get('admin/dashboard', 'Admin::dashboard');
+$routes->get('teacher/dashboard', 'Teacher::dashboard');
+$routes->get('student/dashboard', 'Student::dashboard');
+
+// Admin Routes
+$routes->get('admin/users', 'Admin::users');
+$routes->get('admin/courses', 'Admin::courses');
+
+// Teacher Routes
+$routes->get('teacher/courses', 'Teacher::myCourses');
+$routes->get('teacher/students', 'Teacher::myStudents');
+
+// Student Routes
+$routes->get('student/courses', 'Student::myCourses');
+$routes->get('student/available-courses', 'Student::availableCourses');
+$routes->get('student/enroll/(:num)', 'Student::enroll/$1');
