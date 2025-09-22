@@ -21,23 +21,11 @@ class Auth extends Controller
             ];
             
             if ($this->validate($rules)) {
-                // Split the name into first_name and last_name
-                $nameParts = explode(' ', trim($this->request->getPost('name')), 2);
-                $firstName = $nameParts[0];
-                $lastName = isset($nameParts[1]) ? $nameParts[1] : '';
-                
-                // Generate username from email
-                $email = $this->request->getPost('email');
-                $username = explode('@', $email)[0];
-                
                 $data = [
-                    'username' => $username,
-                    'first_name' => $firstName,
-                    'last_name' => $lastName,
-                    'email' => $email,
+                    'name' => $this->request->getPost('name'),
+                    'email' => $this->request->getPost('email'),
                     'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-                    'role' => 'student',
-                    'status' => 'active'
+                    'role' => 'student'
                 ];
                 
                 // Save user to database
@@ -78,17 +66,14 @@ class Auth extends Controller
                 $password = $this->request->getPost('password');
                 $user = $model->where('email', $email)->first();
                 if ($user && password_verify($password, $user['password'])) {
-                    // Create full name from first_name and last_name
-                    $fullName = trim($user['first_name'] . ' ' . $user['last_name']);
-                    
                     $session->set([
                         'user_id' => $user['id'],
-                        'user_name' => $fullName,
+                        'user_name' => $user['name'],
                         'user_email' => $user['email'],
                         'role' => $user['role'],
                         'isLoggedIn' => true
                     ]);
-                    $session->setFlashdata('success', 'Welcome, ' . $fullName . '!');
+                    $session->setFlashdata('success', 'Welcome, ' . $user['name'] . '!');
                     
                     // Role-based redirection
                     switch ($user['role']) {
