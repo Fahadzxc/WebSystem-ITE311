@@ -314,13 +314,55 @@
             </a>
             
             <ul class="navbar-nav">
-                <li><a class="nav-link <?= ($page ?? '') === 'home' ? 'active' : '' ?>" href="<?= base_url('home') ?>">Home</a></li>
-                <li><a class="nav-link <?= ($page ?? '') === 'about' ? 'active' : '' ?>" href="<?= base_url('about') ?>">About</a></li>
-                <li><a class="nav-link <?= ($page ?? '') === 'contact' ? 'active' : '' ?>" href="<?= base_url('contact') ?>">Contact</a></li>
                 <?php if (session()->get('isLoggedIn')): ?>
-                    <li><a class="nav-link" href="<?= base_url('logout') ?>" style="color: #e74c3c;">Logout</a></li>
+                    <!-- Logged-in User Navigation -->
+                    <!-- User Info -->
+                    <li class="nav-item dropdown">
+                        <span class="nav-link" style="color: #ecf0f1; font-weight: bold;">
+                            Welcome, <?= session()->get('user_name') ?> 
+                            <span class="badge" style="background-color: #3498db; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; margin-left: 5px;">
+                                <?= ucfirst(session()->get('role')) ?>
+                            </span>
+                        </span>
+                    </li>
+                    
+                    <!-- Role-Specific Navigation -->
+                    <?php $userRole = session()->get('role'); ?>
+                    
+                    <?php if ($userRole === 'admin'): ?>
+                        <!-- Admin Navigation -->
+                        <li><a class="nav-link <?= ($page ?? '') === 'admin_dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>">Dashboard</a></li>
+                        <li><a class="nav-link <?= ($page ?? '') === 'admin_users' ? 'active' : '' ?>" href="<?= base_url('admin/users') ?>">Users</a></li>
+                        <li><a class="nav-link <?= ($page ?? '') === 'admin_courses' ? 'active' : '' ?>" href="<?= base_url('admin/courses') ?>">Courses</a></li>
+                        <li><a class="nav-link" href="<?= base_url('admin/reports') ?>">Reports</a></li>
+                        
+                    <?php elseif ($userRole === 'instructor'): ?>
+                        <!-- Teacher Navigation -->
+                        <li><a class="nav-link <?= ($page ?? '') === 'teacher_dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>">Dashboard</a></li>
+                        <li><a class="nav-link <?= ($page ?? '') === 'teacher_courses' ? 'active' : '' ?>" href="<?= base_url('teacher/courses') ?>">My Courses</a></li>
+                        <li><a class="nav-link <?= ($page ?? '') === 'teacher_students' ? 'active' : '' ?>" href="<?= base_url('teacher/students') ?>">Students</a></li>
+                        <li><a class="nav-link" href="<?= base_url('teacher/assignments') ?>">Assignments</a></li>
+                        
+                    <?php elseif ($userRole === 'student'): ?>
+                        <!-- Student Navigation -->
+                        <li><a class="nav-link <?= ($page ?? '') === 'student_dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>">Dashboard</a></li>
+                        <li><a class="nav-link <?= ($page ?? '') === 'student_courses' ? 'active' : '' ?>" href="<?= base_url('student/courses') ?>">My Courses</a></li>
+                        <li><a class="nav-link" href="<?= base_url('student/available-courses') ?>">Browse Courses</a></li>
+                        <li><a class="nav-link" href="<?= base_url('student/assignments') ?>">Assignments</a></li>
+                        <li><a class="nav-link" href="<?= base_url('student/grades') ?>">Grades</a></li>
+                    <?php endif; ?>
+                    
+                    <!-- Common User Actions -->
+                    <li><a class="nav-link" href="<?= base_url('profile') ?>">Profile</a></li>
+                    <li><a class="nav-link" href="<?= base_url('logout') ?>" style="color: #e74c3c; font-weight: bold;">Logout</a></li>
+                    
                 <?php else: ?>
+                    <!-- Guest Navigation (Public Links) -->
+                    <li><a class="nav-link <?= ($page ?? '') === 'home' ? 'active' : '' ?>" href="<?= base_url('home') ?>">Home</a></li>
+                    <li><a class="nav-link <?= ($page ?? '') === 'about' ? 'active' : '' ?>" href="<?= base_url('about') ?>">About</a></li>
+                    <li><a class="nav-link <?= ($page ?? '') === 'contact' ? 'active' : '' ?>" href="<?= base_url('contact') ?>">Contact</a></li>
                     <li><a class="nav-link" href="<?= base_url('login') ?>">Login</a></li>
+                    <li><a class="nav-link" href="<?= base_url('register') ?>">Register</a></li>
                 <?php endif; ?>
             </ul>
         </div>

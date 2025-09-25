@@ -75,17 +75,8 @@ class Auth extends Controller
                     ]);
                     $session->setFlashdata('success', 'Welcome, ' . $user['name'] . '!');
                     
-                    // Role-based redirection
-                    switch ($user['role']) {
-                        case 'admin':
-                            return redirect()->to('/admin/dashboard');
-                        case 'instructor':
-                            return redirect()->to('/teacher/dashboard');
-                        case 'student':
-                            return redirect()->to('/student/dashboard');
-                        default:
-                            return redirect()->to('/dashboard');
-                    }
+                    // Unified dashboard redirection for all roles
+                    return redirect()->to('/dashboard');
                 } else {
                     $session->setFlashdata('error', 'Invalid login credentials.');
                 }
@@ -105,9 +96,63 @@ class Auth extends Controller
     public function dashboard()
     {
         $session = session();
+        
+        // Authorization check - ensure user is logged in
         if (!$session->get('isLoggedIn')) {
             return redirect()->to('/login');
         }
-        echo view('dashboard');
+        
+        // Get user role and prepare role-specific data
+        $role = $session->get('role');
+        $userModel = new UserModel();
+        
+        // Prepare base data
+        $data = [
+            'title' => 'Dashboard - LMS System',
+            'user_name' => $session->get('user_name'),
+            'user_email' => $session->get('user_email'),
+            'role' => $role,
+            'page' => 'dashboard'
+        ];
+        
+        // Fetch role-specific data
+        switch ($role) {
+            case 'admin':
+                // Admin-specific data
+                $data = array_merge($data, [
+                    'total_students' => $userModel->where('role', 'student')->countAllResults(),
+                    'total_teachers' => $userModel->where('role', 'instructor')->countAllResults(),
+                    'total_users' => $userModel->countAllResults(),
+                    'recent_users' => $userModel->orderBy('created_at', 'DESC')->limit(5)->find() ?? [],
+                    'dashboard_type' => 'admin'
+                ]);
+                break;
+                
+            case 'instructor':
+                // Teacher-specific data
+                $data = array_merge($data, [
+                    'my_courses' => [], // Placeholder - implement based on your course model
+                    'total_students' => 0, // Placeholder - implement based on your enrollment model
+                    'pending_assignments' => 0, // Placeholder
+                    'dashboard_type' => 'instructor'
+                ]);
+                break;
+                
+            case 'student':
+                // Student-specific data
+                $data = array_merge($data, [
+                    'enrolled_courses' => [], // Placeholder - implement based on your enrollment model
+                    'pending_assignments' => 0, // Placeholder
+                    'completed_tasks' => 0, // Placeholder
+                    'overall_progress' => 0, // Placeholder
+                    'dashboard_type' => 'student'
+                ]);
+                break;
+                
+            default:
+                $data['dashboard_type'] = 'default';
+        }
+        
+        return view('auth/dashboard', $data);
     }
 }

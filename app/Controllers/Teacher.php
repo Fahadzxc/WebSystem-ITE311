@@ -25,42 +25,11 @@ class Teacher extends BaseController
     }
     
     /**
-     * Teacher Dashboard
-     * Performs authorization check and prepares teacher-specific data
+     * Teacher Dashboard - Redirect to unified dashboard
      */
     public function dashboard()
     {
-        $session = session();
-        
-        // Authorization check - ensure user is logged in and has instructor role
-        if (!$session->get('isLoggedIn') || $session->get('role') !== 'instructor') {
-            $session->setFlashdata('error', 'Access denied. Teacher privileges required.');
-            return redirect()->to('/login');
-        }
-        
-        // Prepare data needed for teacher dashboard
-        $data = [
-            'title' => 'Teacher Dashboard - LMS System',
-            'user_name' => $session->get('user_name'),
-            'user_email' => $session->get('user_email'),
-            'role' => $session->get('role'),
-            'page' => 'teacher_dashboard',
-            
-            // Teacher-specific data
-            'my_courses' => $this->getMyCourses(),
-            'total_students' => $this->getTotalStudents(),
-            'pending_assignments' => $this->getPendingAssignments(),
-            'average_rating' => $this->getAverageRating(),
-            
-            // Recent activities
-            'recent_enrollments' => $this->getRecentEnrollments(),
-            'recent_submissions' => $this->getRecentSubmissions(),
-            
-            // Course statistics
-            'course_stats' => $this->getCourseStatistics(),
-        ];
-        
-        return view('teacher/dashboard', $data);
+        return redirect()->to('/dashboard');
     }
     
     /**

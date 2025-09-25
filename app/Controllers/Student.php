@@ -28,43 +28,11 @@ class Student extends BaseController
     }
     
     /**
-     * Student Dashboard
-     * Performs authorization check and prepares student-specific data
+     * Student Dashboard - Redirect to unified dashboard
      */
     public function dashboard()
     {
-        $session = session();
-        
-        // Authorization check - ensure user is logged in and has student role
-        if (!$session->get('isLoggedIn') || $session->get('role') !== 'student') {
-            $session->setFlashdata('error', 'Access denied. Student privileges required.');
-            return redirect()->to('/login');
-        }
-        
-        // Prepare data needed for student dashboard
-        $data = [
-            'title' => 'Student Dashboard - LMS System',
-            'user_name' => $session->get('user_name'),
-            'user_email' => $session->get('user_email'),
-            'role' => $session->get('role'),
-            'page' => 'student_dashboard',
-            
-            // Student-specific data
-            'enrolled_courses' => $this->getEnrolledCourses(),
-            'total_courses' => $this->getTotalEnrolledCourses(),
-            'pending_assignments' => $this->getPendingAssignments(),
-            'completed_tasks' => $this->getCompletedTasks(),
-            'overall_progress' => $this->getOverallProgress(),
-            
-            // Recent activities
-            'recent_assignments' => $this->getRecentAssignments(),
-            'recent_submissions' => $this->getRecentSubmissions(),
-            
-            // Course progress
-            'course_progress' => $this->getCourseProgress(),
-        ];
-        
-        return view('student/dashboard', $data);
+        return redirect()->to('/dashboard');
     }
     
     /**

@@ -18,20 +18,4 @@ $routes->post('login', 'Auth::login');
 $routes->get('logout', 'Auth::logout');
 $routes->get('dashboard', 'Auth::dashboard');
 
-// Role-based Dashboard Routes
-$routes->get('admin/dashboard', 'Admin::dashboard');
-$routes->get('teacher/dashboard', 'Teacher::dashboard');
-$routes->get('student/dashboard', 'Student::dashboard');
-
-// Admin Routes
-$routes->get('admin/users', 'Admin::users');
-$routes->get('admin/courses', 'Admin::courses');
-
-// Teacher Routes
-$routes->get('teacher/courses', 'Teacher::myCourses');
-$routes->get('teacher/students', 'Teacher::myStudents');
-
-// Student Routes
-$routes->get('student/courses', 'Student::myCourses');
-$routes->get('student/available-courses', 'Student::availableCourses');
-$routes->get('student/enroll/(:num)', 'Student::enroll/$1');
+// Role-based Dashboard Routes (removed - now using unified dashboard)
