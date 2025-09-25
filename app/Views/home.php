@@ -2,6 +2,38 @@
 
 <?= $this->section('content') ?>
 
+<div class="hero">
+    <h1>Learning Management System</h1>
+    <p>A comprehensive educational platform designed to facilitate effective learning and academic excellence.</p>
+    <div>
+        <a href="<?= base_url('about') ?>" class="btn">Learn More</a>
+        <a href="<?= base_url('contact') ?>" class="btn btn-outline">Contact Us</a>
+    </div>
+</div>
+
+<div class="card">
+    <h1>Key Features</h1>
+    <div class="grid-3-220">
+        <div>
+            <h2>Responsive</h2>
+            <p>Crafted with a mobile-first approach to work beautifully on all screens.</p>
+        </div>
+        <div>
+            <h2>Accessible</h2>
+            <p>Readable typography, clear contrast, and simple interactions.</p>
+        </div>
+        <div>
+            <h2>Maintainable</h2>
+            <p>Minimal, clean code structure that’s easy to extend.</p>
+        </div>
+    </div>
+</div>
+
+<?= $this->endSection() ?>
+<?= $this->extend('template') ?>
+
+<?= $this->section('content') ?>
+
 <!-- Hero Section -->
 <section class="hero-section">
     <div class="container text-center">

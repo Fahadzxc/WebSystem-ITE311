@@ -27,28 +27,28 @@ class UserSeeder extends Seeder
                 'updated_at' => date('Y-m-d H:i:s'),
             ],
 
-            // Instructor Users
+            // Teacher Users
             [
                 'name' => 'John Doe',
                 'email' => 'john.doe@lms.com',
-                'password' => password_hash('instructor123', PASSWORD_DEFAULT),
-                'role' => 'instructor',
+                'password' => password_hash('teacher123', PASSWORD_DEFAULT),
+                'role' => 'teacher',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'name' => 'Jane Smith',
                 'email' => 'jane.smith@lms.com',
-                'password' => password_hash('instructor123', PASSWORD_DEFAULT),
-                'role' => 'instructor',
+                'password' => password_hash('teacher123', PASSWORD_DEFAULT),
+                'role' => 'teacher',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'name' => 'Mike Wilson',
                 'email' => 'mike.wilson@lms.com',
-                'password' => password_hash('instructor123', PASSWORD_DEFAULT),
-                'role' => 'instructor',
+                'password' => password_hash('teacher123', PASSWORD_DEFAULT),
+                'role' => 'teacher',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ],

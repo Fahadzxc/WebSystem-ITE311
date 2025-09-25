@@ -18,4 +18,7 @@ $routes->post('login', 'Auth::login');
 $routes->get('logout', 'Auth::logout');
 $routes->get('dashboard', 'Auth::dashboard');
 
-// Role-based Dashboard Routes (removed - now using unified dashboard)
+// Role-specific dashboards
+$routes->get('admin/dashboard', 'Admin::dashboard');
+$routes->get('teacher/dashboard', 'Teacher::dashboard');
+$routes->get('student/dashboard', 'Student::dashboard');

@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'LMS System' ?></title>
     
-    <!-- Professional & Formal CSS -->
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Minimal, clean CSS per spec -->
     <style>
         * {
             margin: 0;
@@ -14,16 +19,16 @@
         }
         
         body {
-            font-family: 'Times New Roman', Georgia, serif;
-            line-height: 1.6;
-            color: #2c3e50;
-            background-color: #ffffff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: #6B7280;
+            background-color: #F9FAFB;
         }
         
         .navbar {
-            background-color: #2c3e50;
+            background-color: #1E293B;
             padding: 1rem 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 2px rgba(2,6,23,0.08);
         }
         
         .navbar .container {
@@ -36,10 +41,10 @@
         }
         
         .navbar-brand {
-            color: #ffffff;
+            color: #FFFFFF;
             text-decoration: none;
             font-size: 1.8rem;
-            font-weight: bold;
+            font-weight: 600;
             letter-spacing: 1px;
         }
         
@@ -47,28 +52,33 @@
             display: flex;
             list-style: none;
             gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .navbar-nav li {
+            list-style: none;
         }
         
         .nav-link {
-            color: #ecf0f1;
+            color: #E5E7EB;
             text-decoration: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
-            transition: all 0.3s;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            transition: color 0.2s ease, background-color 0.2s ease;
             font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.9rem;
+            letter-spacing: 0.2px;
+            font-size: 0.95rem;
         }
         
         .nav-link:hover {
-            color: #ffffff;
-            background-color: #34495e;
+            color: #14B8A6;
+            background-color: transparent;
         }
         
         .nav-link.active {
-            color: #ffffff;
-            background-color: #3498db;
+            color: #FFFFFF;
+            background-color: rgba(37,99,235,0.18);
         }
         
         .main-content {
@@ -79,99 +89,124 @@
         
         .hero {
             text-align: center;
-            padding: 3rem 0;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
+            padding: 4rem 1rem;
+            background: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%);
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
             margin-bottom: 2rem;
         }
         
         .hero h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #2c3e50;
+            font-size: 2.75rem;
+            font-weight: 600;
+            color: #0F172A;
             margin-bottom: 1rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            letter-spacing: -0.02em;
         }
         
         .hero p {
             font-size: 1.1rem;
-            color: #5a6c7d;
+            color: #6B7280;
             margin-bottom: 2rem;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            font-style: italic;
         }
         
         .btn {
             display: inline-block;
-            padding: 0.875rem 2rem;
-            background-color: #2c3e50;
-            color: #ffffff;
+            padding: 0.75rem 1.25rem;
+            background-color: #2563EB;
+            color: #FFFFFF;
             text-decoration: none;
-            border-radius: 4px;
-            border: 2px solid #2c3e50;
+            border-radius: 6px;
+            border: 1px solid #2563EB;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.05s ease;
             font-weight: 600;
             font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin: 0.5rem;
+            letter-spacing: 0.2px;
+            margin: 0.25rem;
         }
         
         .btn:hover {
-            background-color: #34495e;
-            border-color: #34495e;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background-color: #1D4ED8;
+            border-color: #1D4ED8;
+            transform: translateY(-1px);
         }
         
         .btn-outline {
             background-color: transparent;
-            color: #2c3e50;
-            border: 2px solid #2c3e50;
+            color: #1E293B;
+            border: 1px solid #1E293B;
         }
         
         .btn-outline:hover {
-            background-color: #2c3e50;
-            color: #ffffff;
+            background-color: #14B8A6;
+            color: #FFFFFF;
+            border-color: #14B8A6;
         }
         
         .card {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 2.5rem;
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 2rem;
             margin: 2rem 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border: 1px solid #dee2e6;
+            box-shadow: 0 1px 2px rgba(15,23,42,0.06);
+            border: 1px solid #E5E7EB;
+        }
+
+        /* Responsive layout helpers */
+        .grid-3-220 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+        .grid-2-260 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            align-items: start;
+        }
+        .grid-2-280 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            align-items: start;
+        }
+        .stack-gap { display: grid; gap: 1rem; }
+
+        /* Simple content tile */
+        .tile {
+            padding: 1rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            background: #FFFFFF;
         }
         
         .card h1 {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: #2c3e50;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #0F172A;
             margin-bottom: 1.5rem;
             text-align: center;
-            border-bottom: 3px solid #3498db;
+            border-bottom: 2px solid rgba(37,99,235,0.2);
             padding-bottom: 0.5rem;
         }
         
         .card h2 {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #34495e;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
             margin: 2rem 0 1rem 0;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.2px;
         }
         
         .card p {
-            color: #5a6c7d;
+            color: #6B7280;
             margin-bottom: 1.5rem;
             line-height: 1.8;
-            text-align: justify;
+            text-align: left;
         }
         
         .card ul {
@@ -198,13 +233,16 @@
         }
         
         .footer {
-            background-color: #2c3e50;
-            color: #ecf0f1;
+            background-color: #FFFFFF;
+            border-top: 1px solid #E5E7EB;
+            color: #6B7280;
             text-align: center;
-            padding: 2rem 0;
+            padding: 1.25rem 0;
             margin-top: 3rem;
-            border-top: 4px solid #3498db;
+            font-size: 0.875rem;
         }
+        .footer a { color: #6B7280; text-decoration: none; margin: 0 0.75rem; }
+        .footer a:hover { color: #14B8A6; }
         
         .form-group {
             margin-bottom: 1.5rem;
@@ -223,17 +261,17 @@
         .form-control {
             width: 100%;
             padding: 0.75rem;
-            border: 2px solid #dee2e6;
-            border-radius: 4px;
+            border: 1px solid #E5E7EB;
+            border-radius: 6px;
             font-size: 1rem;
-            font-family: 'Times New Roman', Georgia, serif;
+            font-family: 'Inter', sans-serif;
             transition: border-color 0.3s;
         }
         
         .form-control:focus {
             outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            border-color: #2563EB;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
         }
         
         .auth-form {
@@ -306,67 +344,7 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="container">
-            <a class="navbar-brand" href="<?= base_url('/') ?>">
-                LMS System
-            </a>
-            
-            <ul class="navbar-nav">
-                <?php if (session()->get('isLoggedIn')): ?>
-                    <!-- Logged-in User Navigation -->
-                    <!-- User Info -->
-                    <li class="nav-item dropdown">
-                        <span class="nav-link" style="color: #ecf0f1; font-weight: bold;">
-                            Welcome, <?= session()->get('user_name') ?> 
-                            <span class="badge" style="background-color: #3498db; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; margin-left: 5px;">
-                                <?= ucfirst(session()->get('role')) ?>
-                            </span>
-                        </span>
-                    </li>
-                    
-                    <!-- Role-Specific Navigation -->
-                    <?php $userRole = session()->get('role'); ?>
-                    
-                    <?php if ($userRole === 'admin'): ?>
-                        <!-- Admin Navigation -->
-                        <li><a class="nav-link <?= ($page ?? '') === 'admin_dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>">Dashboard</a></li>
-                        <li><a class="nav-link <?= ($page ?? '') === 'admin_users' ? 'active' : '' ?>" href="<?= base_url('admin/users') ?>">Users</a></li>
-                        <li><a class="nav-link <?= ($page ?? '') === 'admin_courses' ? 'active' : '' ?>" href="<?= base_url('admin/courses') ?>">Courses</a></li>
-                        <li><a class="nav-link" href="<?= base_url('admin/reports') ?>">Reports</a></li>
-                        
-                    <?php elseif ($userRole === 'instructor'): ?>
-                        <!-- Teacher Navigation -->
-                        <li><a class="nav-link <?= ($page ?? '') === 'teacher_dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>">Dashboard</a></li>
-                        <li><a class="nav-link <?= ($page ?? '') === 'teacher_courses' ? 'active' : '' ?>" href="<?= base_url('teacher/courses') ?>">My Courses</a></li>
-                        <li><a class="nav-link <?= ($page ?? '') === 'teacher_students' ? 'active' : '' ?>" href="<?= base_url('teacher/students') ?>">Students</a></li>
-                        <li><a class="nav-link" href="<?= base_url('teacher/assignments') ?>">Assignments</a></li>
-                        
-                    <?php elseif ($userRole === 'student'): ?>
-                        <!-- Student Navigation -->
-                        <li><a class="nav-link <?= ($page ?? '') === 'student_dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>">Dashboard</a></li>
-                        <li><a class="nav-link <?= ($page ?? '') === 'student_courses' ? 'active' : '' ?>" href="<?= base_url('student/courses') ?>">My Courses</a></li>
-                        <li><a class="nav-link" href="<?= base_url('student/available-courses') ?>">Browse Courses</a></li>
-                        <li><a class="nav-link" href="<?= base_url('student/assignments') ?>">Assignments</a></li>
-                        <li><a class="nav-link" href="<?= base_url('student/grades') ?>">Grades</a></li>
-                    <?php endif; ?>
-                    
-                    <!-- Common User Actions -->
-                    <li><a class="nav-link" href="<?= base_url('profile') ?>">Profile</a></li>
-                    <li><a class="nav-link" href="<?= base_url('logout') ?>" style="color: #e74c3c; font-weight: bold;">Logout</a></li>
-                    
-                <?php else: ?>
-                    <!-- Guest Navigation (Public Links) -->
-                    <li><a class="nav-link <?= ($page ?? '') === 'home' ? 'active' : '' ?>" href="<?= base_url('home') ?>">Home</a></li>
-                    <li><a class="nav-link <?= ($page ?? '') === 'about' ? 'active' : '' ?>" href="<?= base_url('about') ?>">About</a></li>
-                    <li><a class="nav-link <?= ($page ?? '') === 'contact' ? 'active' : '' ?>" href="<?= base_url('contact') ?>">Contact</a></li>
-                    <li><a class="nav-link" href="<?= base_url('login') ?>">Login</a></li>
-                    <li><a class="nav-link" href="<?= base_url('register') ?>">Register</a></li>
-                <?php endif; ?>
-            </ul>
-        </div>
-    </nav>
+    <?= $this->include('templates/header') ?>
 
     <!-- Main Content Area -->
     <main class="main-content">
