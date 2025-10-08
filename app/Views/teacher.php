@@ -1,6 +1,5 @@
 <div class="container py-4">
   <h3 class="mb-3 text-primary">Teacher Dashboard</h3>
-  <p>Welcome, <?= esc($name) ?>!</p>
 
   <div class="card shadow-sm mb-3">
     <div class="card-header fw-semibold">My Courses</div>

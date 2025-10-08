@@ -23,6 +23,7 @@
             line-height: 1.7;
             color: #6B7280;
             background-color: #F9FAFB;
+            overflow: hidden;
         }
         
         .navbar {
@@ -238,7 +239,7 @@
             color: #6B7280;
             text-align: center;
             padding: 1.25rem 0;
-            margin-top: 3rem;
+            margin-top: 1rem;
             font-size: 0.875rem;
         }
         .footer a { color: #6B7280; text-decoration: none; margin: 0 0.75rem; }
@@ -352,8 +353,10 @@
     </main>
 
     <!-- Footer -->
+    <?php if (!session()->get('isLoggedIn')): ?>
     <footer class="footer">
         <p>&copy; <?= date('Y') ?> LMS System. All rights reserved.</p>
     </footer>
+    <?php endif; ?>
 </body>
 </html>
