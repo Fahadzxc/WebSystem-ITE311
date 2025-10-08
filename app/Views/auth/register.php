@@ -17,6 +17,7 @@
     <?php endif; ?>
     
     <form action="" method="post">
+        <?= csrf_field() ?>
         <div class="form-group">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" id="name" name="name" value="<?= set_value('name') ?>" required>

@@ -55,7 +55,18 @@ class Auth extends Controller
     {
         // Redirect if already logged in
         if (session()->get('isLoggedIn')) {
-            return redirect()->to('/dashboard');
+            // Redirect to role-specific dashboard
+            $role = session()->get('role');
+            switch ($role) {
+                case 'admin':
+                    return redirect()->to('admin/dashboard');
+                case 'teacher':
+                    return redirect()->to('teacher/dashboard');
+                case 'student':
+                    return redirect()->to('student/dashboard');
+                default:
+                    return redirect()->to('/dashboard');
+            }
         }
         
         helper(['form']);
@@ -119,18 +130,21 @@ class Auth extends Controller
         // Check if user is logged in
         if (!session()->get('isLoggedIn')) {
             session()->setFlashdata('error', 'Please login to access the dashboard.');
-            return redirect()->to(base_url('login'));
+            return redirect()->to('login');
         }
 
-        // User is logged in, show dashboard
-        $data = [
-            'user' => [
-                'name' => session()->get('name'),
-                'email' => session()->get('email'),
-                'role' => session()->get('role')
-            ]
-        ];
-
-        return view('auth/dashboard', $data);
+        // Redirect to role-specific dashboard
+        $role = session()->get('role');
+        switch ($role) {
+            case 'admin':
+                return redirect()->to('admin/dashboard');
+            case 'teacher':
+                return redirect()->to('teacher/dashboard');
+            case 'student':
+                return redirect()->to('student/dashboard');
+            default:
+                session()->setFlashdata('error', 'Your account role is not recognized.');
+                return redirect()->to('login');
+        }
     }
 }

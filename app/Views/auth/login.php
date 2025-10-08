@@ -23,6 +23,7 @@
     <?php endif; ?>
     
     <form action="" method="post">
+        <?= csrf_field() ?>
         <div class="form-group">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" name="email" value="<?= set_value('email') ?>" required>
