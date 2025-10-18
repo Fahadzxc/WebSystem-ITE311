@@ -18,7 +18,7 @@ class Teacher extends BaseController
             return redirect()->to(base_url('login'));
         }
 
-        return view('auth/dashboard', [
+        return view('teacher', [
             'user' => [
               'name'  => session('name'),
               'email' => session('email'),

@@ -98,7 +98,7 @@ class Auth extends Controller
                         case 'teacher':
                             return redirect()->to(base_url('teacher/dashboard'));
                         case 'student':
-                            return redirect()->to(base_url('student/dashboard'));
+                            return redirect()->to(base_url('announcements'));
                         default:
                             // Unknown role: clear session and go back to login
                             session()->destroy();
@@ -141,7 +141,7 @@ class Auth extends Controller
             case 'teacher':
                 return redirect()->to('teacher/dashboard');
             case 'student':
-                return redirect()->to('student/dashboard');
+                return redirect()->to('announcements');
             default:
                 session()->setFlashdata('error', 'Your account role is not recognized.');
                 return redirect()->to('login');
