@@ -31,5 +31,6 @@ $routes->post('course/enroll', 'Course::enroll');
 $routes->post('course/unenroll', 'Course::unenroll');
 $routes->get('courses/my-enrollments', 'Course::myEnrollments');
 
-// Announcements Routes
+// Announcement Routes
 $routes->get('announcements', 'Announcement::index');
+$routes->get('student/announcement', 'Announcement::index');

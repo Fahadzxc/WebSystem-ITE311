@@ -25,12 +25,6 @@ class Student extends BaseController
             return redirect()->to(base_url('login'));
         }
 
-        // Must be Student
-        if (session('role') !== 'student') {
-            session()->setFlashdata('error', 'Unauthorized access.');
-            return redirect()->to(base_url('login'));
-        }
-
         $user_id = session()->get('user_id');
 
         // Get user's enrollments

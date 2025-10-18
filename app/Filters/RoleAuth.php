@@ -31,43 +31,37 @@ class RoleAuth implements FilterInterface
             return redirect()->to(base_url('login'));
         }
 
-        // Get user role and current URI
         $userRole = session()->get('role');
         $currentPath = $request->getUri()->getPath();
-        
-        // Debug: Log the current path and role for debugging
-        log_message('debug', 'RoleAuth Filter - User Role: ' . $userRole . ', Current Path: ' . $currentPath);
-        
-        // Define role-based access rules
-        $accessRules = [
-            'admin' => [
-                'allowed_prefixes' => ['/admin', '/announcements', '/courses', '/home', '/about', '/contact', '/logout', '/dashboard']
-            ],
-            'teacher' => [
-                'allowed_prefixes' => ['/teacher', '/announcements', '/courses', '/home', '/about', '/contact', '/logout', '/dashboard']
-            ],
-            'student' => [
-                'allowed_prefixes' => ['/student', '/announcements', '/courses', '/home', '/about', '/contact', '/logout', '/dashboard']
-            ]
-        ];
 
-        // Check if user has permission for current route
-        $hasPermission = false;
-        
-        if (isset($accessRules[$userRole])) {
-            foreach ($accessRules[$userRole]['allowed_prefixes'] as $prefix) {
-                if (strpos($currentPath, $prefix) === 0) {
-                    $hasPermission = true;
-                    break;
-                }
+        // Debug: Log the current path and role
+        log_message('debug', 'RoleAuth Filter - User Role: ' . $userRole . ', Current Path: ' . $currentPath);
+
+        // Admin can access any route starting with /admin
+        if ($userRole === 'admin') {
+            if (strpos($currentPath, '/admin') === 0) {
+                return; // Allow access
             }
         }
 
-        // If no permission, redirect to announcements with error message
-        if (!$hasPermission) {
-            session()->setFlashdata('error', 'Access Denied: Insufficient Permissions');
-            return redirect()->to(base_url('announcements'));
+        // Teacher can only access routes starting with /teacher
+        if ($userRole === 'teacher') {
+            if (strpos($currentPath, '/teacher') === 0) {
+                return; // Allow access
+            }
         }
+
+        // Student can access routes starting with /student
+        if ($userRole === 'student') {
+            if (strpos($currentPath, '/student') === 0) {
+                return; // Allow access
+            }
+        }
+
+        // If user tries to access unauthorized route, redirect with error
+        log_message('debug', 'RoleAuth Filter - Access denied for role: ' . $userRole . ' to path: ' . $currentPath);
+        session()->setFlashdata('error', 'Access Denied: Insufficient Permissions');
+        return redirect()->to(base_url('announcements'));
     }
 
     /**

@@ -14,14 +14,8 @@ class Admin extends BaseController
             return redirect()->to(base_url('login'));
         }
 
-        // Must be admin
-        if (session('role') !== 'admin') {
-            session()->setFlashdata('error', 'Unauthorized access.');
-            return redirect()->to(base_url('login'));
-        }
-
-        // Render admin dashboard with user context
-        return view('admin', [
+        // Render unified wrapper with user context
+        return view('auth/dashboard', [
             'user' => [
                 'name'  => session('name'),
                 'email' => session('email'),

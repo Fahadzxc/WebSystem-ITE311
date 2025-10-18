@@ -11,7 +11,6 @@ class AnnouncementModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
     protected $useSoftDeletes = false;
-    protected $protectFields = true;
     protected $allowedFields = [
         'title',
         'content',
@@ -24,25 +23,39 @@ class AnnouncementModel extends Model
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
-    protected $deletedField = 'deleted_at';
 
-    // Validation
-    protected $validationRules = [
-        'title' => 'required|max_length[255]',
-        'content' => 'required'
-    ];
-    protected $validationMessages = [];
-    protected $skipValidation = false;
-    protected $cleanValidationRules = true;
+    // NO VALIDATION - Just save everything
+    protected $skipValidation = true;
+    protected $cleanValidationRules = false;
 
-    // Callbacks
-    protected $allowCallbacks = true;
+    // NO CALLBACKS - Let controller handle everything
     protected $beforeInsert = [];
-    protected $afterInsert = [];
     protected $beforeUpdate = [];
-    protected $afterUpdate = [];
-    protected $beforeFind = [];
-    protected $afterFind = [];
-    protected $beforeDelete = [];
-    protected $afterDelete = [];
+
+    /**
+     * Get all announcements ordered by created_at descending (newest first)
+     */
+    public function getAllAnnouncements()
+    {
+        return $this->orderBy('created_at', 'DESC')->findAll();
+    }
+
+    /**
+     * Find announcement by ID
+     */
+    public function findById(int $id)
+    {
+        return $this->find($id);
+    }
+
+    /**
+     * Get recent announcements (last N days)
+     */
+    public function getRecentAnnouncements(int $days = 7)
+    {
+        $date = date('Y-m-d H:i:s', strtotime("-{$days} days"));
+        return $this->where('created_at >=', $date)
+                   ->orderBy('created_at', 'DESC')
+                   ->findAll();
+    }
 }
