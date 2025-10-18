@@ -30,3 +30,6 @@ $routes->get('courses/(:num)', 'Course::view/$1');
 $routes->post('course/enroll', 'Course::enroll');
 $routes->post('course/unenroll', 'Course::unenroll');
 $routes->get('courses/my-enrollments', 'Course::myEnrollments');
+
+// Announcements Routes
+$routes->get('announcements', 'Announcement::index');
