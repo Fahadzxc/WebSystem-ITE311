@@ -1,5 +1,5 @@
 <div class="container py-4">
-  <h3 class="mb-3 text-primary">Admin Dashboard</h3>
+  <h3 class="mb-3 text-primary">Welcome, Admin!</h3>
 
   <div class="row g-3">
     <div class="col-md-3">

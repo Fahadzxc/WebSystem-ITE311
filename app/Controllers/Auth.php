@@ -91,14 +91,17 @@ class Auth extends Controller
                     ]);
                     $session->setFlashdata('success', 'Welcome, ' . $user['name'] . '!');
                     
+                    // Debug: Log the role for debugging
+                    log_message('debug', 'Auth Login - User Role: ' . $user['role'] . ', Redirecting...');
+                    
                     // Redirect based on role
                     switch ($user['role']) {
                         case 'admin':
-                            return redirect()->to(base_url('admin/dashboard'));
+                            return redirect()->to('/admin/dashboard');
                         case 'teacher':
-                            return redirect()->to(base_url('teacher/dashboard'));
+                            return redirect()->to('/teacher/dashboard');
                         case 'student':
-                            return redirect()->to(base_url('student/dashboard'));
+                            return redirect()->to('/announcements');
                         default:
                             // Unknown role: clear session and go back to login
                             session()->destroy();
@@ -137,11 +140,11 @@ class Auth extends Controller
         $role = session()->get('role');
         switch ($role) {
             case 'admin':
-                return redirect()->to('admin/dashboard');
+                return redirect()->to('/admin/dashboard');
             case 'teacher':
-                return redirect()->to('teacher/dashboard');
+                return redirect()->to('/teacher/dashboard');
             case 'student':
-                return redirect()->to('student/dashboard');
+                return redirect()->to('/announcements');
             default:
                 session()->setFlashdata('error', 'Your account role is not recognized.');
                 return redirect()->to('login');

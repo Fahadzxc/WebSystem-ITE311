@@ -13,12 +13,10 @@ class Teacher extends BaseController
             return redirect()->to(base_url('login'));
         }
 
-        if (session('role') !== 'teacher') {
-            session()->setFlashdata('error', 'Unauthorized access.');
-            return redirect()->to(base_url('login'));
-        }
 
         return view('auth/dashboard', [
+
+
             'user' => [
               'name'  => session('name'),
               'email' => session('email'),

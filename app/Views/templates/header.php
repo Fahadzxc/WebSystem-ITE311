@@ -21,6 +21,7 @@
                             <li><a class="nav-link" href="<?= base_url('teacher/grades'); ?>">Grades</a></li>
                         <?php elseif ($role === 'student'): ?>
                             <li><a class="nav-link" href="<?= base_url('student/dashboard'); ?>">Student Dashboard</a></li>
+                            <li><a class="nav-link" href="<?= base_url('student/announcement'); ?>">Announcements</a></li>
                             <li><a class="nav-link" href="<?= base_url('student/enrollments'); ?>">My Enrollments</a></li>
                             <li><a class="nav-link" href="<?= base_url('student/materials'); ?>">All Materials</a></li>
                             <li><a class="nav-link" href="<?= base_url('student/assignments'); ?>">Assignments</a></li>
