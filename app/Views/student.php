@@ -21,7 +21,9 @@
   <div class="card shadow-sm mb-4">
     <div class="card-header fw-semibold d-flex justify-content-between align-items-center">
       <span>My Enrolled Courses</span>
-      <span class="badge bg-primary"><?= count($enrollments ?? []) ?></span>
+      <div class="d-flex gap-2 align-items-center">
+        <span class="badge bg-primary"><?= count($enrollments ?? []) ?></span>
+      </div>
     </div>
     <div class="card-body">
       <?php if (!empty($enrollments)): ?>
@@ -39,6 +41,11 @@
                     <span class="badge bg-<?= $enrollment['status'] === 'active' ? 'success' : 'secondary' ?>">
                       <?= ucfirst($enrollment['status']) ?>
                     </span>
+                  </div>
+                  <div class="mt-2">
+                    <a href="<?= base_url('student/materials/' . $enrollment['course_id']) ?>" class="btn btn-sm btn-outline-primary">
+                      <i class="fas fa-download"></i> View Materials
+                    </a>
                   </div>
                   <div class="mt-2">
                     <div class="progress" style="height: 6px;">

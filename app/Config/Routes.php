@@ -4,6 +4,16 @@ use CodeIgniter\Router\RouteCollection;
 
 /**
  * @var RouteCollection $routes
+ * 
+ * Route Configuration for LMS System
+ * 
+ * Route Structure:
+ * - Public routes: Home, About, Contact, Auth
+ * - Dashboard routes: Role-specific dashboards
+ * - Student routes: Enrollment, Materials access
+ * - Admin routes: Course management, Material upload
+ * - Teacher routes: Material management
+ * - Materials routes: Upload, Download, Delete operations
  */
 $routes->get('/', 'Home::index');
 $routes->get('home', 'Home::index');
@@ -22,7 +32,25 @@ $routes->get('dashboard', 'Auth::dashboard');
 $routes->get('admin/dashboard', 'Admin::dashboard');
 $routes->get('teacher/dashboard', 'Teacher::dashboard');
 $routes->get('student/dashboard', 'Student::dashboard');
+
+// Student Routes
 $routes->post('student/enroll', 'Student::enroll');
+$routes->get('student/materials', 'Student::materials');
+$routes->get('student/materials/(:num)', 'Student::courseMaterials/$1');
+
+// Admin Course Management Routes
+$routes->get('admin/course/(:num)/upload', 'Materials::upload/$1');
+$routes->post('admin/course/(:num)/upload', 'Materials::upload/$1');
+
+// Materials Management Routes
+$routes->get('materials/upload/(:num)', 'Materials::upload/$1');
+$routes->post('materials/upload/(:num)', 'Materials::upload/$1');
+$routes->get('materials/download/(:num)', 'Materials::download/$1');
+$routes->get('materials/delete/(:num)', 'Materials::delete/$1');
+
+// Teacher Materials Routes (alternative access for teachers)
+$routes->get('teacher/course/(:num)/materials', 'Materials::upload/$1');
+$routes->post('teacher/course/(:num)/materials', 'Materials::upload/$1');
 
 // Course Routes
 $routes->get('courses', 'Course::index');
@@ -30,3 +58,5 @@ $routes->get('courses/(:num)', 'Course::view/$1');
 $routes->post('course/enroll', 'Course::enroll');
 $routes->post('course/unenroll', 'Course::unenroll');
 $routes->get('courses/my-enrollments', 'Course::myEnrollments');
+
+

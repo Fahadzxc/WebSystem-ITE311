@@ -1,0 +1,42 @@
+CRITICAL - 2025-10-19 08:06:24 --> ErrorException: Undefined property: CodeIgniter\View\View::$request
+[Method: GET, Route: materials/upload/1]
+in APPPATH\Views\materials\upload.php on line 13.
+ 1 APPPATH\Views\materials\upload.php(13): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: CodeIgniter\\View\\View::$request', 'C:\\xampp\\htdocs\\ITE311-ALALAWI\\app\\Views\\materials\\upload.php', 13)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\ITE311-ALALAWI\\app\\Views\\materials\\upload.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('materials/upload', [], true)
+ 5 APPPATH\Controllers\Materials.php(175): view('materials/upload', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Materials->upload('1')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Materials))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-10-19 08:06:28 --> ErrorException: Undefined property: CodeIgniter\View\View::$request
+[Method: GET, Route: admin/course/1/upload]
+in APPPATH\Views\materials\upload.php on line 13.
+ 1 APPPATH\Views\materials\upload.php(13): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: CodeIgniter\\View\\View::$request', 'C:\\xampp\\htdocs\\ITE311-ALALAWI\\app\\Views\\materials\\upload.php', 13)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\ITE311-ALALAWI\\app\\Views\\materials\\upload.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('materials/upload', [], true)
+ 5 APPPATH\Controllers\Materials.php(175): view('materials/upload', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Materials->upload('1')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Materials))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-10-19 08:06:31 --> ErrorException: Undefined property: CodeIgniter\View\View::$request
+[Method: GET, Route: admin/course/1/upload]
+in APPPATH\Views\materials\upload.php on line 13.
+ 1 APPPATH\Views\materials\upload.php(13): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: CodeIgniter\\View\\View::$request', 'C:\\xampp\\htdocs\\ITE311-ALALAWI\\app\\Views\\materials\\upload.php', 13)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\ITE311-ALALAWI\\app\\Views\\materials\\upload.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('materials/upload', [], true)
+ 5 APPPATH\Controllers\Materials.php(175): view('materials/upload', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Materials->upload('1')
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Materials))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

@@ -5,16 +5,19 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\EnrollmentModel;
 use App\Models\CourseModel;
+use App\Models\MaterialModel;
 
 class Student extends BaseController
 {
     protected $enrollmentModel;
     protected $courseModel;
+    protected $materialModel;
 
     public function __construct()
     {
         $this->enrollmentModel = new EnrollmentModel();
         $this->courseModel = new CourseModel();
+        $this->materialModel = new MaterialModel();
     }
 
     public function dashboard()
@@ -127,5 +130,115 @@ class Student extends BaseController
             session()->setFlashdata('error', 'Failed to enroll in course. Please try again.');
             return redirect()->to('student/dashboard');
         }
+    }
+
+    /**
+     * Display materials for enrolled courses
+     */
+    public function materials()
+    {
+        // Check if user is logged in
+        if (!session()->get('isLoggedIn')) {
+            session()->setFlashdata('error', 'Please login first.');
+            return redirect()->to(base_url('login'));
+        }
+
+        // Check if user is a student
+        if (session('role') !== 'student') {
+            session()->setFlashdata('error', 'Unauthorized access.');
+            return redirect()->to(base_url('login'));
+        }
+
+        $user_id = session()->get('user_id');
+
+        // Get user's enrollments
+        $enrollments = $this->enrollmentModel->getUserEnrollments($user_id);
+
+        if (empty($enrollments)) {
+            return view('student/materials', [
+                'user' => [
+                    'name' => session('name'),
+                    'email' => session('email'),
+                    'role' => session('role'),
+                ],
+                'enrollments' => [],
+                'materials_by_course' => []
+            ]);
+        }
+
+        // Get course IDs from enrollments
+        $course_ids = array_column($enrollments, 'course_id');
+
+        // Get all materials for enrolled courses
+        $materials_by_course = [];
+        foreach ($enrollments as $enrollment) {
+            $course_id = $enrollment['course_id'];
+            $materials = $this->materialModel->getMaterialsByCourse($course_id);
+            
+            if (!empty($materials)) {
+                $materials_by_course[] = [
+                    'course_id' => $course_id,
+                    'course_title' => $enrollment['course_title'],
+                    'course_description' => $enrollment['course_description'],
+                    'materials' => $materials
+                ];
+            }
+        }
+
+        return view('student/materials', [
+            'user' => [
+                'name' => session('name'),
+                'email' => session('email'),
+                'role' => session('role'),
+            ],
+            'enrollments' => $enrollments,
+            'materials_by_course' => $materials_by_course
+        ]);
+    }
+
+    /**
+     * Display materials for a specific course
+     */
+    public function courseMaterials($course_id)
+    {
+        // Check if user is logged in
+        if (!session()->get('isLoggedIn')) {
+            session()->setFlashdata('error', 'Please login first.');
+            return redirect()->to(base_url('login'));
+        }
+
+        // Check if user is a student
+        if (session('role') !== 'student') {
+            session()->setFlashdata('error', 'Unauthorized access.');
+            return redirect()->to(base_url('login'));
+        }
+
+        $user_id = session()->get('user_id');
+
+        // Check if user is enrolled in this course
+        if (!$this->enrollmentModel->isAlreadyEnrolled($user_id, $course_id)) {
+            session()->setFlashdata('error', 'You are not enrolled in this course.');
+            return redirect()->to(base_url('student/materials'));
+        }
+
+        // Get course information
+        $course = $this->courseModel->find($course_id);
+        if (!$course) {
+            session()->setFlashdata('error', 'Course not found.');
+            return redirect()->to(base_url('student/materials'));
+        }
+
+        // Get materials for this course
+        $materials = $this->materialModel->getMaterialsByCourse($course_id);
+
+        return view('student/course_materials', [
+            'user' => [
+                'name' => session('name'),
+                'email' => session('email'),
+                'role' => session('role'),
+            ],
+            'course' => $course,
+            'materials' => $materials
+        ]);
     }
 }

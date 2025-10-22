@@ -29,7 +29,7 @@
             line-height: 1.7;
             color: #6B7280;
             background-color: #F9FAFB;
-            overflow: hidden;
+            overflow: auto;
         }
         
         .navbar {

@@ -22,6 +22,7 @@
                         <?php elseif ($role === 'student'): ?>
                             <li><a class="nav-link" href="<?= base_url('student/dashboard'); ?>">Student Dashboard</a></li>
                             <li><a class="nav-link" href="<?= base_url('student/enrollments'); ?>">My Enrollments</a></li>
+                            <li><a class="nav-link" href="<?= base_url('student/materials'); ?>">All Materials</a></li>
                             <li><a class="nav-link" href="<?= base_url('student/assignments'); ?>">Assignments</a></li>
                         <?php else: ?>
                             <li><a class="nav-link" href="<?= base_url('dashboard'); ?>">Dashboard</a></li>
