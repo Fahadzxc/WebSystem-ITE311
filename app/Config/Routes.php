@@ -37,6 +37,7 @@ $routes->get('student/dashboard', 'Student::dashboard');
 $routes->post('student/enroll', 'Student::enroll');
 $routes->get('student/materials', 'Student::materials');
 $routes->get('student/materials/(:num)', 'Student::courseMaterials/$1');
+$routes->get('student/announcement', 'Announcement::index');
 
 // Admin Course Management Routes
 $routes->get('admin/course/(:num)/upload', 'Materials::upload/$1');
@@ -45,12 +46,16 @@ $routes->post('admin/course/(:num)/upload', 'Materials::upload/$1');
 // Materials Management Routes
 $routes->get('materials/upload/(:num)', 'Materials::upload/$1');
 $routes->post('materials/upload/(:num)', 'Materials::upload/$1');
+$routes->post('materials/uploadFile', 'Materials::uploadFile');
 $routes->get('materials/download/(:num)', 'Materials::download/$1');
 $routes->get('materials/delete/(:num)', 'Materials::delete/$1');
 
 // Teacher Materials Routes (alternative access for teachers)
 $routes->get('teacher/course/(:num)/materials', 'Materials::upload/$1');
 $routes->post('teacher/course/(:num)/materials', 'Materials::upload/$1');
+
+// Announcements Routes
+$routes->get('announcements', 'Announcement::index');
 
 // Course Routes
 $routes->get('courses', 'Course::index');

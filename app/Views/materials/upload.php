@@ -7,13 +7,13 @@
     
     <!-- Flash Messages -->
     <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success" style="background-color: #D1FAE5; color: #065F46; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; border: 1px solid #A7F3D0;">
+        <div class="alert alert-success auto-hide" style="background-color: #D1FAE5; color: #065F46; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; border: 1px solid #A7F3D0; transition: opacity 0.5s ease-out;">
             <i class="fas fa-check-circle"></i> <?= session()->getFlashdata('success') ?>
         </div>
     <?php endif; ?>
 
     <?php if (session()->getFlashdata('error')): ?>
-        <div class="alert alert-danger" style="background-color: #FEE2E2; color: #991B1B; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; border: 1px solid #FCA5A5;">
+        <div class="alert alert-danger auto-hide" style="background-color: #FEE2E2; color: #991B1B; padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; border: 1px solid #FCA5A5; transition: opacity 0.5s ease-out;">
             <i class="fas fa-exclamation-circle"></i> <?= session()->getFlashdata('error') ?>
         </div>
     <?php endif; ?>
@@ -23,7 +23,7 @@
         <h2><i class="fas fa-cloud-upload-alt"></i> Upload New Material</h2>
         <p class="text-muted">Upload course materials such as documents, presentations, images, or other files.</p>
         
-        <form action="<?= base_url('file-upload/upload') ?>" method="post" enctype="multipart/form-data" class="upload-form">
+        <form action="<?= base_url('materials/uploadFile') ?>" method="post" enctype="multipart/form-data" class="upload-form">
             <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
             <input type="hidden" name="redirect_to" value="materials">
             
@@ -142,5 +142,21 @@
     <?php endif; ?>
 </div>
 
+
+<script>
+// Auto-hide flash messages after 3 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('.auto-hide');
+    
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            alert.style.opacity = '0';
+            setTimeout(function() {
+                alert.style.display = 'none';
+            }, 500); // Wait for fade out transition
+        }, 3000); // Hide after 3 seconds
+    });
+});
+</script>
 
 <?= $this->endSection() ?>

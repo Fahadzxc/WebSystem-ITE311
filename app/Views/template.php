@@ -58,9 +58,11 @@
         .navbar-nav {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 1.5rem;
             margin: 0;
             padding: 0;
+            flex-wrap: wrap;
+            align-items: center;
         }
         
         .navbar-nav li {
@@ -70,17 +72,21 @@
         .nav-link {
             color: #E5E7EB;
             text-decoration: none;
-            padding: 0.5rem 0.75rem;
-            border-radius: 6px;
-            transition: color 0.2s ease, background-color 0.2s ease;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
             font-weight: 500;
-            letter-spacing: 0.2px;
-            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            border: 1px solid transparent;
         }
         
         .nav-link:hover {
-            color: #14B8A6;
-            background-color: transparent;
+            color: #FFFFFF;
+            background-color: rgba(20, 184, 166, 0.15);
+            border-color: rgba(20, 184, 166, 0.3);
+            transform: translateY(-1px);
         }
         
         .nav-link.active {
@@ -329,10 +335,18 @@
             .navbar .container {
                 flex-direction: column;
                 gap: 1rem;
+                padding: 0 1rem;
             }
             
             .navbar-nav {
-                gap: 1rem;
+                gap: 0.8rem;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .nav-link {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
             }
             
             .hero h1 {
