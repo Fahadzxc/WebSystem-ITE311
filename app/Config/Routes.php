@@ -38,6 +38,7 @@ $routes->post('student/enroll', 'Student::enroll');
 $routes->get('student/materials', 'Student::materials');
 $routes->get('student/materials/(:num)', 'Student::courseMaterials/$1');
 $routes->get('student/announcement', 'Announcement::index');
+$routes->get('student/create-test-notifications', 'Student::createTestNotifications');
 
 // Admin Course Management Routes
 $routes->get('admin/course/(:num)/upload', 'Materials::upload/$1');
@@ -56,6 +57,12 @@ $routes->post('teacher/course/(:num)/materials', 'Materials::upload/$1');
 
 // Announcements Routes
 $routes->get('announcements', 'Announcement::index');
+$routes->get('student/announcement', 'Announcement::index');
+
+// Notifications Routes
+$routes->get('notifications', 'Notifications::index');
+$routes->get('notifications/api', 'Notifications::get');
+$routes->post('notifications/mark_read/(:num)', 'Notifications::mark_as_read/$1');
 
 // Course Routes
 $routes->get('courses', 'Course::index');
@@ -63,5 +70,3 @@ $routes->get('courses/(:num)', 'Course::view/$1');
 $routes->post('course/enroll', 'Course::enroll');
 $routes->post('course/unenroll', 'Course::unenroll');
 $routes->get('courses/my-enrollments', 'Course::myEnrollments');
-
-

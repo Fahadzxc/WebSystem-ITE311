@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateAnnouncementsTableV2 extends Migration
+class CreateNotificationsTable extends Migration
 {
     public function up()
     {
@@ -15,31 +15,33 @@ class CreateAnnouncementsTableV2 extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'title' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
-                'null' => false,
+            'user_id' => [
+                'type' => 'INT',
+                'constraint' => 11,
+                'unsigned' => true,
             ],
-            'content' => [
-                'type' => 'TEXT',
-                'null' => false,
+            'message' => [
+                'type' => 'VARCHAR',
+                'constraint' => 500,
+            ],
+            'is_read' => [
+                'type' => 'TINYINT',
+                'constraint' => 1,
+                'default' => 0,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
             ],
-            'updated_at' => [
-                'type' => 'DATETIME',
-                'null' => true,
-            ],
         ]);
-
+        
         $this->forge->addKey('id', true);
-        $this->forge->createTable('announcements');
+        $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('notifications');
     }
 
     public function down()
     {
-        $this->forge->dropTable('announcements');
+        $this->forge->dropTable('notifications');
     }
 }

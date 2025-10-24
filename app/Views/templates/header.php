@@ -28,6 +28,19 @@
                         <?php else: ?>
                             <li><a class="nav-link" href="<?= base_url('dashboard'); ?>">Dashboard</a></li>
                         <?php endif; ?>
+                        
+                        <!-- Notifications Link -->
+                        <li>
+                            <a class="nav-link" href="<?= base_url('notifications'); ?>" style="position: relative; display: inline-block;">
+                                <i class="fas fa-bell <?= (isset($unread_count) && $unread_count > 0) ? 'text-danger' : '' ?>"></i> Notifications
+                                <?php if (isset($unread_count) && $unread_count > 0): ?>
+                                    <span style="position: absolute; top: -8px; right: -8px; background-color: #dc3545; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                        <?= $unread_count ?>
+                                    </span>
+                                <?php endif; ?>
+                            </a>
+                        </li>
+                        
                         <li>
                             <a class="nav-link" href="<?= base_url('logout'); ?>">Logout</a>
                         </li>

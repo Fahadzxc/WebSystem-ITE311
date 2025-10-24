@@ -94,6 +94,118 @@
             background-color: rgba(37,99,235,0.18);
         }
         
+        .notification-link {
+            position: relative;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        
+        .notification-dropdown {
+            min-width: 350px;
+            max-width: 400px;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .notification-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #F3F4F6;
+            background: #FFFFFF;
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .notification-item:hover {
+            background-color: #F9FAFB;
+        }
+        
+        .notification-item.unread {
+            background-color: #EFF6FF;
+            border-left: 3px solid #3B82F6;
+        }
+        
+        .notification-message {
+            font-size: 0.875rem;
+            color: #374151;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+        
+        .notification-time {
+            font-size: 0.75rem;
+            color: #6B7280;
+            margin-bottom: 6px;
+        }
+        
+        .mark-read-btn {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border: none;
+            background-color: #3B82F6;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .mark-read-btn:hover {
+            background-color: #2563EB;
+        }
+        
+        /* Bootstrap dropdown compatibility */
+        .dropdown-menu {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 0;
+            margin-top: 8px;
+        }
+        
+        .dropdown-header {
+            padding: 12px 16px;
+            margin: 0;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            background-color: #F9FAFB;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        
+        .dropdown-divider {
+            margin: 0;
+            border-color: #E5E7EB;
+        }
+        
+        .dropdown-item-text {
+            padding: 12px 16px;
+            color: #6B7280;
+        }
+        
+        /* Pulse animation for new notifications */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 0.6s ease-in-out 3;
+        }
+        
         .main-content {
             max-width: 1200px;
             margin: 2rem auto;
@@ -377,6 +489,117 @@
     <footer class="footer">
         <p>&copy; <?= date('Y') ?> LMS System. All rights reserved.</p>
     </footer>
+    <?php endif; ?>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- jQuery (if not already included) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Notification JavaScript -->
+    <?php if (session()->get('isLoggedIn')): ?>
+    <script>
+    $(document).ready(function() {
+        // Load notifications when page loads
+        loadNotifications();
+        
+        // Set up real-time updates every 60 seconds (optional advanced task)
+        setInterval(function() {
+            loadNotifications();
+            console.log('Auto-refreshing notifications...');
+        }, 60000); // 60 seconds = 60,000 milliseconds
+        
+        // Reload notifications when dropdown is opened
+        $('#notificationDropdown').on('click', function() {
+            loadNotifications();
+        });
+        
+        // Function to load notifications via AJAX using $.get()
+        function loadNotifications() {
+            $.get('<?= base_url('notifications') ?>', function(response) {
+                if (response.success) {
+                    updateNotificationBadge(response.unread_count);
+                    populateNotificationList(response.notifications);
+                } else {
+                    console.error('Failed to load notifications:', response.message);
+                    $('#notificationList').html('<li><span class="dropdown-item-text text-danger">Error loading notifications</span></li>');
+                }
+            }).fail(function() {
+                console.error('Error loading notifications');
+                $('#notificationList').html('<li><span class="dropdown-item-text text-danger">Error loading notifications</span></li>');
+            });
+        }
+        
+        // Function to update notification badge
+        function updateNotificationBadge(count) {
+            const badge = $('#notificationBadge');
+            if (count > 0) {
+                badge.text(count).show();
+            } else {
+                badge.hide();
+            }
+        }
+        
+        // Function to populate notification list with Bootstrap alert classes
+        function populateNotificationList(notifications) {
+            const listContainer = $('#notificationList');
+            
+            if (notifications.length === 0) {
+                listContainer.html('<li><span class="dropdown-item-text text-muted">No notifications</span></li>');
+                return;
+            }
+            
+            let html = '';
+            notifications.forEach(function(notification) {
+                const isUnread = notification.is_read == 0;
+                const timeAgo = formatTimeAgo(notification.created_at);
+                
+                html += `
+                    <li class="notification-item ${isUnread ? 'unread' : ''}" data-id="${notification.id}">
+                        <div class="alert ${isUnread ? 'alert-info' : 'alert-secondary'} mb-0" style="padding: 8px 12px;">
+                            <div class="notification-message">${notification.message}</div>
+                            <div class="notification-time">${timeAgo}</div>
+                            ${isUnread ? `<button class="mark-read-btn" onclick="markAsRead(${notification.id})">Mark as Read</button>` : '<small class="text-muted">Read</small>'}
+                        </div>
+                    </li>
+                `;
+            });
+            
+            listContainer.html(html);
+        }
+        
+        // Function to format time ago
+        function formatTimeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - date) / 1000);
+            
+            if (diffInSeconds < 60) return 'Just now';
+            if (diffInSeconds < 3600) return Math.floor(diffInSeconds / 60) + ' minutes ago';
+            if (diffInSeconds < 86400) return Math.floor(diffInSeconds / 3600) + ' hours ago';
+            return Math.floor(diffInSeconds / 86400) + ' days ago';
+        }
+        
+        // Global function to mark notification as read using $.post()
+        window.markAsRead = function(notificationId) {
+            $.post('<?= base_url('notifications/mark_read') ?>/' + notificationId, function(response) {
+                if (response.success) {
+                    // Remove notification from list with animation
+                    $(`.notification-item[data-id="${notificationId}"]`).fadeOut(300, function() {
+                        $(this).remove();
+                        // Reload notifications to update count
+                        loadNotifications();
+                    });
+                } else {
+                    alert('Failed to mark notification as read: ' + response.message);
+                }
+            }).fail(function() {
+                alert('Error marking notification as read');
+            });
+        };
+    });
+    </script>
     <?php endif; ?>
 </body>
 </html>

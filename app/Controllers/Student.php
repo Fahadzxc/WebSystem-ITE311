@@ -6,18 +6,21 @@ use App\Controllers\BaseController;
 use App\Models\EnrollmentModel;
 use App\Models\CourseModel;
 use App\Models\MaterialModel;
+use App\Models\NotificationModel;
 
 class Student extends BaseController
 {
     protected $enrollmentModel;
     protected $courseModel;
     protected $materialModel;
+    protected $notificationModel;
 
     public function __construct()
     {
         $this->enrollmentModel = new EnrollmentModel();
         $this->courseModel = new CourseModel();
         $this->materialModel = new MaterialModel();
+        $this->notificationModel = new NotificationModel();
     }
 
     public function dashboard()
@@ -58,7 +61,8 @@ class Student extends BaseController
             ],
             'enrollments' => $enrollments,
             'available_courses' => $available_courses,
-            'overall_progress' => $overall_progress
+            'overall_progress' => $overall_progress,
+            'unread_count' => $this->data['unread_count'] ?? 0
         ]);
     }
 
@@ -118,6 +122,22 @@ class Student extends BaseController
         $enrollmentId = $this->enrollmentModel->enrollUser($enrollmentData);
 
         if ($enrollmentId) {
+            // Create notification for successful enrollment
+            try {
+                $enrollmentMessage = "You have been successfully enrolled in '{$course['title']}'. Welcome to the course!";
+                $this->notificationModel->createNotification($user_id, $enrollmentMessage);
+                
+                // Also create a welcome notification with course details
+                $welcomeMessage = "Welcome to {$course['title']}! You can now access course materials, assignments, and participate in discussions.";
+                $this->notificationModel->createNotification($user_id, $welcomeMessage);
+                
+                // Create a getting started notification
+                $gettingStartedMessage = "Getting started with {$course['title']}: Check out the course materials and don't forget to introduce yourself to your classmates!";
+            } catch (\Exception $e) {
+                // Log error but don't fail the enrollment
+                log_message('error', 'Failed to create enrollment notification: ' . $e->getMessage());
+            }
+            
             session()->setFlashdata('success', 'Successfully enrolled in ' . $course['title'] . '!');
             return redirect()->to('student/dashboard');
         } else {
@@ -234,5 +254,44 @@ class Student extends BaseController
             'course' => $course,
             'materials' => $materials
         ]);
+    }
+
+    /**
+     * Create additional test notifications for demonstration
+     * Access via: /student/create-test-notifications
+     */
+    public function createTestNotifications()
+    {
+        // Must be logged in
+        if (!session()->get('isLoggedIn')) {
+            session()->setFlashdata('error', 'Please login first.');
+            return redirect()->to('login');
+        }
+        
+        $user_id = session()->get('user_id');
+        
+        try {
+            // Create various test notifications
+            $testNotifications = [
+                " New assignment has been posted in your enrolled course. Check it out!",
+                " Your quiz submission has been graded. View your results now.",
+                " Course materials have been updated. New resources are available.",
+                " Reminder: Assignment deadline is approaching in 2 days.",
+                " Welcome to the Learning Management System! Explore your dashboard.",
+                " You have a new message from your instructor.",
+                " Congratulations! You've completed 50% of the course."
+            ];
+            
+            foreach ($testNotifications as $message) {
+                $this->notificationModel->createNotification($user_id, $message);
+            }
+            
+            session()->setFlashdata('success', 'Test notifications created successfully! Check your notification dropdown.');
+            
+        } catch (\Exception $e) {
+            session()->setFlashdata('error', 'Failed to create test notifications: ' . $e->getMessage());
+        }
+        
+        return redirect()->to('student/dashboard');
     }
 }
