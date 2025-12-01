@@ -33,6 +33,11 @@ $routes->get('admin/dashboard', 'Admin::dashboard');
 $routes->get('teacher/dashboard', 'Teacher::dashboard');
 $routes->get('student/dashboard', 'Student::dashboard');
 
+// Admin Academic Settings Routes
+$routes->get('admin/academic-settings', 'Admin\AcademicSettings::index');
+$routes->post('admin/academic-settings/apply', 'Admin\AcademicSettings::applyAcademicYear');
+$routes->post('admin/academic-settings/assign-year-level', 'Admin\AcademicSettings::assignYearLevelToStudents');
+
 // Student Routes
 $routes->post('student/enroll', 'Student::enroll');
 $routes->get('student/materials', 'Student::materials');
@@ -51,9 +56,23 @@ $routes->post('materials/uploadFile', 'Materials::uploadFile');
 $routes->get('materials/download/(:num)', 'Materials::download/$1');
 $routes->get('materials/delete/(:num)', 'Materials::delete/$1');
 
+// Assignment Routes
+$routes->get('assignment', 'Assignment::index');
+$routes->get('assignment/create', 'Assignment::create');
+$routes->post('assignment/create', 'Assignment::create');
+$routes->get('assignment/view/(:num)', 'Assignment::view/$1');
+$routes->post('assignment/submit/(:num)', 'Assignment::submit/$1');
+$routes->get('assignment/download/(:num)', 'Assignment::download/$1');
+$routes->post('assignment/delete/(:num)', 'Assignment::delete/$1');
+
 // Teacher Materials Routes (alternative access for teachers)
 $routes->get('teacher/course/(:num)/materials', 'Materials::upload/$1');
 $routes->post('teacher/course/(:num)/materials', 'Materials::upload/$1');
+
+// Teacher Enrollment Routes
+$routes->get('teacher/enrollments', 'Teacher::enrollments');
+$routes->post('teacher/enrollStudent', 'Teacher::enrollStudent');
+$routes->get('teacher/getCourseStudents/(:num)', 'Teacher::getCourseStudents/$1');
 
 // Announcements Routes
 $routes->get('announcements', 'Announcement::index');

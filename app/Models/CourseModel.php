@@ -86,10 +86,36 @@ class CourseModel extends Model
      */
     public function getCourseWithInstructor($id)
     {
-        return $this->select('courses.*, users.name as instructor_name')
-                    ->join('users', 'users.id = courses.instructor_id')
-                    ->where('courses.id', $id)
-                    ->first();
+        // Get course first
+        $course = $this->find($id);
+        if (!$course) {
+            return null;
+        }
+        
+        // Get teacher name from users table where role = 'teacher'
+        $userModel = new \App\Models\UserModel();
+        
+        // First, try to get teacher from instructor_id if it points to a teacher
+        if (!empty($course['instructor_id'])) {
+            $instructor = $userModel->where('id', $course['instructor_id'])
+                                  ->where('role', 'teacher')
+                                  ->first();
+            
+            if ($instructor && !empty($instructor['name'])) {
+                $course['instructor_name'] = $instructor['name'];
+                return $course;
+            }
+        }
+        
+        // If instructor_id doesn't point to a teacher, get the first available teacher
+        $teacher = $userModel->where('role', 'teacher')->first();
+        if ($teacher && !empty($teacher['name'])) {
+            $course['instructor_name'] = $teacher['name'];
+        } else {
+            $course['instructor_name'] = null;
+        }
+        
+        return $course;
     }
 
     /**

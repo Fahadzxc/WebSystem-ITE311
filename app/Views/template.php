@@ -5,97 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?? 'LMS System' ?></title>
     
-    <!-- Typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Minimal, clean CSS per spec -->
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Color Palette CSS Variables -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bs-primary: #1E40AF;
+            --bs-primary-rgb: 30, 64, 175;
+            --bs-accent: #3B82F6;
+            --bs-accent-rgb: 59, 130, 246;
+            --bs-bg-light: #F8FAFC;
+            --bs-text-dark: #0F172A;
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.7;
-            color: #6B7280;
-            background-color: #F9FAFB;
-            overflow: auto;
-        }
-        
-        .navbar {
-            background-color: #1E293B;
-            padding: 1rem 0;
-            box-shadow: 0 1px 2px rgba(2,6,23,0.08);
-        }
-        
-        .navbar .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bs-bg-light);
+            color: var(--bs-text-dark);
+            min-height: 100vh;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+        }
+        
+        .bg-primary-custom {
+            background-color: var(--bs-primary) !important;
+        }
+        
+        .text-primary-custom {
+            color: var(--bs-primary) !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: #1E3A8A;
+            border-color: #1E3A8A;
+        }
+        
+        .btn-primary:focus {
+            background-color: #1E3A8A;
+            border-color: #1E3A8A;
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.5);
+        }
+        
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .navbar-dark .navbar-nav .nav-link:hover {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 0.375rem;
         }
         
         .navbar-brand {
-            color: #FFFFFF;
-            text-decoration: none;
-            font-size: 1.8rem;
-            font-weight: 600;
-            letter-spacing: 1px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
         }
         
-        .navbar-nav {
-            display: flex;
-            list-style: none;
-            gap: 1.5rem;
-            margin: 0;
-            padding: 0;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        
-        .navbar-nav li {
-            list-style: none;
-        }
-        
-        .nav-link {
-            color: #E5E7EB;
-            text-decoration: none;
-            padding: 0.6rem 1rem;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            font-size: 0.9rem;
-            white-space: nowrap;
-            border: 1px solid transparent;
-        }
-        
-        .nav-link:hover {
-            color: #FFFFFF;
-            background-color: rgba(20, 184, 166, 0.15);
-            border-color: rgba(20, 184, 166, 0.3);
-            transform: translateY(-1px);
-        }
-        
-        .nav-link.active {
-            color: #FFFFFF;
-            background-color: rgba(37,99,235,0.18);
-        }
-        
-        .notification-link {
-            position: relative;
+        main {
+            flex: 1;
         }
         
         .notification-badge {
@@ -112,367 +96,52 @@
             line-height: 1;
         }
         
-        .notification-dropdown {
-            min-width: 350px;
-            max-width: 400px;
-            border: 1px solid #E5E7EB;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-height: 400px;
-            overflow-y: auto;
+        /* Custom scrollbar for notification dropdown */
+        #notificationList::-webkit-scrollbar {
+            width: 6px;
         }
         
+        #notificationList::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        #notificationList::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        
+        #notificationList::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Notification item hover effect */
         .notification-item {
-            padding: 12px 16px;
-            border-bottom: 1px solid #F3F4F6;
-            background: #FFFFFF;
-            transition: background-color 0.2s ease;
             cursor: pointer;
         }
         
         .notification-item:hover {
-            background-color: #F9FAFB;
+            background-color: #f8fafc !important;
         }
         
-        .notification-item.unread {
-            background-color: #EFF6FF;
-            border-left: 3px solid #3B82F6;
+        .notification-item:last-child {
+            border-bottom: none !important;
         }
         
-        .notification-message {
-            font-size: 0.875rem;
-            color: #374151;
-            margin-bottom: 4px;
-            line-height: 1.4;
+        /* Button styling */
+        .btn-primary-custom {
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
         }
         
-        .notification-time {
-            font-size: 0.75rem;
-            color: #6B7280;
-            margin-bottom: 6px;
+        .btn-primary-custom:hover {
+            background-color: #1E3A8A;
+            border-color: #1E3A8A;
         }
         
-        .mark-read-btn {
-            font-size: 0.75rem;
-            padding: 4px 8px;
-            border: none;
-            background-color: #3B82F6;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        
-        .mark-read-btn:hover {
-            background-color: #2563EB;
-        }
-        
-        /* Bootstrap dropdown compatibility */
-        .dropdown-menu {
-            background: #FFFFFF;
-            border: 1px solid #E5E7EB;
-            border-radius: 8px;
-            padding: 0;
-            margin-top: 8px;
-        }
-        
-        .dropdown-header {
-            padding: 12px 16px;
-            margin: 0;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #374151;
-            background-color: #F9FAFB;
-            border-bottom: 1px solid #E5E7EB;
-        }
-        
-        .dropdown-divider {
-            margin: 0;
-            border-color: #E5E7EB;
-        }
-        
-        .dropdown-item-text {
-            padding: 12px 16px;
-            color: #6B7280;
-        }
-        
-        /* Pulse animation for new notifications */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
-        }
-        
-        .pulse-animation {
-            animation: pulse 0.6s ease-in-out 3;
-        }
-        
-        .main-content {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-        
-        .hero {
-            text-align: center;
-            padding: 4rem 1rem;
-            background: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%);
-            border: 1px solid #E5E7EB;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-        }
-        
-        .hero h1 {
-            font-size: 2.75rem;
-            font-weight: 600;
-            color: #0F172A;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
-        
-        .hero p {
-            font-size: 1.1rem;
-            color: #6B7280;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.25rem;
-            background-color: #2563EB;
-            color: #FFFFFF;
-            text-decoration: none;
-            border-radius: 6px;
-            border: 1px solid #2563EB;
-            cursor: pointer;
-            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.05s ease;
-            font-weight: 600;
-            font-size: 0.95rem;
-            letter-spacing: 0.2px;
-            margin: 0.25rem;
-        }
-        
-        .btn:hover {
-            background-color: #1D4ED8;
-            border-color: #1D4ED8;
-            transform: translateY(-1px);
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            color: #1E293B;
-            border: 1px solid #1E293B;
-        }
-        
-        .btn-outline:hover {
-            background-color: #14B8A6;
-            color: #FFFFFF;
-            border-color: #14B8A6;
-        }
-        
-        .card {
-            background: #FFFFFF;
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 2rem 0;
-            box-shadow: 0 1px 2px rgba(15,23,42,0.06);
-            border: 1px solid #E5E7EB;
-        }
-
-        /* Responsive layout helpers */
-        .grid-3-220 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-        }
-        .grid-2-260 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 2rem;
-            align-items: start;
-        }
-        .grid-2-280 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            align-items: start;
-        }
-        .stack-gap { display: grid; gap: 1rem; }
-
-        /* Simple content tile */
-        .tile {
-            padding: 1rem;
-            border: 1px solid #E5E7EB;
-            border-radius: 12px;
-            background: #FFFFFF;
-        }
-        
-        .card h1 {
-            font-size: 2rem;
-            font-weight: 600;
-            color: #0F172A;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            border-bottom: 2px solid rgba(37,99,235,0.2);
-            padding-bottom: 0.5rem;
-        }
-        
-        .card h2 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: #111827;
-            margin: 2rem 0 1rem 0;
-            letter-spacing: 0.2px;
-        }
-        
-        .card p {
-            color: #6B7280;
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-            text-align: left;
-        }
-        
-        .card ul {
-            color: #5a6c7d;
-            margin-left: 2rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .card li {
-            margin-bottom: 0.75rem;
-            line-height: 1.7;
-        }
-        
-        .text-center {
-            text-align: center;
-        }
-        
-        .mt-3 {
-            margin-top: 1.5rem;
-        }
-        
-        .mb-3 {
-            margin-bottom: 1.5rem;
-        }
-        
-        .footer {
-            background-color: #FFFFFF;
-            border-top: 1px solid #E5E7EB;
-            color: #6B7280;
-            text-align: center;
-            padding: 1.25rem 0;
-            margin-top: 1rem;
-            font-size: 0.875rem;
-        }
-        .footer a { color: #6B7280; text-decoration: none; margin: 0 0.75rem; }
-        .footer a:hover { color: #14B8A6; }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #2c3e50;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 0.5px;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #E5E7EB;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-            transition: border-color 0.3s;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: #2563EB;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-        }
-        
-        .auth-form {
-            max-width: 450px;
-            margin: 1rem auto;
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border: 1px solid #dee2e6;
-        }
-        
-        .auth-form h2 {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 0.5rem;
-        }
-        
-        .auth-form .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        .auth-form .btn {
-            width: 100%;
-            margin: 0;
-        }
-        
-        .auth-form .text-center {
-            margin-top: 1.5rem;
-        }
-        
-        .auth-form a {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .auth-form a:hover {
-            color: #2980b9;
-            text-decoration: underline;
-        }
-        
-        @media (max-width: 768px) {
-            .navbar .container {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 0 1rem;
-            }
-            
-            .navbar-nav {
-                gap: 0.8rem;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            
-            .nav-link {
-                padding: 0.5rem 0.8rem;
-                font-size: 0.85rem;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-            
-            .main-content {
-                margin: 1rem auto;
-                padding: 0 1rem;
-            }
+        /* Notification dropdown link hover */
+        .dropdown-item.text-primary-custom:hover {
+            background-color: var(--bs-primary) !important;
+            color: white !important;
         }
     </style>
 </head>
@@ -480,22 +149,27 @@
     <?= $this->include('templates/header') ?>
 
     <!-- Main Content Area -->
-    <main class="main-content">
+    <main>
         <?= $this->renderSection('content') ?>
     </main>
 
     <!-- Footer -->
     <?php if (!session()->get('isLoggedIn')): ?>
-    <footer class="footer">
-        <p>&copy; <?= date('Y') ?> LMS System. All rights reserved.</p>
+    <footer class="bg-white border-top py-4 mt-auto">
+        <div class="container">
+            <p class="text-center text-muted mb-0">&copy; <?= date('Y') ?> LMS System. All rights reserved.</p>
+        </div>
     </footer>
     <?php endif; ?>
     
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- jQuery (if not already included) -->
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Page-specific scripts -->
+    <?= $this->renderSection('scripts') ?>
     
     <!-- Notification JavaScript -->
     <?php if (session()->get('isLoggedIn')): ?>
@@ -504,30 +178,40 @@
         // Load notifications when page loads
         loadNotifications();
         
-        // Set up real-time updates every 60 seconds (optional advanced task)
+        // Set up real-time updates every 60 seconds
         setInterval(function() {
             loadNotifications();
-            console.log('Auto-refreshing notifications...');
-        }, 60000); // 60 seconds = 60,000 milliseconds
+        }, 60000);
         
         // Reload notifications when dropdown is opened
         $('#notificationDropdown').on('click', function() {
             loadNotifications();
         });
         
-        // Function to load notifications via AJAX using $.get()
+        // Function to load notifications via AJAX
         function loadNotifications() {
-            $.get('<?= base_url('notifications') ?>', function(response) {
-                if (response.success) {
+            $.get('<?= base_url('notifications/api') ?>', function(response) {
+                if (response && response.success) {
                     updateNotificationBadge(response.unread_count);
                     populateNotificationList(response.notifications);
                 } else {
-                    console.error('Failed to load notifications:', response.message);
-                    $('#notificationList').html('<li><span class="dropdown-item-text text-danger">Error loading notifications</span></li>');
+                    const errorMsg = response && response.message ? response.message : 'Unknown error';
+                    console.error('Failed to load notifications:', errorMsg);
+                    $('#notificationList').html(`
+                        <div class="text-center py-4 px-4">
+                            <i class="fas fa-exclamation-triangle text-warning" style="font-size: 2rem;"></i>
+                            <p class="text-danger mb-0 mt-2 small">Error loading notifications</p>
+                        </div>
+                    `);
                 }
-            }).fail(function() {
-                console.error('Error loading notifications');
-                $('#notificationList').html('<li><span class="dropdown-item-text text-danger">Error loading notifications</span></li>');
+            }).fail(function(xhr, status, error) {
+                console.error('Error loading notifications:', error);
+                $('#notificationList').html(`
+                    <div class="text-center py-4 px-4">
+                        <i class="fas fa-exclamation-triangle text-warning" style="font-size: 2rem;"></i>
+                        <p class="text-danger mb-0 mt-2 small">Error loading notifications</p>
+                    </div>
+                `);
             });
         }
         
@@ -541,39 +225,109 @@
             }
         }
         
-        // Function to populate notification list with Bootstrap alert classes
+        // Function to populate notification list
         function populateNotificationList(notifications) {
             const listContainer = $('#notificationList');
+            const notificationCount = $('#notificationCount');
+            
+            // Update count badge
+            notificationCount.text(notifications.length);
             
             if (notifications.length === 0) {
-                listContainer.html('<li><span class="dropdown-item-text text-muted">No notifications</span></li>');
+                listContainer.html(`
+                    <div class="text-center py-5 px-4">
+                        <i class="fas fa-bell-slash text-muted" style="font-size: 2.5rem; opacity: 0.3;"></i>
+                        <p class="text-muted mb-0 mt-3">No notifications</p>
+                        <small class="text-muted">You're all caught up!</small>
+                    </div>
+                `);
                 return;
             }
             
+            // Limit to 5 notifications to avoid scrollbar
+            const displayNotifications = notifications.slice(0, 5);
+            const hasMore = notifications.length > 5;
+            
             let html = '';
-            notifications.forEach(function(notification) {
+            displayNotifications.forEach(function(notification) {
                 const isUnread = notification.is_read == 0;
                 const timeAgo = formatTimeAgo(notification.created_at);
+                const icon = isUnread ? 'fa-circle text-primary-custom' : 'fa-check-circle text-muted';
                 
                 html += `
-                    <li class="notification-item ${isUnread ? 'unread' : ''}" data-id="${notification.id}">
-                        <div class="alert ${isUnread ? 'alert-info' : 'alert-secondary'} mb-0" style="padding: 8px 12px;">
-                            <div class="notification-message">${notification.message}</div>
-                            <div class="notification-time">${timeAgo}</div>
-                            ${isUnread ? `<button class="mark-read-btn" onclick="markAsRead(${notification.id})">Mark as Read</button>` : '<small class="text-muted">Read</small>'}
+                    <div class="notification-item ${isUnread ? 'bg-light border-start border-primary border-3' : ''} p-3" style="transition: all 0.2s ease; border-bottom: 1px solid #f1f5f9;">
+                        <div class="d-flex align-items-start">
+                            <div class="flex-shrink-0 me-3 mt-1">
+                                <div class="rounded-circle ${isUnread ? 'bg-primary-custom' : 'bg-secondary'}" style="width: 8px; height: 8px; opacity: ${isUnread ? '1' : '0.5'};"></div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <p class="mb-2 fw-semibold" style="font-size: 0.95rem; color: ${isUnread ? '#0F172A' : '#6B7280'}; line-height: 1.5;">
+                                    ${notification.message}
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="far fa-clock me-1"></i>${timeAgo}
+                                    </small>
+                                    ${isUnread ? `
+                                        <button class="btn btn-sm btn-primary-custom text-white" onclick="markAsRead(${notification.id})" style="font-size: 0.75rem; padding: 0.3rem 0.8rem; border-radius: 6px;">
+                                            <i class="fas fa-check me-1"></i>Mark Read
+                                        </button>
+                                    ` : `
+                                        <span class="badge bg-light text-muted border" style="font-size: 0.7rem; padding: 0.25rem 0.5rem;">
+                                            <i class="fas fa-check me-1"></i>Read
+                                        </span>
+                                    `}
+                                </div>
+                            </div>
                         </div>
-                    </li>
+                    </div>
                 `;
             });
+            
+            if (hasMore) {
+                html += `
+                    <div class="text-center py-2 border-top bg-light">
+                        <small class="text-muted">
+                            <i class="fas fa-ellipsis-h me-1"></i>
+                            ${notifications.length - 5} more notification${notifications.length - 5 > 1 ? 's' : ''}
+                        </small>
+                    </div>
+                `;
+            }
             
             listContainer.html(html);
         }
         
         // Function to format time ago
         function formatTimeAgo(dateString) {
-            const date = new Date(dateString);
+            if (!dateString) return 'Just now';
+            
+            // Parse MySQL datetime format (YYYY-MM-DD HH:MM:SS) properly
+            // MySQL datetime is stored without timezone, so we need to parse it as local time
+            let date;
+            if (dateString.includes(' ')) {
+                // MySQL datetime format: "2025-11-21 13:40:00"
+                // Split into date and time parts
+                const parts = dateString.split(' ');
+                const datePart = parts[0]; // "2025-11-21"
+                const timePart = parts[1]; // "13:40:00"
+                
+                // Create date object using local time (not UTC)
+                // Format: new Date(year, month, day, hour, minute, second)
+                const [year, month, day] = datePart.split('-').map(Number);
+                const [hour, minute, second] = timePart.split(':').map(Number);
+                date = new Date(year, month - 1, day, hour, minute, second || 0);
+            } else {
+                date = new Date(dateString);
+            }
+            
             const now = new Date();
             const diffInSeconds = Math.floor((now - date) / 1000);
+            
+            // Handle negative differences (future dates) or invalid dates
+            if (isNaN(date.getTime()) || diffInSeconds < 0) {
+                return 'Just now';
+            }
             
             if (diffInSeconds < 60) return 'Just now';
             if (diffInSeconds < 3600) return Math.floor(diffInSeconds / 60) + ' minutes ago';
@@ -581,21 +335,26 @@
             return Math.floor(diffInSeconds / 86400) + ' days ago';
         }
         
-        // Global function to mark notification as read using $.post()
+        // Global function to mark notification as read
         window.markAsRead = function(notificationId) {
-            $.post('<?= base_url('notifications/mark_read') ?>/' + notificationId, function(response) {
-                if (response.success) {
-                    // Remove notification from list with animation
-                    $(`.notification-item[data-id="${notificationId}"]`).fadeOut(300, function() {
-                        $(this).remove();
-                        // Reload notifications to update count
-                        loadNotifications();
-                    });
-                } else {
-                    alert('Failed to mark notification as read: ' + response.message);
+            $.ajaxSetup({
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                 }
-            }).fail(function() {
-                alert('Error marking notification as read');
+            });
+            
+            $.post('<?= base_url('notifications/mark_read') ?>/' + notificationId, {
+                <?= csrf_token() ?>: '<?= csrf_hash() ?>'
+            }, function(response) {
+                if (response && response.success) {
+                    // Simply reload notifications to update the UI
+                    loadNotifications();
+                } else {
+                    const errorMsg = response && response.message ? response.message : 'Unknown error';
+                    alert('Failed to mark notification as read: ' + errorMsg);
+                }
+            }, 'json').fail(function(xhr, status, error) {
+                alert('Error marking notification as read: ' + error);
             });
         };
     });

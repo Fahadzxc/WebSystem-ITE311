@@ -17,7 +17,10 @@ class EnrollmentModel extends Model
         'course_id',
         'enrollment_date',
         'status',
-        'progress'
+        'progress',
+        'academic_year_id',
+        'semester_id',
+        'term_id'
     ];
 
     protected $useTimestamps = true;
@@ -64,6 +67,33 @@ class EnrollmentModel extends Model
         $data['status'] = $data['status'] ?? 'active';
         $data['progress'] = $data['progress'] ?? 0.00;
 
+        // Auto-assign academic year, semester, and term if not provided
+        if (empty($data['academic_year_id'])) {
+            $academicYearModel = new \App\Models\AcademicYearModel();
+            $activeYear = $academicYearModel->getActiveAcademicYear();
+            if ($activeYear) {
+                $data['academic_year_id'] = $activeYear['id'];
+            }
+        }
+
+        // Auto-assign semester if not provided (default to First Semester)
+        if (empty($data['semester_id'])) {
+            $semesterModel = new \App\Models\SemesterModel();
+            $firstSemester = $semesterModel->where('semester_number', 1)->first();
+            if ($firstSemester) {
+                $data['semester_id'] = $firstSemester['id'];
+            }
+        }
+
+        // Auto-assign term if not provided (default to 1st Term)
+        if (empty($data['term_id'])) {
+            $termModel = new \App\Models\TermModel();
+            $firstTerm = $termModel->where('term_number', 1)->where('is_summer', 0)->first();
+            if ($firstTerm) {
+                $data['term_id'] = $firstTerm['id'];
+            }
+        }
+
         // Check if user is already enrolled
         if ($this->isAlreadyEnrolled($data['user_id'], $data['course_id'])) {
             return false; // User already enrolled
@@ -80,11 +110,56 @@ class EnrollmentModel extends Model
      */
     public function getUserEnrollments($user_id)
     {
-        return $this->select('enrollments.*, courses.title as course_title, courses.description as course_description, courses.instructor_id')
-                    ->join('courses', 'courses.id = enrollments.course_id')
+        return $this->select('enrollments.*, courses.title as course_title, courses.description as course_description, courses.instructor_id, 
+                             academic_years.description as academic_year, semesters.semester_name, terms.term_name')
+                    ->join('courses', 'courses.id = enrollments.course_id', 'left')
+                    ->join('academic_years', 'academic_years.id = enrollments.academic_year_id', 'left')
+                    ->join('semesters', 'semesters.id = enrollments.semester_id', 'left')
+                    ->join('terms', 'terms.id = enrollments.term_id', 'left')
                     ->where('enrollments.user_id', $user_id)
                     ->orderBy('enrollments.enrollment_date', 'DESC')
                     ->findAll();
+    }
+
+    /**
+     * Get enrollments by academic period
+     */
+    public function getEnrollmentsByAcademicPeriod($academic_year_id = null, $semester_id = null, $term_id = null)
+    {
+        $builder = $this->select('enrollments.*, courses.title as course_title, users.name as student_name, users.email as student_email,
+                                 academic_years.description as academic_year, semesters.semester_name, terms.term_name')
+                       ->join('courses', 'courses.id = enrollments.course_id', 'left')
+                       ->join('users', 'users.id = enrollments.user_id', 'left')
+                       ->join('academic_years', 'academic_years.id = enrollments.academic_year_id', 'left')
+                       ->join('semesters', 'semesters.id = enrollments.semester_id', 'left')
+                       ->join('terms', 'terms.id = enrollments.term_id', 'left');
+
+        if ($academic_year_id) {
+            $builder->where('enrollments.academic_year_id', $academic_year_id);
+        }
+        if ($semester_id) {
+            $builder->where('enrollments.semester_id', $semester_id);
+        }
+        if ($term_id) {
+            $builder->where('enrollments.term_id', $term_id);
+        }
+
+        return $builder->orderBy('enrollments.enrollment_date', 'DESC')->findAll();
+    }
+
+    /**
+     * Get student enrollments count by semester
+     */
+    public function getStudentEnrollmentsBySemester($user_id, $semester_id = null)
+    {
+        $builder = $this->where('enrollments.user_id', $user_id)
+                       ->where('enrollments.status', 'active');
+
+        if ($semester_id) {
+            $builder->where('enrollments.semester_id', $semester_id);
+        }
+
+        return $builder->countAllResults();
     }
 
     /**

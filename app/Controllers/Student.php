@@ -235,8 +235,8 @@ class Student extends BaseController
             return redirect()->to(base_url('student/materials'));
         }
 
-        // Get course information
-        $course = $this->courseModel->find($course_id);
+        // Get course information with instructor name
+        $course = $this->courseModel->getCourseWithInstructor($course_id);
         if (!$course) {
             session()->setFlashdata('error', 'Course not found.');
             return redirect()->to(base_url('student/materials'));
