@@ -42,10 +42,6 @@ $routes->get('admin/users/delete/(:num)', 'Admin::deleteUser/$1');
 $routes->get('admin/users/restore/(:num)', 'Admin::restoreUser/$1');
 $routes->get('admin/users/get/(:num)', 'Admin::getUser/$1');
 
-// Admin Academic Settings Routes
-$routes->get('admin/academic-settings', 'Admin\AcademicSettings::index');
-$routes->post('admin/academic-settings/apply', 'Admin\AcademicSettings::applyAcademicYear');
-$routes->post('admin/academic-settings/assign-year-level', 'Admin\AcademicSettings::assignYearLevelToStudents');
 
 // Student Routes
 $routes->post('student/enroll', 'Student::enroll');

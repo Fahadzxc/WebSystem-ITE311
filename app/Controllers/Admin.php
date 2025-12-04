@@ -81,6 +81,30 @@ class Admin extends BaseController
             $password = $this->request->getPost('password');
             $role = $this->request->getPost('role');
 
+            // Validate name - only letters and spaces allowed
+            if (!preg_match('/^[a-zA-Z\s]+$/', $name)) {
+                session()->setFlashdata('error', 'Name contains invalid characters.');
+                return redirect()->to(base_url('admin/users'));
+            }
+
+            // Validate email - must be valid email format and @gmail.com
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                session()->setFlashdata('error', 'Please enter a valid email address.');
+                return redirect()->to(base_url('admin/users'));
+            }
+
+            // Check if email contains invalid special characters
+            if (preg_match('/[\/\'"\\\;\<\>]/', $email)) {
+                session()->setFlashdata('error', 'Invalid email format.');
+                return redirect()->to(base_url('admin/users'));
+            }
+
+            // Validate email must be @gmail.com
+            if (strpos($email, '@gmail.com') === false) {
+                session()->setFlashdata('error', 'Please enter a valid email address.');
+                return redirect()->to(base_url('admin/users'));
+            }
+
             // Check if email already exists
             $existingUser = $this->userModel->findByEmail($email);
             if ($existingUser) {
@@ -125,6 +149,30 @@ class Admin extends BaseController
             $email = $this->request->getPost('email');
             $role = $this->request->getPost('role');
             $password = $this->request->getPost('password');
+
+            // Validate name - only letters and spaces allowed
+            if (!preg_match('/^[a-zA-Z\s]+$/', $name)) {
+                session()->setFlashdata('error', 'Name contains invalid characters.');
+                return redirect()->to(base_url('admin/users'));
+            }
+
+            // Validate email - must be valid email format and @gmail.com
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                session()->setFlashdata('error', 'Please enter a valid email address.');
+                return redirect()->to(base_url('admin/users'));
+            }
+
+            // Check if email contains invalid special characters
+            if (preg_match('/[\/\'"\\\;\<\>]/', $email)) {
+                session()->setFlashdata('error', 'Invalid email format.');
+                return redirect()->to(base_url('admin/users'));
+            }
+
+            // Validate email must be @gmail.com
+            if (strpos($email, '@gmail.com') === false) {
+                session()->setFlashdata('error', 'Please enter a valid email address.');
+                return redirect()->to(base_url('admin/users'));
+            }
 
             // Check if email already exists for other users
             $existingUser = $this->userModel->findByEmail($email);

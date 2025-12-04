@@ -24,9 +24,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="<?= base_url('admin/users'); ?>"><i class="fas fa-users me-1"></i>User Management</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('admin/academic-settings'); ?>">Settings</a>
-                        </li>
                     <?php elseif ($role === 'teacher'): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= base_url('teacher/dashboard'); ?>">Teacher Dashboard</a>

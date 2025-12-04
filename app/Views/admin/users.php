@@ -128,16 +128,18 @@
                 <h5 class="modal-title" id="createUserModalLabel"><i class="fas fa-user-plus me-2"></i>Add New User</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="<?= base_url('admin/users/create') ?>" method="POST">
+            <form action="<?= base_url('admin/users/create') ?>" method="POST" id="createUserForm">
                 <?= csrf_field() ?>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="createName" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" id="createName" name="name" required>
+                        <input type="text" class="form-control" id="createName" name="name" required pattern="^[a-zA-Z\s]+$">
+                        <div class="invalid-feedback" id="createNameError">Name contains invalid characters.</div>
                     </div>
                     <div class="mb-3">
                         <label for="createEmail" class="form-label">Email Address</label>
                         <input type="email" class="form-control" id="createEmail" name="email" required>
+                        <div class="invalid-feedback" id="createEmailError">Please enter a valid email address.</div>
                     </div>
                     <div class="mb-3">
                         <label for="createPassword" class="form-label">Password</label>
@@ -175,11 +177,13 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="editName" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" id="editName" name="name" required>
+                        <input type="text" class="form-control" id="editName" name="name" required pattern="^[a-zA-Z\s]+$">
+                        <div class="invalid-feedback" id="editNameError">Name contains invalid characters.</div>
                     </div>
                     <div class="mb-3">
                         <label for="editEmail" class="form-label">Email Address</label>
                         <input type="email" class="form-control" id="editEmail" name="email" required>
+                        <div class="invalid-feedback" id="editEmailError">Please enter a valid email address.</div>
                     </div>
                     <div class="mb-3">
                         <label for="editPassword" class="form-label">New Password <small class="text-muted">(leave blank to keep current)</small></label>
@@ -299,5 +303,114 @@ function confirmRestore(userId, userName) {
     const modal = new bootstrap.Modal(document.getElementById('restoreUserModal'));
     modal.show();
 }
+
+// Validation functions
+function validateName(name) {
+    // Only letters and spaces allowed
+    return /^[a-zA-Z\s]+$/.test(name);
+}
+
+function validateEmail(email) {
+    // Check if valid email format
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return false;
+    }
+    
+    // Check if contains invalid special characters
+    if (/[\/\'"\\\;\<\>]/.test(email)) {
+        return false;
+    }
+    
+    // Must be @gmail.com
+    if (email.indexOf('@gmail.com') === -1) {
+        return false;
+    }
+    
+    return true;
+}
+
+// Create User Form Validation
+document.getElementById('createUserForm').addEventListener('submit', function(e) {
+    const name = document.getElementById('createName').value.trim();
+    const email = document.getElementById('createEmail').value.trim();
+    const nameInput = document.getElementById('createName');
+    const emailInput = document.getElementById('createEmail');
+    const nameError = document.getElementById('createNameError');
+    const emailError = document.getElementById('createEmailError');
+    let isValid = true;
+
+    // Reset previous errors
+    nameInput.classList.remove('is-invalid');
+    emailInput.classList.remove('is-invalid');
+
+    // Validate name
+    if (!validateName(name)) {
+        nameInput.classList.add('is-invalid');
+        nameError.textContent = 'Name contains invalid characters.';
+        isValid = false;
+    }
+
+    // Validate email
+    if (!validateEmail(email)) {
+        emailInput.classList.add('is-invalid');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            emailError.textContent = 'Please enter a valid email address.';
+        } else if (/[\/\'"\\\;\<\>]/.test(email)) {
+            emailError.textContent = 'Invalid email format.';
+        } else if (email.indexOf('@gmail.com') === -1) {
+            emailError.textContent = 'Please enter a valid email address.';
+        } else {
+            emailError.textContent = 'Invalid email format.';
+        }
+        isValid = false;
+    }
+
+    if (!isValid) {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// Edit User Form Validation
+document.getElementById('editUserForm').addEventListener('submit', function(e) {
+    const name = document.getElementById('editName').value.trim();
+    const email = document.getElementById('editEmail').value.trim();
+    const nameInput = document.getElementById('editName');
+    const emailInput = document.getElementById('editEmail');
+    const nameError = document.getElementById('editNameError');
+    const emailError = document.getElementById('editEmailError');
+    let isValid = true;
+
+    // Reset previous errors
+    nameInput.classList.remove('is-invalid');
+    emailInput.classList.remove('is-invalid');
+
+    // Validate name
+    if (!validateName(name)) {
+        nameInput.classList.add('is-invalid');
+        nameError.textContent = 'Name contains invalid characters.';
+        isValid = false;
+    }
+
+    // Validate email
+    if (!validateEmail(email)) {
+        emailInput.classList.add('is-invalid');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            emailError.textContent = 'Please enter a valid email address.';
+        } else if (/[\/\'"\\\;\<\>]/.test(email)) {
+            emailError.textContent = 'Invalid email format.';
+        } else if (email.indexOf('@gmail.com') === -1) {
+            emailError.textContent = 'Please enter a valid email address.';
+        } else {
+            emailError.textContent = 'Invalid email format.';
+        }
+        isValid = false;
+    }
+
+    if (!isValid) {
+        e.preventDefault();
+        return false;
+    }
+});
 </script>
 <?= $this->endSection() ?>
