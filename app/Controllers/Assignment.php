@@ -377,6 +377,70 @@ class Assignment extends BaseController
     }
 
     /**
+     * View submission details (Teacher only)
+     */
+    public function viewSubmission($submission_id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $role = session()->get('role');
+        $user_id = session()->get('user_id');
+
+        // Only teachers can view submissions
+        if ($role !== 'teacher') {
+            session()->setFlashdata('error', 'Access denied. Teacher only.');
+            return redirect()->to(base_url('assignment'));
+        }
+
+        // Get submission with student info
+        $submission = $this->submissionModel->select('assignment_submissions.*, users.name as student_name, users.email as student_email')
+                                           ->join('users', 'users.id = assignment_submissions.student_id')
+                                           ->where('assignment_submissions.id', $submission_id)
+                                           ->first();
+
+        if (!$submission) {
+            session()->setFlashdata('error', 'Submission not found.');
+            return redirect()->to(base_url('assignment'));
+        }
+
+        // Get assignment details
+        $assignment = $this->assignmentModel->find($submission['assignment_id']);
+        if (!$assignment) {
+            session()->setFlashdata('error', 'Assignment not found.');
+            return redirect()->to(base_url('assignment'));
+        }
+
+        // Check if teacher owns this assignment
+        if ($assignment['teacher_id'] != $user_id) {
+            session()->setFlashdata('error', 'Access denied. You do not own this assignment.');
+            return redirect()->to(base_url('assignment'));
+        }
+
+        // Get course info
+        $course = $this->courseModel->find($assignment['course_id']);
+
+        // Get questions and answers
+        $questions = $this->questionModel->getQuestionsByAssignment($assignment['id']);
+        $answers = [];
+        if ($submission) {
+            $answerData = $this->answerModel->getAnswersBySubmission($submission['id']);
+            foreach ($answerData as $answer) {
+                $answers[$answer['question_id']] = $answer;
+            }
+        }
+
+        return view('teacher/view_submission', [
+            'assignment' => $assignment,
+            'submission' => $submission,
+            'course' => $course,
+            'questions' => $questions,
+            'answers' => $answers
+        ]);
+    }
+
+    /**
      * Download submission file
      */
     public function download($submission_id)
@@ -407,6 +471,66 @@ class Assignment extends BaseController
         }
 
         return $this->response->download($filePath, null);
+    }
+
+    /**
+     * Teacher: Grade submission
+     */
+    public function grade($submission_id)
+    {
+        if (!session()->get('isLoggedIn') || session()->get('role') !== 'teacher') {
+            session()->setFlashdata('error', 'Access denied. Teacher only.');
+            return redirect()->to(base_url('assignment'));
+        }
+
+        $user_id = session()->get('user_id');
+
+        // Get submission
+        $submission = $this->submissionModel->find($submission_id);
+        if (!$submission) {
+            session()->setFlashdata('error', 'Submission not found.');
+            return redirect()->to(base_url('assignment'));
+        }
+
+        // Get assignment
+        $assignment = $this->assignmentModel->find($submission['assignment_id']);
+        if (!$assignment) {
+            session()->setFlashdata('error', 'Assignment not found.');
+            return redirect()->to(base_url('assignment'));
+        }
+
+        // Check if teacher owns this assignment
+        if ($assignment['teacher_id'] != $user_id) {
+            session()->setFlashdata('error', 'Access denied. You do not own this assignment.');
+            return redirect()->to(base_url('assignment'));
+        }
+
+        if ($this->request->getMethod() === 'POST') {
+            $score = $this->request->getPost('score');
+            $feedback = $this->request->getPost('feedback');
+
+            // Validate score
+            if ($score < 0 || $score > $assignment['max_score']) {
+                session()->setFlashdata('error', 'Score must be between 0 and ' . $assignment['max_score']);
+                return redirect()->to(base_url('assignment/submission/' . $submission_id));
+            }
+
+            // Update submission
+            $data = [
+                'score' => $score,
+                'feedback' => $feedback ?: null,
+                'status' => 'graded'
+            ];
+
+            if ($this->submissionModel->update($submission_id, $data)) {
+                session()->setFlashdata('success', 'Submission graded successfully.');
+                return redirect()->to(base_url('assignment/view/' . $assignment['id']));
+            } else {
+                session()->setFlashdata('error', 'Failed to grade submission.');
+            }
+        }
+
+        return redirect()->to(base_url('assignment/submission/' . $submission_id));
     }
 
     /**

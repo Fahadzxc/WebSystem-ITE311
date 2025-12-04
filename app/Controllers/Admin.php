@@ -279,5 +279,31 @@ class Admin extends BaseController
 
         return $this->response->setJSON(['success' => false, 'message' => 'User not found']);
     }
+
+    /**
+     * Cleanup expired enrollments (4 months old)
+     * Can be called manually or via cron job
+     */
+    public function cleanupExpiredEnrollments()
+    {
+        $auth = $this->checkAdminAuth();
+        if ($auth !== true) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Unauthorized']);
+        }
+
+        $enrollmentModel = new \App\Models\EnrollmentModel();
+        $removedCount = $enrollmentModel->removeExpiredEnrollments();
+
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => "Removed {$removedCount} expired enrollment(s).",
+                'count' => $removedCount
+            ]);
+        }
+
+        session()->setFlashdata('success', "Removed {$removedCount} expired enrollment(s).");
+        return redirect()->to(base_url('admin/users'));
+    }
 }
 

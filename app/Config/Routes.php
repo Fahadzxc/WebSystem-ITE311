@@ -41,6 +41,7 @@ $routes->post('admin/users/update/(:num)', 'Admin::updateUser/$1');
 $routes->get('admin/users/delete/(:num)', 'Admin::deleteUser/$1');
 $routes->get('admin/users/restore/(:num)', 'Admin::restoreUser/$1');
 $routes->get('admin/users/get/(:num)', 'Admin::getUser/$1');
+$routes->get('admin/users/cleanup-enrollments', 'Admin::cleanupExpiredEnrollments');
 
 
 // Student Routes
@@ -66,6 +67,8 @@ $routes->get('assignment', 'Assignment::index');
 $routes->get('assignment/create', 'Assignment::create');
 $routes->post('assignment/create', 'Assignment::create');
 $routes->get('assignment/view/(:num)', 'Assignment::view/$1');
+$routes->get('assignment/submission/(:num)', 'Assignment::viewSubmission/$1');
+$routes->post('assignment/grade/(:num)', 'Assignment::grade/$1');
 $routes->post('assignment/submit/(:num)', 'Assignment::submit/$1');
 $routes->get('assignment/download/(:num)', 'Assignment::download/$1');
 $routes->post('assignment/delete/(:num)', 'Assignment::delete/$1');

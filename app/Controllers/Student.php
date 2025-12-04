@@ -230,8 +230,17 @@ class Student extends BaseController
         $user_id = session()->get('user_id');
 
         // Check if user is enrolled in this course
-        if (!$this->enrollmentModel->isAlreadyEnrolled($user_id, $course_id)) {
+        $enrollment = $this->enrollmentModel->getEnrollment($user_id, $course_id);
+        if (!$enrollment) {
             session()->setFlashdata('error', 'You are not enrolled in this course.');
+            return redirect()->to(base_url('student/materials'));
+        }
+
+        // Check if enrollment is expired (4 months)
+        if ($this->enrollmentModel->isEnrollmentExpired($enrollment['enrollment_date'])) {
+            // Remove expired enrollment
+            $this->enrollmentModel->delete($enrollment['id']);
+            session()->setFlashdata('error', 'Your enrollment in this course has expired (4 months duration).');
             return redirect()->to(base_url('student/materials'));
         }
 

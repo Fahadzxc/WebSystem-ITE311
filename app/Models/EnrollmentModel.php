@@ -17,10 +17,7 @@ class EnrollmentModel extends Model
         'course_id',
         'enrollment_date',
         'status',
-        'progress',
-        'academic_year_id',
-        'semester_id',
-        'term_id'
+        'progress'
     ];
 
     protected $useTimestamps = true;
@@ -67,33 +64,6 @@ class EnrollmentModel extends Model
         $data['status'] = $data['status'] ?? 'active';
         $data['progress'] = $data['progress'] ?? 0.00;
 
-        // Auto-assign academic year, semester, and term if not provided
-        if (empty($data['academic_year_id'])) {
-            $academicYearModel = new \App\Models\AcademicYearModel();
-            $activeYear = $academicYearModel->getActiveAcademicYear();
-            if ($activeYear) {
-                $data['academic_year_id'] = $activeYear['id'];
-            }
-        }
-
-        // Auto-assign semester if not provided (default to First Semester)
-        if (empty($data['semester_id'])) {
-            $semesterModel = new \App\Models\SemesterModel();
-            $firstSemester = $semesterModel->where('semester_number', 1)->first();
-            if ($firstSemester) {
-                $data['semester_id'] = $firstSemester['id'];
-            }
-        }
-
-        // Auto-assign term if not provided (default to 1st Term)
-        if (empty($data['term_id'])) {
-            $termModel = new \App\Models\TermModel();
-            $firstTerm = $termModel->where('term_number', 1)->where('is_summer', 0)->first();
-            if ($firstTerm) {
-                $data['term_id'] = $firstTerm['id'];
-            }
-        }
-
         // Check if user is already enrolled
         if ($this->isAlreadyEnrolled($data['user_id'], $data['course_id'])) {
             return false; // User already enrolled
@@ -103,61 +73,102 @@ class EnrollmentModel extends Model
     }
 
     /**
-     * Get all courses a user is enrolled in
+     * Get all courses a user is enrolled in (excluding expired enrollments)
      * 
      * @param int $user_id User ID
      * @return array Array of enrollment records with course details
      */
     public function getUserEnrollments($user_id)
     {
-        return $this->select('enrollments.*, courses.title as course_title, courses.description as course_description, courses.instructor_id, 
-                             academic_years.description as academic_year, semesters.semester_name, terms.term_name')
+        // First, remove expired enrollments for this user
+        $this->removeExpiredEnrollments($user_id);
+        
+        return $this->select('enrollments.*, courses.title as course_title, courses.description as course_description, courses.instructor_id')
                     ->join('courses', 'courses.id = enrollments.course_id', 'left')
-                    ->join('academic_years', 'academic_years.id = enrollments.academic_year_id', 'left')
-                    ->join('semesters', 'semesters.id = enrollments.semester_id', 'left')
-                    ->join('terms', 'terms.id = enrollments.term_id', 'left')
                     ->where('enrollments.user_id', $user_id)
+                    ->where('enrollments.status', 'active')
                     ->orderBy('enrollments.enrollment_date', 'DESC')
                     ->findAll();
     }
 
     /**
-     * Get enrollments by academic period
+     * Check if enrollment is expired (4 months after enrollment date)
+     * 
+     * @param string $enrollment_date Enrollment date
+     * @return bool True if expired, false otherwise
+     */
+    public function isEnrollmentExpired($enrollment_date)
+    {
+        $enrollmentDate = new \DateTime($enrollment_date);
+        $expiryDate = clone $enrollmentDate;
+        $expiryDate->modify('+4 months');
+        $now = new \DateTime();
+        
+        return $now > $expiryDate;
+    }
+
+    /**
+     * Remove expired enrollments for a specific user
+     * 
+     * @param int $user_id User ID (optional, if null removes for all users)
+     * @return int Number of enrollments removed
+     */
+    public function removeExpiredEnrollments($user_id = null)
+    {
+        $builder = $this->where('status', 'active');
+        
+        if ($user_id) {
+            $builder->where('user_id', $user_id);
+        }
+        
+        $enrollments = $builder->findAll();
+        $removedCount = 0;
+        
+        foreach ($enrollments as $enrollment) {
+            if ($this->isEnrollmentExpired($enrollment['enrollment_date'])) {
+                // Delete the enrollment
+                $this->delete($enrollment['id']);
+                $removedCount++;
+            }
+        }
+        
+        return $removedCount;
+    }
+
+    /**
+     * Get enrollment expiry date
+     * 
+     * @param string $enrollment_date Enrollment date
+     * @return string Expiry date in Y-m-d H:i:s format
+     */
+    public function getExpiryDate($enrollment_date)
+    {
+        $enrollmentDate = new \DateTime($enrollment_date);
+        $expiryDate = clone $enrollmentDate;
+        $expiryDate->modify('+4 months');
+        
+        return $expiryDate->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * Get enrollments by academic period (deprecated - academic settings removed)
      */
     public function getEnrollmentsByAcademicPeriod($academic_year_id = null, $semester_id = null, $term_id = null)
     {
-        $builder = $this->select('enrollments.*, courses.title as course_title, users.name as student_name, users.email as student_email,
-                                 academic_years.description as academic_year, semesters.semester_name, terms.term_name')
+        $builder = $this->select('enrollments.*, courses.title as course_title, users.name as student_name, users.email as student_email')
                        ->join('courses', 'courses.id = enrollments.course_id', 'left')
-                       ->join('users', 'users.id = enrollments.user_id', 'left')
-                       ->join('academic_years', 'academic_years.id = enrollments.academic_year_id', 'left')
-                       ->join('semesters', 'semesters.id = enrollments.semester_id', 'left')
-                       ->join('terms', 'terms.id = enrollments.term_id', 'left');
-
-        if ($academic_year_id) {
-            $builder->where('enrollments.academic_year_id', $academic_year_id);
-        }
-        if ($semester_id) {
-            $builder->where('enrollments.semester_id', $semester_id);
-        }
-        if ($term_id) {
-            $builder->where('enrollments.term_id', $term_id);
-        }
+                       ->join('users', 'users.id = enrollments.user_id', 'left');
 
         return $builder->orderBy('enrollments.enrollment_date', 'DESC')->findAll();
     }
 
     /**
-     * Get student enrollments count by semester
+     * Get student enrollments count by semester (deprecated - academic settings removed)
      */
     public function getStudentEnrollmentsBySemester($user_id, $semester_id = null)
     {
-        $builder = $this->where('enrollments.user_id', $user_id)
-                       ->where('enrollments.status', 'active');
-
-        if ($semester_id) {
-            $builder->where('enrollments.semester_id', $semester_id);
-        }
+        $builder = $this->where('user_id', $user_id)
+                       ->where('status', 'active');
 
         return $builder->countAllResults();
     }
