@@ -81,6 +81,13 @@ class Auth extends Controller
                 $email = $this->request->getPost('email');
                 $password = $this->request->getPost('password');
                 $user = $model->where('email', $email)->first();
+                
+                // Check if user is deleted
+                if ($user && isset($user['is_deleted']) && $user['is_deleted'] == 1) {
+                    $session->setFlashdata('error', 'This account has been deleted. Please contact the administrator.');
+                    return redirect()->to('/login');
+                }
+                
                 if ($user && password_verify($password, $user['password'])) {
                     $session->set([
                         'user_id' => $user['id'],

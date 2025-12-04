@@ -33,6 +33,15 @@ $routes->get('admin/dashboard', 'Admin::dashboard');
 $routes->get('teacher/dashboard', 'Teacher::dashboard');
 $routes->get('student/dashboard', 'Student::dashboard');
 
+
+// Admin User Management Routes
+$routes->get('admin/users', 'Admin::users');
+$routes->post('admin/users/create', 'Admin::createUser');
+$routes->post('admin/users/update/(:num)', 'Admin::updateUser/$1');
+$routes->get('admin/users/delete/(:num)', 'Admin::deleteUser/$1');
+$routes->get('admin/users/restore/(:num)', 'Admin::restoreUser/$1');
+$routes->get('admin/users/get/(:num)', 'Admin::getUser/$1');
+
 // Admin Academic Settings Routes
 $routes->get('admin/academic-settings', 'Admin\AcademicSettings::index');
 $routes->post('admin/academic-settings/apply', 'Admin\AcademicSettings::applyAcademicYear');
