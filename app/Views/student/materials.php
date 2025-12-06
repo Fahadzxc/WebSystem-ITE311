@@ -126,7 +126,7 @@
                 <i class="fas fa-folder-open text-muted mb-3" style="font-size: 4rem; opacity: 0.5;"></i>
                 <h3 class="fw-bold mb-2" style="color: var(--bs-text-dark);">No Materials Available</h3>
                 <p class="text-muted mb-4">No course materials are available yet. Check back later or contact your instructor.</p>
-                <a href="<?= base_url('student/dashboard') ?>" class="btn btn-primary">
+                <a href="<?= base_url('dashboard') ?>" class="btn btn-primary">
                     <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                 </a>
             </div>

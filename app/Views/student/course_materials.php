@@ -145,7 +145,7 @@
         <a href="<?= base_url('student/materials') ?>" class="btn btn-outline-primary">
             <i class="fas fa-arrow-left me-2"></i>Back to All Materials
         </a>
-        <a href="<?= base_url('student/dashboard') ?>" class="btn btn-primary">
+        <a href="<?= base_url('dashboard') ?>" class="btn btn-primary">
             <i class="fas fa-home me-2"></i>Dashboard
         </a>
     </div>

@@ -55,18 +55,7 @@ class Auth extends Controller
     {
         // Redirect if already logged in
         if (session()->get('isLoggedIn')) {
-            // Redirect to role-specific dashboard
-            $role = session()->get('role');
-            switch ($role) {
-                case 'admin':
-                    return redirect()->to('admin/dashboard');
-                case 'teacher':
-                    return redirect()->to('teacher/dashboard');
-                case 'student':
-                    return redirect()->to('student/dashboard');
-                default:
-                    return redirect()->to('/dashboard');
-            }
+            return redirect()->to('/dashboard');
         }
         
         helper(['form']);
@@ -101,20 +90,8 @@ class Auth extends Controller
                     // Debug: Log the role for debugging
                     log_message('debug', 'Auth Login - User Role: ' . $user['role'] . ', Redirecting...');
                     
-                    // Redirect based on role
-                    switch ($user['role']) {
-                        case 'admin':
-                            return redirect()->to('/admin/dashboard');
-                        case 'teacher':
-                            return redirect()->to('/teacher/dashboard');
-                        case 'student':
-                            return redirect()->to('/student/dashboard');
-                        default:
-                            // Unknown role: clear session and go back to login
-                            session()->destroy();
-                            session()->setFlashdata('error', 'Your account role is not recognized.');
-                            return redirect()->to(base_url('login'));
-                    }
+                    // Redirect to unified dashboard
+                    return redirect()->to('/dashboard');
                 } else {
                     $session->setFlashdata('error', 'Invalid login credentials.');
                 }
@@ -143,15 +120,75 @@ class Auth extends Controller
             return redirect()->to('login');
         }
 
-        // Redirect to role-specific dashboard
         $role = session()->get('role');
+        
+        // Load data based on role and render unified dashboard
         switch ($role) {
             case 'admin':
-                return redirect()->to('/admin/dashboard');
+                // Admin dashboard - load users data for User Management
+                $userModel = new \App\Models\UserModel();
+                $users = $userModel->getAllUsers();
+                
+                return view('auth/dashboard', [
+                    'user' => [
+                        'name'  => session('name'),
+                        'email' => session('email'),
+                        'role'  => session('role'),
+                    ],
+                    'users' => $users
+                ]);
+                
             case 'teacher':
-                return redirect()->to('/teacher/dashboard');
+                // Teacher dashboard - load courses
+                $courseModel = new \App\Models\CourseModel();
+                $teacher_id = session()->get('user_id');
+                $courses = $courseModel->where('status', 'published')->orderBy('title', 'ASC')->findAll();
+                $myCourses = $courseModel->getCoursesByInstructor($teacher_id);
+                
+                return view('auth/dashboard', [
+                    'user' => [
+                        'name' => session('name'),
+                        'email' => session('email'),
+                        'role' => session('role'),
+                    ],
+                    'courses' => $courses,
+                    'myCourses' => $myCourses
+                ]);
+                
             case 'student':
-                return redirect()->to('/student/dashboard');
+                // Student dashboard - load enrollments and courses
+                $enrollmentModel = new \App\Models\EnrollmentModel();
+                $courseModel = new \App\Models\CourseModel();
+                $user_id = session()->get('user_id');
+                
+                $enrollments = $enrollmentModel->getUserEnrollments($user_id);
+                $enrolled_course_ids = array_column($enrollments, 'course_id');
+                $available_courses = [];
+                
+                if (!empty($enrolled_course_ids)) {
+                    $available_courses = $courseModel->whereNotIn('id', $enrolled_course_ids)->findAll();
+                } else {
+                    $available_courses = $courseModel->findAll();
+                }
+                
+                $overall_progress = 0;
+                if (!empty($enrollments)) {
+                    $total_progress = array_sum(array_column($enrollments, 'progress'));
+                    $overall_progress = $total_progress / count($enrollments);
+                }
+                
+                return view('auth/dashboard', [
+                    'user' => [
+                        'name' => session('name'),
+                        'email' => session('email'),
+                        'role' => session('role'),
+                    ],
+                    'enrollments' => $enrollments,
+                    'available_courses' => $available_courses,
+                    'overall_progress' => $overall_progress,
+                    'unread_count' => 0
+                ]);
+                
             default:
                 session()->setFlashdata('error', 'Your account role is not recognized.');
                 return redirect()->to('login');

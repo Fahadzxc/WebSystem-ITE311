@@ -11,7 +11,7 @@
             </h1>
             <p class="text-muted mb-0">Enroll students in your courses</p>
         </div>
-        <a href="<?= base_url('teacher/dashboard') ?>" class="btn btn-outline-secondary">
+        <a href="<?= base_url('dashboard') ?>" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
         </a>
     </div>

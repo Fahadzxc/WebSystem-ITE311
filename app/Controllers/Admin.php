@@ -49,22 +49,15 @@ class Admin extends BaseController
 
     /**
      * User Management - List all users
+     * Redirects to dashboard where User Management is now integrated
      */
     public function users()
     {
         $auth = $this->checkAdminAuth();
         if ($auth !== true) return $auth;
 
-        $users = $this->userModel->getAllUsers();
-
-        return view('admin/users', [
-            'users' => $users,
-            'user' => [
-                'name'  => session('name'),
-                'email' => session('email'),
-                'role'  => session('role'),
-            ]
-        ]);
+        // Redirect to dashboard where User Management is now integrated
+        return redirect()->to(base_url('dashboard'));
     }
 
     /**
@@ -84,32 +77,32 @@ class Admin extends BaseController
             // Validate name - only letters and spaces allowed
             if (!preg_match('/^[a-zA-Z\s]+$/', $name)) {
                 session()->setFlashdata('error', 'Name contains invalid characters.');
-                return redirect()->to(base_url('admin/users'));
+                return redirect()->to(base_url('dashboard'));
             }
 
             // Validate email - must be valid email format and @gmail.com
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 session()->setFlashdata('error', 'Please enter a valid email address.');
-                return redirect()->to(base_url('admin/users'));
+                return redirect()->to(base_url('dashboard'));
             }
 
             // Check if email contains invalid special characters
             if (preg_match('/[\/\'"\\\;\<\>]/', $email)) {
                 session()->setFlashdata('error', 'Invalid email format.');
-                return redirect()->to(base_url('admin/users'));
+                return redirect()->to(base_url('dashboard'));
             }
 
             // Validate email must be @gmail.com
             if (strpos($email, '@gmail.com') === false) {
                 session()->setFlashdata('error', 'Please enter a valid email address.');
-                return redirect()->to(base_url('admin/users'));
+                return redirect()->to(base_url('dashboard'));
             }
 
             // Check if email already exists
             $existingUser = $this->userModel->findByEmail($email);
             if ($existingUser) {
                 session()->setFlashdata('error', 'Email already exists.');
-                return redirect()->to(base_url('admin/users'));
+                return redirect()->to(base_url('dashboard'));
             }
 
             // Create user
@@ -142,7 +135,7 @@ class Admin extends BaseController
             // Don't allow editing yourself
             if ($id == session('user_id')) {
                 session()->setFlashdata('error', 'You cannot edit your own account.');
-                return redirect()->to(base_url('admin/users'));
+                return redirect()->to(base_url('dashboard'));
             }
 
             $name = $this->request->getPost('name');
@@ -153,32 +146,32 @@ class Admin extends BaseController
             // Validate name - only letters and spaces allowed
             if (!preg_match('/^[a-zA-Z\s]+$/', $name)) {
                 session()->setFlashdata('error', 'Name contains invalid characters.');
-                return redirect()->to(base_url('admin/users'));
+                return redirect()->to(base_url('dashboard'));
             }
 
             // Validate email - must be valid email format and @gmail.com
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 session()->setFlashdata('error', 'Please enter a valid email address.');
-                return redirect()->to(base_url('admin/users'));
+                return redirect()->to(base_url('dashboard'));
             }
 
             // Check if email contains invalid special characters
             if (preg_match('/[\/\'"\\\;\<\>]/', $email)) {
                 session()->setFlashdata('error', 'Invalid email format.');
-                return redirect()->to(base_url('admin/users'));
+                return redirect()->to(base_url('dashboard'));
             }
 
             // Validate email must be @gmail.com
             if (strpos($email, '@gmail.com') === false) {
                 session()->setFlashdata('error', 'Please enter a valid email address.');
-                return redirect()->to(base_url('admin/users'));
+                return redirect()->to(base_url('dashboard'));
             }
 
             // Check if email already exists for other users
             $existingUser = $this->userModel->findByEmail($email);
             if ($existingUser && $existingUser['id'] != $id) {
                 session()->setFlashdata('error', 'Email already exists for another user.');
-                return redirect()->to(base_url('admin/users'));
+                return redirect()->to(base_url('dashboard'));
             }
 
             // Prepare update data
@@ -215,7 +208,7 @@ class Admin extends BaseController
             // Don't allow deleting yourself
             if ($id == session('user_id')) {
                 session()->setFlashdata('error', 'You cannot delete your own account.');
-                return redirect()->to(base_url('admin/users'));
+                return redirect()->to(base_url('dashboard'));
             }
 
             // Soft delete - mark as deleted instead of actually deleting

@@ -85,7 +85,7 @@
                 <strong>Note:</strong> Assignments will only appear for courses you are enrolled in. 
                 Make sure you are enrolled in the course where the assignment was created.
             </div>
-            <a href="<?= base_url('student/dashboard') ?>" class="btn btn-primary-custom mt-3">
+            <a href="<?= base_url('dashboard') ?>" class="btn btn-primary-custom mt-3">
                 <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
             </a>
         </div>

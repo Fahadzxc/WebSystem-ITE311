@@ -72,7 +72,7 @@ class Course extends Controller
         // Check if request is POST
         if ($this->request->getMethod() !== 'post') {
             session()->setFlashdata('error', 'Invalid request method.');
-            return redirect()->to('student/dashboard');
+            return redirect()->to('dashboard');
         }
 
         // Get course_id from POST request
@@ -80,14 +80,14 @@ class Course extends Controller
         
         if (!$course_id) {
             session()->setFlashdata('error', 'Course ID is required.');
-            return redirect()->to('student/dashboard');
+            return redirect()->to('dashboard');
         }
 
         // Validate course exists
         $course = $this->courseModel->find($course_id);
         if (!$course) {
             session()->setFlashdata('error', 'Course not found.');
-            return redirect()->to('student/dashboard');
+            return redirect()->to('dashboard');
         }
 
         // User ID already obtained above
@@ -95,7 +95,7 @@ class Course extends Controller
         // Check if user is already enrolled
         if ($this->enrollmentModel->isAlreadyEnrolled($user_id, $course_id)) {
             session()->setFlashdata('error', 'You are already enrolled in this course.');
-            return redirect()->to('student/dashboard');
+            return redirect()->to('dashboard');
         }
 
         // Prepare enrollment data
@@ -112,10 +112,10 @@ class Course extends Controller
 
         if ($enrollmentId) {
             session()->setFlashdata('success', 'Successfully enrolled in ' . $course['title'] . '!');
-            return redirect()->to('student/dashboard');
+            return redirect()->to('dashboard');
         } else {
             session()->setFlashdata('error', 'Failed to enroll in course. Please try again.');
-            return redirect()->to('student/dashboard');
+            return redirect()->to('dashboard');
         }
     }
 
@@ -135,7 +135,7 @@ class Course extends Controller
         // Check if request is POST
         if ($this->request->getMethod() !== 'post') {
             session()->setFlashdata('error', 'Invalid request method.');
-            return redirect()->to('student/dashboard');
+            return redirect()->to('dashboard');
         }
 
         // Get course_id from POST request
@@ -143,7 +143,7 @@ class Course extends Controller
         
         if (!$course_id) {
             session()->setFlashdata('error', 'Course ID is required.');
-            return redirect()->to('student/dashboard');
+            return redirect()->to('dashboard');
         }
 
         // Get user ID from session

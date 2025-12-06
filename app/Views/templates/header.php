@@ -19,21 +19,18 @@
                     <?php $role = strtolower(session('role') ?? ''); ?>
                     <?php if ($role === 'admin'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('admin/dashboard'); ?>">Admin Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('admin/users'); ?>"><i class="fas fa-users me-1"></i>User Management</a>
+                            <a class="nav-link" href="<?= base_url('dashboard'); ?>">Dashboard</a>
                         </li>
                     <?php elseif ($role === 'teacher'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('teacher/dashboard'); ?>">Teacher Dashboard</a>
+                            <a class="nav-link" href="<?= base_url('dashboard'); ?>">Dashboard</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= base_url('assignment'); ?>">Assignments</a>
                         </li>
                     <?php elseif ($role === 'student'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('student/dashboard'); ?>">Dashboard</a>
+                            <a class="nav-link" href="<?= base_url('dashboard'); ?>">Dashboard</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= base_url('student/announcement'); ?>">Announcements</a>

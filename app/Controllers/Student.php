@@ -85,7 +85,7 @@ class Student extends BaseController
         
         if (!$course_id) {
             session()->setFlashdata('error', 'Course ID is required.');
-            return redirect()->to('student/dashboard');
+            return redirect()->to('dashboard');
         }
 
         // Get user ID from session only (never trust client data)
@@ -100,13 +100,13 @@ class Student extends BaseController
         $course = $this->courseModel->find($course_id);
         if (!$course) {
             session()->setFlashdata('error', 'Course not found.');
-            return redirect()->to('student/dashboard');
+            return redirect()->to('dashboard');
         }
 
         // Check if user is already enrolled
         if ($this->enrollmentModel->isAlreadyEnrolled($user_id, $course_id)) {
             session()->setFlashdata('error', 'You are already enrolled in this course.');
-            return redirect()->to('student/dashboard');
+            return redirect()->to('dashboard');
         }
 
         // Prepare enrollment data
@@ -139,10 +139,10 @@ class Student extends BaseController
             }
             
             session()->setFlashdata('success', 'Successfully enrolled in ' . $course['title'] . '!');
-            return redirect()->to('student/dashboard');
+            return redirect()->to('dashboard');
         } else {
             session()->setFlashdata('error', 'Failed to enroll in course. Please try again.');
-            return redirect()->to('student/dashboard');
+            return redirect()->to('dashboard');
         }
     }
 
@@ -301,6 +301,6 @@ class Student extends BaseController
             session()->setFlashdata('error', 'Failed to create test notifications: ' . $e->getMessage());
         }
         
-        return redirect()->to('student/dashboard');
+        return redirect()->to('dashboard');
     }
 }

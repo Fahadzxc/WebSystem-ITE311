@@ -219,7 +219,7 @@ class Materials extends BaseController
                 // For teachers, verify they teach this course
                 if (!$this->teacherTeachesCourse($user_id, $course_id)) {
                     session()->setFlashdata('error', 'You do not teach this course.');
-                    return redirect()->to(base_url('teacher/dashboard'));
+                    return redirect()->to(base_url('dashboard'));
                 }
             }
         } else {
