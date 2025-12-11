@@ -240,6 +240,21 @@ class Auth extends Controller
                     $available_courses = $courseModel->findAll();
                 }
                 
+                // Add instructor names to available courses
+                $userModel = new \App\Models\UserModel();
+                foreach ($available_courses as &$course) {
+                    if (!empty($course['instructor_id']) && $course['instructor_id'] != 0) {
+                        $instructor = $userModel->find($course['instructor_id']);
+                        if ($instructor && strtolower($instructor['role']) === 'teacher') {
+                            $course['instructor_name'] = $instructor['name'];
+                        } else {
+                            $course['instructor_name'] = 'Unassigned';
+                        }
+                    } else {
+                        $course['instructor_name'] = 'TBA';
+                    }
+                }
+                
                 // Calculate progress only from active enrollments
                 $overall_progress = 0;
                 if (!empty($activeEnrollments)) {

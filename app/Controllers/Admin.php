@@ -350,7 +350,15 @@ class Admin extends BaseController
         }
 
         $schedules = $this->scheduleModel->getSchedulesByCourse($course_id);
-        return $this->response->setJSON(['schedules' => $schedules]);
+        $course = $this->courseModel->find($course_id);
+        
+        return $this->response->setJSON([
+            'schedules' => $schedules,
+            'course' => [
+                'semester' => $course['semester'] ?? null,
+                'academic_year' => $course['academic_year'] ?? null
+            ]
+        ]);
     }
 
     /**
@@ -499,8 +507,33 @@ class Admin extends BaseController
                     }
                 }
 
-                // Assign teacher to course
-                $this->courseModel->update($course_id, ['instructor_id' => $teacher_id]);
+                // Get semester and academic year from POST
+                $semester = $this->request->getPost('semester');
+                $academic_year = $this->request->getPost('academic_year');
+
+                // Validate semester and academic year
+                if (empty($semester)) {
+                    session()->setFlashdata('error', 'Please select a semester/term.');
+                    return redirect()->to(base_url('dashboard'));
+                }
+
+                if (empty($academic_year)) {
+                    session()->setFlashdata('error', 'Please enter an academic year.');
+                    return redirect()->to(base_url('dashboard'));
+                }
+
+                // Validate academic year format (YYYY-YYYY) - still validate even if dropdown
+                if (!preg_match('/^\d{4}-\d{4}$/', $academic_year)) {
+                    session()->setFlashdata('error', 'Please select a valid academic year.');
+                    return redirect()->to(base_url('dashboard'));
+                }
+
+                // Assign teacher to course with semester and academic year
+                $this->courseModel->update($course_id, [
+                    'instructor_id' => $teacher_id,
+                    'semester' => $semester,
+                    'academic_year' => $academic_year
+                ]);
 
                 // Delete existing schedules for this course
                 $this->scheduleModel->deleteByCourse($course_id);
@@ -517,8 +550,12 @@ class Admin extends BaseController
 
                 session()->setFlashdata('success', 'Teacher assigned to course with schedule(s) successfully.');
             } else {
-                // Remove teacher assignment (set to 0 for unassigned)
-                $this->courseModel->update($course_id, ['instructor_id' => 0]);
+                // Remove teacher assignment (set to 0 for unassigned, clear semester/term)
+                $this->courseModel->update($course_id, [
+                    'instructor_id' => 0,
+                    'semester' => null,
+                    'academic_year' => null
+                ]);
                 $this->scheduleModel->deleteByCourse($course_id);
                 session()->setFlashdata('success', 'Teacher assignment removed successfully.');
             }

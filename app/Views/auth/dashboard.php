@@ -138,14 +138,21 @@ x<?= $this->extend('template') ?>
               <h5 class="mb-0 fw-semibold"><i class="fas fa-chalkboard-teacher me-2"></i>Teacher Course Assignment</h5>
               <p class="text-muted small mb-0 mt-1">Assign teachers to courses</p>
             </div>
-            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createCourseModal">
-              <i class="fas fa-plus me-2"></i>Add New Course
-            </button>
+              <div class="d-flex gap-2">
+              <input type="text" 
+                     id="adminCourseSearch" 
+                     class="form-control form-control-sm" 
+                     placeholder="Search courses..." 
+                     style="width: 250px;">
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createCourseModal">
+                <i class="fas fa-plus me-2"></i>Add New Course
+              </button>
+            </div>
           </div>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover mb-0" id="adminCoursesTable">
               <thead class="bg-light">
                 <tr>
                   <th class="px-4 py-3">Course ID</th>
@@ -156,7 +163,7 @@ x<?= $this->extend('template') ?>
                   <th class="py-3 text-center">Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="adminCoursesTableBody">
                 <?php if (empty($courses)): ?>
                   <tr>
                     <td colspan="6" class="text-center py-5">
@@ -166,7 +173,7 @@ x<?= $this->extend('template') ?>
                   </tr>
                 <?php else: ?>
                   <?php foreach ($courses as $course): ?>
-                    <tr>
+                    <tr class="admin-course-row">
                       <td class="px-4 py-3"><?= $course['id'] ?></td>
                       <td class="py-3">
                         <strong><?= esc($course['title']) ?></strong>
@@ -179,6 +186,17 @@ x<?= $this->extend('template') ?>
                           <span class="badge bg-success"><?= esc($course['instructor_name']) ?></span>
                         <?php else: ?>
                           <span class="badge bg-secondary">Unassigned</span>
+                        <?php endif; ?>
+                        <?php if (!empty($course['semester']) || !empty($course['academic_year'])): ?>
+                          <br><small class="text-muted mt-1 d-block">
+                            <?php if (!empty($course['semester'])): ?>
+                              <i class="fas fa-calendar-alt me-1"></i><?= esc($course['semester']) ?>
+                            <?php endif; ?>
+                            <?php if (!empty($course['academic_year'])): ?>
+                              <?php if (!empty($course['semester'])): ?> • <?php endif; ?>
+                              AY <?= esc($course['academic_year']) ?>
+                            <?php endif; ?>
+                          </small>
                         <?php endif; ?>
                       </td>
                       <td class="py-3">
@@ -497,6 +515,36 @@ x<?= $this->extend('template') ?>
                   <small class="text-danger">No teachers available. Please create a teacher account first.</small>
                 <?php endif; ?>
               </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="assignSemester" class="form-label">Semester/Term <span class="text-danger">*</span></label>
+                  <select class="form-select" id="assignSemester" name="semester" required>
+                    <option value="">-- Select Semester --</option>
+                    <option value="1st Semester">1st Semester</option>
+                    <option value="2nd Semester">2nd Semester</option>
+                    <option value="Summer">Summer</option>
+                    <option value="Midyear">Midyear</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="assignAcademicYear" class="form-label">Academic Year <span class="text-danger">*</span></label>
+                  <select class="form-select" id="assignAcademicYear" name="academic_year" required>
+                    <option value="">-- Select Academic Year --</option>
+                    <?php
+                    // Generate academic year options (current year and future years)
+                    $currentYear = (int)date('Y');
+                    // Start from current year, show up to 5 years in the future
+                    for ($i = 0; $i <= 5; $i++) {
+                      $startYear = $currentYear + $i;
+                      $endYear = $startYear + 1;
+                      $academicYear = $startYear . '-' . $endYear;
+                      $selected = ($i === 0) ? 'selected' : ''; // Default to current academic year
+                      echo '<option value="' . $academicYear . '" ' . $selected . '>' . $academicYear . '</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+              </div>
               <div class="mb-3">
                 <label class="form-label fw-semibold">Course Schedule</label>
                 <div class="mb-3">
@@ -756,11 +804,25 @@ x<?= $this->extend('template') ?>
       document.getElementById('assignStartTime').value = '';
       document.getElementById('assignEndTime').value = '';
       
-      // Load existing schedules if teacher is assigned
+      // Clear semester and academic year fields
+      document.getElementById('assignSemester').value = '';
+      document.getElementById('assignAcademicYear').value = '';
+      
+      // Load existing schedules and course info if teacher is assigned
       if (currentTeacherId && currentTeacherId != 0 && currentTeacherId != 'null') {
         fetch('<?= base_url('admin/courses/get-schedules') ?>?course_id=' + courseId)
           .then(response => response.json())
           .then(data => {
+            // Load semester and academic year if available
+            if (data.course) {
+              if (data.course.semester) {
+                document.getElementById('assignSemester').value = data.course.semester;
+              }
+              if (data.course.academic_year) {
+                document.getElementById('assignAcademicYear').value = data.course.academic_year;
+              }
+            }
+            
             if (data.schedules && data.schedules.length > 0) {
               // Get unique start and end times (should be same for all)
               const firstSchedule = data.schedules[0];
@@ -1030,6 +1092,17 @@ x<?= $this->extend('template') ?>
       schedulesInput.value = JSON.stringify(schedules);
       this.appendChild(schedulesInput);
     });
+
+    // Admin Course Search Script - Same logic as user search
+    document.getElementById('adminCourseSearch').addEventListener('keyup', function() {
+      const searchValue = this.value.toLowerCase();
+      const tableRows = document.querySelectorAll('#adminCoursesTable tbody tr');
+      
+      tableRows.forEach(function(row) {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchValue) ? '' : 'none';
+      });
+    });
     </script>
     <?php
           break;
@@ -1065,16 +1138,23 @@ x<?= $this->extend('template') ?>
                             <span class="badge bg-primary-custom text-white ms-2"><?= count($courses) ?></span>
                         <?php endif; ?>
                     </h5>
-                    <a href="<?= base_url('teacher/enrollments') ?>" class="btn btn-primary btn-sm">
-                        <i class="fas fa-user-plus me-2"></i>Manage Enrollments
-                    </a>
+                    <div class="d-flex gap-2">
+                        <input type="text" 
+                               id="teacherCourseSearch" 
+                               class="form-control form-control-sm" 
+                               placeholder="Search courses..." 
+                               style="width: 250px;">
+                        <a href="<?= base_url('teacher/enrollments') ?>" class="btn btn-primary btn-sm">
+                            <i class="fas fa-user-plus me-2"></i>Manage Enrollments
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
                 <?php if (!empty($courses)): ?>
-                    <div class="row g-3">
+                    <div class="row g-3" id="teacherCoursesContainer">
                         <?php foreach ($courses as $course): ?>
-                            <div class="col-md-6 col-lg-4">
+                            <div class="col-md-6 col-lg-4 teacher-course-card">
                                 <div class="card border h-100 shadow-sm">
                                     <div class="card-body d-flex flex-column">
                                         <h6 class="card-title text-primary-custom fw-bold mb-2">
@@ -1136,6 +1216,19 @@ x<?= $this->extend('template') ?>
                 <?php endif; ?>
             </div>
         </div>
+
+        <!-- Teacher Course Search Script - Same logic as user search -->
+        <script>
+        document.getElementById('teacherCourseSearch').addEventListener('keyup', function() {
+          const searchValue = this.value.toLowerCase();
+          const courseCards = document.querySelectorAll('.teacher-course-card');
+          
+          courseCards.forEach(function(card) {
+            const text = card.textContent.toLowerCase();
+            card.style.display = text.includes(searchValue) ? '' : 'none';
+          });
+        });
+        </script>
 
         <!-- New Submissions Card -->
         <div class="card shadow-sm border-0">
@@ -1307,17 +1400,39 @@ x<?= $this->extend('template') ?>
       <div class="card shadow-sm mb-4">
         <div class="card-header fw-semibold d-flex justify-content-between align-items-center">
           <span>Available Courses</span>
-          <span class="badge bg-secondary"><?= count($available_courses ?? []) ?></span>
+          <div class="d-flex gap-2 align-items-center">
+            <span class="badge bg-secondary"><?= count($available_courses ?? []) ?></span>
+            <input type="text" 
+                   id="studentCourseSearch" 
+                   class="form-control form-control-sm" 
+                   placeholder="Search courses..." 
+                   style="width: 250px;">
+          </div>
         </div>
         <div class="card-body">
           <?php if (!empty($available_courses)): ?>
-            <div class="row g-3">
+            <div class="row g-3" id="studentAvailableCoursesContainer">
               <?php foreach ($available_courses as $course): ?>
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-4 student-course-card">
                   <div class="card border-0 bg-light">
                     <div class="card-body">
                       <h6 class="card-title text-primary"><?= esc($course['title']) ?></h6>
                       <p class="card-text text-muted small"><?= esc($course['description']) ?></p>
+                      
+                      <!-- Semester and Academic Year Info -->
+                      <?php if (!empty($course['semester']) || !empty($course['academic_year'])): ?>
+                        <div class="mb-2">
+                          <span class="badge bg-info me-1">
+                            <i class="fas fa-calendar-alt me-1"></i><?= esc($course['semester'] ?? 'TBA') ?>
+                          </span>
+                          <?php if (!empty($course['academic_year'])): ?>
+                            <span class="badge bg-primary">
+                              <i class="fas fa-graduation-cap me-1"></i>AY <?= esc($course['academic_year']) ?>
+                            </span>
+                          <?php endif; ?>
+                        </div>
+                      <?php endif; ?>
+                      
                       <div class="d-flex justify-content-between align-items-center">
                         <small class="text-muted">
                           Instructor: <?= esc($course['instructor_name'] ?? 'TBA') ?>
@@ -1368,6 +1483,19 @@ x<?= $this->extend('template') ?>
           <?php endif; ?>
         </div>
       </div>
+
+      <!-- Student Course Search Script - Same logic as user search -->
+      <script>
+      document.getElementById('studentCourseSearch').addEventListener('keyup', function() {
+        const searchValue = this.value.toLowerCase();
+        const courseCards = document.querySelectorAll('.student-course-card');
+        
+        courseCards.forEach(function(card) {
+          const text = card.textContent.toLowerCase();
+          card.style.display = text.includes(searchValue) ? '' : 'none';
+        });
+      });
+      </script>
 
   <!-- Quick Stats Row -->
   <div class="row g-3">

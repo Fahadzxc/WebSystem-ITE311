@@ -116,12 +116,26 @@
                             <?php foreach ($courses as $course): ?>
                                 <a href="#" 
                                    class="list-group-item list-group-item-action course-item" 
-                                   data-course-id="<?= $course['id'] ?>"
+                                   data-course-id="<?= $course['id'] ?>" 
                                    data-course-title="<?= esc($course['title']) ?>">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h6 class="mb-1 fw-semibold"><?= esc($course['title']) ?></h6>
                                     </div>
                                     <p class="mb-1 text-muted small"><?= esc($course['description']) ?></p>
+                                    <?php if (!empty($course['semester']) || !empty($course['academic_year'])): ?>
+                                        <div class="mt-2">
+                                            <?php if (!empty($course['semester'])): ?>
+                                                <span class="badge bg-info me-1">
+                                                    <i class="fas fa-calendar-alt me-1"></i><?= esc($course['semester']) ?>
+                                                </span>
+                                            <?php endif; ?>
+                                            <?php if (!empty($course['academic_year'])): ?>
+                                                <span class="badge bg-primary">
+                                                    <i class="fas fa-graduation-cap me-1"></i>AY <?= esc($course['academic_year']) ?>
+                                                </span>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </a>
                             <?php endforeach; ?>
                         </div>

@@ -50,6 +50,31 @@ class Course extends Controller
     }
 
     /**
+     * Search courses by name or description
+     */
+    public function search()
+    {
+        // Accept search term from GET or POST
+        $searchTerm = $this->request->getGet('search_term') ?? $this->request->getPost('search_term');
+        
+        // Build query with search conditions
+        if (!empty($searchTerm)) {
+            $this->courseModel->groupStart();
+            $this->courseModel->like('title', $searchTerm);
+            $this->courseModel->orLike('description', $searchTerm);
+            $this->courseModel->groupEnd();
+        }
+        
+        $courses = $this->courseModel->findAll();
+        
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON($courses);
+        }
+        
+        return view('courses/search_results', ['courses' => $courses, 'searchTerm' => $searchTerm]);
+    }
+
+    /**
      * Handle course enrollment via AJAX
      */
     public function enroll()
