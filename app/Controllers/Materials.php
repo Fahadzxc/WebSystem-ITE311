@@ -6,6 +6,8 @@ use App\Controllers\BaseController;
 use App\Models\MaterialModel;
 use App\Models\CourseModel;
 use App\Models\EnrollmentModel;
+use App\Models\NotificationModel;
+use App\Models\UserModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Materials extends BaseController
@@ -13,12 +15,16 @@ class Materials extends BaseController
     protected $materialModel;
     protected $courseModel;
     protected $enrollmentModel;
+    protected $notificationModel;
+    protected $userModel;
 
     public function __construct()
     {
         $this->materialModel = new MaterialModel();
         $this->courseModel = new CourseModel();
         $this->enrollmentModel = new EnrollmentModel();
+        $this->notificationModel = new NotificationModel();
+        $this->userModel = new UserModel();
     }
 
     /**
@@ -115,6 +121,10 @@ class Materials extends BaseController
 
             if ($this->materialModel->insert($data)) {
                 session()->setFlashdata('success', 'File uploaded successfully!');
+                
+                // Notify all enrolled students about the new material
+                $courseTitle = $course['title'] ?? $course['course_name'] ?? 'Course';
+                $this->notifyStudentsAboutMaterial($course_id, $file->getClientName(), $courseTitle);
             } else {
                 session()->setFlashdata('error', 'Failed to save file record');
                 // Delete uploaded file if database save failed
@@ -336,6 +346,13 @@ class Materials extends BaseController
 
         if ($this->materialModel->insert($data)) {
             session()->setFlashdata('success', 'File uploaded successfully!');
+            
+            // Get course info for notification
+            $course = $this->courseModel->find($course_id);
+            $courseTitle = $course['title'] ?? 'Course';
+            
+            // Notify all enrolled students about the new material
+            $this->notifyStudentsAboutMaterial($course_id, $file->getClientName(), $courseTitle);
         } else {
             session()->setFlashdata('error', 'Failed to save file record');
             // Delete uploaded file if database save failed
@@ -396,5 +413,42 @@ class Materials extends BaseController
         }
 
         return redirect()->back();
+    }
+
+    /**
+     * Notify all enrolled students and admins about new material upload
+     * 
+     * @param int $course_id Course ID
+     * @param string $material_name Material file name
+     * @param string $course_title Course title
+     */
+    private function notifyStudentsAboutMaterial($course_id, $material_name, $course_title)
+    {
+        try {
+            // Get all active enrollments for this course
+            $enrollments = $this->enrollmentModel->where('course_id', $course_id)
+                                                ->where('status', 'active')
+                                                ->findAll();
+
+            // Create notification for each enrolled student
+            foreach ($enrollments as $enrollment) {
+                $message = "New material '{$material_name}' has been uploaded for '{$course_title}'.";
+                $this->notificationModel->createNotification($enrollment['user_id'], $message);
+            }
+
+            // Get all admin users and notify them
+            $admins = $this->userModel->where('role', 'admin')
+                                     ->where('is_deleted', 0)
+                                     ->findAll();
+
+            // Create notification for each admin
+            foreach ($admins as $admin) {
+                $message = "New material '{$material_name}' has been uploaded for course '{$course_title}'.";
+                $this->notificationModel->createNotification($admin['id'], $message);
+            }
+        } catch (\Exception $e) {
+            // Log error but don't fail the upload
+            log_message('error', 'Failed to create material upload notification: ' . $e->getMessage());
+        }
     }
 }

@@ -157,20 +157,35 @@ class Assignment extends BaseController
                     $qBuilder = $db->table('assignment_questions');
                     $order = 0;
                     foreach ($questions as $question) {
-                        if (!empty($question['question_text']) && !empty($question['correct_answer'])) {
+                        if (!empty($question['question_text'])) {
+                            $questionType = $question['question_type'] ?? 'multiple_choice';
+                            
                             $qData = [
                                 'assignment_id' => $assignment_id,
+                                'question_type' => $questionType,
                                 'question_text' => trim($question['question_text']),
-                                'option_a' => trim($question['option_a'] ?? ''),
-                                'option_b' => trim($question['option_b'] ?? ''),
-                                'option_c' => trim($question['option_c'] ?? ''),
-                                'option_d' => trim($question['option_d'] ?? ''),
-                                'correct_answer' => trim($question['correct_answer']),
                                 'points' => (float)($question['points'] ?? 1),
                                 'order' => $order,
                                 'created_at' => $now,
                                 'updated_at' => $now
                             ];
+                            
+                            // Only add multiple choice fields if it's a multiple choice question
+                            if ($questionType === 'multiple_choice') {
+                                $qData['option_a'] = trim($question['option_a'] ?? '');
+                                $qData['option_b'] = trim($question['option_b'] ?? '');
+                                $qData['option_c'] = trim($question['option_c'] ?? '');
+                                $qData['option_d'] = trim($question['option_d'] ?? '');
+                                $qData['correct_answer'] = trim($question['correct_answer'] ?? '');
+                            } else {
+                                // For essay and file_upload, set these to null
+                                $qData['option_a'] = null;
+                                $qData['option_b'] = null;
+                                $qData['option_c'] = null;
+                                $qData['option_d'] = null;
+                                $qData['correct_answer'] = null;
+                            }
+                            
                             $qBuilder->insert($qData);
                             $order++;
                         }
@@ -312,6 +327,8 @@ class Assignment extends BaseController
             $submission_text = $this->request->getPost('submission_text');
             $file = $this->request->getFile('submission_file');
             $answers = $this->request->getPost('answers') ?? [];
+            $essayAnswers = $this->request->getPost('essay_answers') ?? [];
+            $fileAnswers = $this->request->getFiles('file_answers') ?? [];
 
             // Get database connection
             $db = \Config\Database::connect();
@@ -341,16 +358,79 @@ class Assignment extends BaseController
                 $submission_id = $db->insertID();
                 log_message('debug', 'Submission inserted. ID: ' . $submission_id);
                 
-                // Auto-grade multiple choice questions
+                // Get all questions
                 $questions = $this->questionModel->getQuestionsByAssignment($id);
                 $scoreData = null;
-                if (!empty($questions) && !empty($answers)) {
-                    $scoreData = $this->answerModel->saveAnswers($submission_id, $answers, $questions);
+                $hasManualGrading = false;
+                
+                if (!empty($questions)) {
+                    $answerBuilder = $db->table('assignment_answers');
+                    $totalPoints = 0;
+                    $earnedPoints = 0;
                     
-                    // Update submission with score
+                    // Create upload directory if it doesn't exist
+                    $uploadPath = WRITEPATH . 'uploads/assignments/';
+                    if (!is_dir($uploadPath)) {
+                        mkdir($uploadPath, 0755, true);
+                    }
+                    
+                    foreach ($questions as $question) {
+                        $questionType = $question['question_type'] ?? 'multiple_choice';
+                        $totalPoints += $question['points'];
+                        
+                        $answerData = [
+                            'submission_id' => $submission_id,
+                            'question_id' => $question['id'],
+                            'points_earned' => 0,
+                            'is_correct' => false,
+                            'created_at' => $now,
+                            'updated_at' => $now
+                        ];
+                        
+                        if ($questionType === 'multiple_choice') {
+                            // Auto-grade multiple choice
+                            $selectedAnswer = $answers[$question['id']] ?? null;
+                            $isCorrect = ($selectedAnswer === $question['correct_answer']);
+                            $pointsEarned = $isCorrect ? $question['points'] : 0;
+                            $earnedPoints += $pointsEarned;
+                            
+                            $answerData['selected_answer'] = $selectedAnswer;
+                            $answerData['is_correct'] = $isCorrect;
+                            $answerData['points_earned'] = $pointsEarned;
+                        } elseif ($questionType === 'essay') {
+                            // Save essay answer (manual grading)
+                            $hasManualGrading = true;
+                            $essayText = $essayAnswers[$question['id']] ?? '';
+                            $answerData['text_answer'] = trim($essayText);
+                            $answerData['points_earned'] = 0; // Will be set by teacher
+                        } elseif ($questionType === 'file_upload') {
+                            // Handle file upload answer (manual grading)
+                            $hasManualGrading = true;
+                            $uploadedFile = $fileAnswers[$question['id']] ?? null;
+                            
+                            if ($uploadedFile && $uploadedFile->isValid() && !$uploadedFile->hasMoved()) {
+                                $newName = $uploadedFile->getRandomName();
+                                $uploadedFile->move($uploadPath, $newName);
+                                $answerData['file_path'] = 'uploads/assignments/' . $newName;
+                                $answerData['file_name'] = $uploadedFile->getName();
+                            }
+                            $answerData['points_earned'] = 0; // Will be set by teacher
+                        }
+                        
+                        $answerBuilder->insert($answerData);
+                    }
+                    
+                    $scoreData = [
+                        'total_points' => $totalPoints,
+                        'earned_points' => $earnedPoints,
+                        'percentage' => $totalPoints > 0 ? ($earnedPoints / $totalPoints) * 100 : 0
+                    ];
+                    
+                    // Update submission with score (only auto-graded portion)
+                    $status = $hasManualGrading ? 'submitted' : 'graded';
                     $builder->where('id', $submission_id)->update([
-                        'score' => $scoreData['earned_points'],
-                        'status' => 'graded',
+                        'score' => $earnedPoints,
+                        'status' => $status,
                         'updated_at' => $now
                     ]);
                 }
@@ -359,8 +439,10 @@ class Assignment extends BaseController
                 $this->notifyTeacherAboutSubmission($assignment['teacher_id'], $id, $student_id);
                 
                 $successMsg = 'Assignment submitted successfully!';
-                if ($scoreData) {
+                if ($scoreData && !$hasManualGrading) {
                     $successMsg .= ' Your score: ' . number_format($scoreData['earned_points'], 2) . ' / ' . number_format($assignment['max_score'], 2);
+                } elseif ($hasManualGrading) {
+                    $successMsg .= ' Some questions will be manually graded by your instructor.';
                 }
                 session()->setFlashdata('success', $successMsg);
                 return redirect()->to(base_url('assignment/view/' . $id));
@@ -434,6 +516,13 @@ class Assignment extends BaseController
                 $answers[$answer['question_id']] = $answer;
             }
         }
+        
+        // Ensure question_type is set for all questions
+        foreach ($questions as &$question) {
+            if (!isset($question['question_type'])) {
+                $question['question_type'] = 'multiple_choice';
+            }
+        }
 
         return view('teacher/view_submission', [
             'assignment' => $assignment,
@@ -478,6 +567,46 @@ class Assignment extends BaseController
     }
 
     /**
+     * Download answer file (for file upload questions)
+     */
+    public function downloadAnswer($answer_id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $answer = $this->answerModel->find($answer_id);
+        if (!$answer || !$answer['file_path']) {
+            session()->setFlashdata('error', 'File not found.');
+            return redirect()->back();
+        }
+
+        $role = session()->get('role');
+        $user_id = session()->get('user_id');
+
+        // Get submission to check access
+        $submission = $this->submissionModel->find($answer['submission_id']);
+        if (!$submission) {
+            session()->setFlashdata('error', 'Submission not found.');
+            return redirect()->back();
+        }
+
+        // Check access: student can download their own, teacher can download any
+        if ($role === 'student' && $submission['student_id'] != $user_id) {
+            session()->setFlashdata('error', 'Access denied.');
+            return redirect()->back();
+        }
+
+        $filePath = WRITEPATH . $answer['file_path'];
+        if (!file_exists($filePath)) {
+            session()->setFlashdata('error', 'File not found.');
+            return redirect()->back();
+        }
+
+        return $this->response->download($filePath, null, $answer['file_name'] ?? null);
+    }
+
+    /**
      * Teacher: Grade submission
      */
     public function grade($submission_id)
@@ -510,24 +639,67 @@ class Assignment extends BaseController
         }
 
         if ($this->request->getMethod() === 'POST') {
-            $score = $this->request->getPost('score');
-            $feedback = $this->request->getPost('feedback');
-
-            // Validate score
-            if ($score < 0 || $score > $assignment['max_score']) {
-                session()->setFlashdata('error', 'Score must be between 0 and ' . $assignment['max_score']);
-                return redirect()->to(base_url('assignment/submission/' . $submission_id));
+            $questionScores = $this->request->getPost('question_scores') ?? [];
+            $questionFeedback = $this->request->getPost('question_feedback') ?? [];
+            $overallFeedback = $this->request->getPost('feedback');
+            
+            $db = \Config\Database::connect();
+            $totalScore = 0;
+            
+            // Get all questions and answers
+            $questions = $this->questionModel->getQuestionsByAssignment($assignment['id']);
+            $answers = $this->answerModel->where('submission_id', $submission_id)->findAll();
+            $answersByQuestion = [];
+            foreach ($answers as $answer) {
+                $answersByQuestion[$answer['question_id']] = $answer;
             }
-
-            // Update submission
+            
+            // Update per-question scores and feedback
+            foreach ($questions as $question) {
+                $questionId = $question['id'];
+                $questionType = $question['question_type'] ?? 'multiple_choice';
+                
+                // For multiple choice, score is already set (auto-graded)
+                // For essay and file_upload, update with manual scores
+                if (($questionType === 'essay' || $questionType === 'file_upload') && isset($questionScores[$questionId])) {
+                    $pointsEarned = (float)$questionScores[$questionId];
+                    $feedback = $questionFeedback[$questionId] ?? null;
+                    
+                    // Validate points
+                    if ($pointsEarned < 0 || $pointsEarned > $question['points']) {
+                        continue; // Skip invalid scores
+                    }
+                    
+                    // Update answer
+                    if (isset($answersByQuestion[$questionId])) {
+                        $answerId = $answersByQuestion[$questionId]['id'];
+                        $db->table('assignment_answers')->where('id', $answerId)->update([
+                            'points_earned' => $pointsEarned,
+                            'teacher_feedback' => $feedback ? trim($feedback) : null,
+                            'updated_at' => date('Y-m-d H:i:s')
+                        ]);
+                        // Update local array for recalculation
+                        $answersByQuestion[$questionId]['points_earned'] = $pointsEarned;
+                    }
+                }
+            }
+            
+            // Recalculate total from all answers
+            $recalculatedTotal = 0;
+            foreach ($answersByQuestion as $answer) {
+                $recalculatedTotal += (float)($answer['points_earned'] ?? 0);
+            }
+            
+            // Update submission with total score
             $data = [
-                'score' => $score,
-                'feedback' => $feedback ?: null,
-                'status' => 'graded'
+                'score' => $recalculatedTotal,
+                'feedback' => $overallFeedback ? trim($overallFeedback) : null,
+                'status' => 'graded',
+                'updated_at' => date('Y-m-d H:i:s')
             ];
 
             if ($this->submissionModel->update($submission_id, $data)) {
-                session()->setFlashdata('success', 'Submission graded successfully.');
+                session()->setFlashdata('success', 'Submission graded successfully. Total score: ' . number_format($recalculatedTotal, 2) . ' / ' . number_format($assignment['max_score'], 2));
                 return redirect()->to(base_url('assignment/view/' . $assignment['id']));
             } else {
                 session()->setFlashdata('error', 'Failed to grade submission.');

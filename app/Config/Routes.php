@@ -43,6 +43,10 @@ $routes->post('admin/courses/create', 'Admin::createCourse');
 $routes->post('admin/courses/assign-teacher', 'Admin::assignTeacher');
 $routes->post('admin/courses/check-conflict', 'Admin::checkConflict');
 $routes->get('admin/courses/get-schedules', 'Admin::getSchedules');
+$routes->get('admin/teacher/(:num)/students', 'Admin::getTeacherStudents/$1');
+$routes->post('admin/enrollStudent', 'Admin::enrollStudent');
+$routes->post('admin/unenrollStudent', 'Admin::unenrollStudent');
+$routes->get('admin/getCourseStudents/(:num)', 'Admin::getCourseStudents/$1');
 
 
 // Student Routes
@@ -72,6 +76,7 @@ $routes->get('assignment/submission/(:num)', 'Assignment::viewSubmission/$1');
 $routes->post('assignment/grade/(:num)', 'Assignment::grade/$1');
 $routes->post('assignment/submit/(:num)', 'Assignment::submit/$1');
 $routes->get('assignment/download/(:num)', 'Assignment::download/$1');
+$routes->get('assignment/downloadAnswer/(:num)', 'Assignment::downloadAnswer/$1');
 $routes->post('assignment/delete/(:num)', 'Assignment::delete/$1');
 
 // Teacher Materials Routes (alternative access for teachers)

@@ -198,6 +198,11 @@ x<?= $this->extend('template') ?>
                             <?php endif; ?>
                           </small>
                         <?php endif; ?>
+                        <?php if (!empty($course['max_students'])): ?>
+                          <br><small class="text-info mt-1 d-block">
+                            <i class="fas fa-users me-1"></i>Max: <?= esc($course['max_students']) ?> students
+                          </small>
+                        <?php endif; ?>
                       </td>
                       <td class="py-3">
                         <?php 
@@ -229,9 +234,14 @@ x<?= $this->extend('template') ?>
                         <span class="badge <?= $statusClass ?>"><?= ucfirst($course['status'] ?? 'draft') ?></span>
                       </td>
                       <td class="py-3 text-center">
-                        <button class="btn btn-sm btn-outline-primary" onclick="assignTeacher(<?= $course['id'] ?>, '<?= esc($course['title']) ?>', <?= $course['instructor_id'] ?? 'null' ?>)">
-                          <i class="fas fa-user-edit me-1"></i>Assign Teacher
-                        </button>
+                        <div class="d-flex gap-2 justify-content-center">
+                          <button class="btn btn-sm btn-outline-primary" onclick="assignTeacher(<?= $course['id'] ?>, '<?= esc($course['title']) ?>', <?= $course['instructor_id'] ?? 'null' ?>)">
+                            <i class="fas fa-user-edit me-1"></i>Assign Teacher
+                          </button>
+                          <button class="btn btn-sm btn-outline-success" onclick="manageStudents(<?= $course['id'] ?>, '<?= esc($course['title']) ?>')">
+                            <i class="fas fa-users me-1"></i>Manage Students
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   <?php endforeach; ?>
@@ -250,15 +260,15 @@ x<?= $this->extend('template') ?>
             <div class="col-md-6">
               <h6 class="text-muted mb-2">Upload Materials</h6>
               <div class="d-grid gap-2">
-                <a href="<?= base_url('admin/course/1/upload') ?>" class="btn btn-primary">
-                  <i class="fas fa-upload me-2"></i> Upload to Course 1
-                </a>
-                <a href="<?= base_url('admin/course/2/upload') ?>" class="btn btn-primary">
-                  <i class="fas fa-upload me-2"></i> Upload to Course 2
-                </a>
-                <a href="<?= base_url('admin/course/3/upload') ?>" class="btn btn-primary">
-                  <i class="fas fa-upload me-2"></i> Upload to Course 3
-                </a>
+                <?php if (!empty($courses)): ?>
+                  <?php foreach ($courses as $course): ?>
+                    <a href="<?= base_url('admin/course/' . $course['id'] . '/upload') ?>" class="btn btn-primary">
+                      <i class="fas fa-upload me-2"></i> Upload to <?= esc($course['title']) ?>
+                    </a>
+                  <?php endforeach; ?>
+                <?php else: ?>
+                  <p class="text-muted">No courses available</p>
+                <?php endif; ?>
               </div>
             </div>
           </div>
@@ -546,6 +556,18 @@ x<?= $this->extend('template') ?>
                 </div>
               </div>
               <div class="mb-3">
+                <label for="assignMaxStudents" class="form-label">
+                  <i class="fas fa-users me-1"></i>Maximum Students
+                </label>
+                <input type="number" 
+                       class="form-control" 
+                       id="assignMaxStudents" 
+                       name="max_students" 
+                       min="1" 
+                       placeholder="Enter maximum number of students (optional)">
+                <small class="text-muted">Leave empty for unlimited students. Set a limit to control enrollment capacity.</small>
+              </div>
+              <div class="mb-3">
                 <label class="form-label fw-semibold">Course Schedule</label>
                 <div class="mb-3">
                   <label class="form-label">Select Days</label>
@@ -609,6 +631,22 @@ x<?= $this->extend('template') ?>
               <div id="scheduleConflictAlert" class="alert alert-warning d-none" role="alert">
                 <i class="fas fa-exclamation-triangle me-2"></i><span id="conflictMessage"></span>
               </div>
+              
+              <!-- Students Assigned to Teacher Section -->
+              <div id="teacherStudentsSection" class="mt-4" style="display: none;">
+                <hr>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <label class="form-label fw-semibold mb-0">
+                    <i class="fas fa-users me-2"></i>Students Assigned to Teacher
+                  </label>
+                  <span id="studentsCount" class="badge bg-primary">0</span>
+                </div>
+                <div id="teacherStudentsList" class="border rounded p-3" style="max-height: 300px; overflow-y: auto; background-color: #f8f9fa;">
+                  <div class="text-center text-muted py-3">
+                    <i class="fas fa-spinner fa-spin me-2"></i>Loading students...
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -618,6 +656,41 @@ x<?= $this->extend('template') ?>
               <button type="submit" class="btn btn-primary" id="assignTeacherSubmitBtn"><i class="fas fa-save me-2"></i>Assign Teacher</button>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manage Students Modal -->
+    <div class="modal fade" id="manageStudentsModal" tabindex="-1" aria-labelledby="manageStudentsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="manageStudentsModalLabel">
+              <i class="fas fa-users me-2"></i>Manage Students - <span id="manageCourseTitle"></span>
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="manageCourseId" value="">
+            
+            <!-- Search Students -->
+            <div class="mb-3">
+              <input type="text" 
+                     id="studentSearchInput" 
+                     class="form-control" 
+                     placeholder="Search students by name or email...">
+            </div>
+
+            <!-- Students List -->
+            <div id="studentsListContainer" style="max-height: 500px; overflow-y: auto;">
+              <div class="text-center py-4">
+                <i class="fas fa-spinner fa-spin me-2"></i>Loading students...
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
         </div>
       </div>
     </div>
@@ -783,6 +856,148 @@ x<?= $this->extend('template') ?>
       }
     });
 
+    // Manage Students function
+    function manageStudents(courseId, courseTitle) {
+      document.getElementById('manageCourseId').value = courseId;
+      document.getElementById('manageCourseTitle').textContent = courseTitle;
+      
+      const modal = new bootstrap.Modal(document.getElementById('manageStudentsModal'));
+      modal.show();
+      
+      loadCourseStudents(courseId);
+    }
+
+    // Load students for a course
+    function loadCourseStudents(courseId) {
+      const container = document.getElementById('studentsListContainer');
+      container.innerHTML = '<div class="text-center py-4"><i class="fas fa-spinner fa-spin me-2"></i>Loading students...</div>';
+
+      fetch('<?= base_url('admin/getCourseStudents') ?>/' + courseId)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success && data.students) {
+            renderStudentsList(data.students);
+          } else {
+            container.innerHTML = '<div class="alert alert-danger">Error loading students.</div>';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          container.innerHTML = '<div class="alert alert-danger">Error loading students.</div>';
+        });
+    }
+
+    // Render students list
+    function renderStudentsList(students) {
+      const container = document.getElementById('studentsListContainer');
+      
+      if (students.length === 0) {
+        container.innerHTML = '<div class="alert alert-info">No students found.</div>';
+        return;
+      }
+
+      let html = '<div class="list-group">';
+      students.forEach(function(student) {
+        const enrolledBadge = student.is_enrolled 
+          ? '<span class="badge bg-success">Enrolled</span>' 
+          : '<span class="badge bg-secondary">Not Enrolled</span>';
+        
+        const actionButton = student.is_enrolled
+          ? `<button class="btn btn-sm btn-danger unenroll-btn" 
+                     onclick="adminUnenrollStudent(${student.id}, ${student.enrollment.id}, ${document.getElementById('manageCourseId').value}, '${student.name.replace(/'/g, "\\'")}')">
+                <i class="fas fa-user-minus me-1"></i>Unenroll
+              </button>`
+          : `<button class="btn btn-sm btn-success enroll-btn" 
+                     onclick="adminEnrollStudent(${student.id}, ${document.getElementById('manageCourseId').value}, '${student.name.replace(/'/g, "\\'")}')">
+                <i class="fas fa-user-plus me-1"></i>Enroll
+              </button>`;
+
+        html += `
+          <div class="list-group-item student-item" data-student-id="${student.id}">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-1 fw-semibold">${student.name}</h6>
+                <small class="text-muted">${student.email}</small>
+                <div class="mt-1">${enrolledBadge}</div>
+              </div>
+              <div>
+                ${actionButton}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    // Admin enroll student
+    function adminEnrollStudent(studentId, courseId, studentName) {
+      if (!confirm(`Are you sure you want to enroll ${studentName} in this course?`)) {
+        return;
+      }
+
+      fetch('<?= base_url('admin/enrollStudent') ?>', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `<?= csrf_token() ?>=<?= csrf_hash() ?>&student_id=${studentId}&course_id=${courseId}`
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Student enrolled successfully!');
+            loadCourseStudents(courseId);
+          } else {
+            alert('Error: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error enrolling student.');
+        });
+    }
+
+    // Admin unenroll student
+    function adminUnenrollStudent(studentId, enrollmentId, courseId, studentName) {
+      if (!confirm(`Are you sure you want to unenroll ${studentName} from this course?`)) {
+        return;
+      }
+
+      fetch('<?= base_url('admin/unenrollStudent') ?>', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `<?= csrf_token() ?>=<?= csrf_hash() ?>&enrollment_id=${enrollmentId}&student_id=${studentId}&course_id=${courseId}`
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Student unenrolled successfully!');
+            loadCourseStudents(courseId);
+          } else {
+            alert('Error: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error unenrolling student.');
+        });
+    }
+
+    // Student search functionality
+    document.getElementById('studentSearchInput')?.addEventListener('keyup', function() {
+      const searchValue = this.value.toLowerCase();
+      const studentItems = document.querySelectorAll('.student-item');
+      
+      studentItems.forEach(function(item) {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(searchValue) ? '' : 'none';
+      });
+    });
+
     // Assign Teacher function
     function assignTeacher(courseId, courseTitle, currentTeacherId) {
       const modal = new bootstrap.Modal(document.getElementById('assignTeacherModal'));
@@ -804,22 +1019,29 @@ x<?= $this->extend('template') ?>
       document.getElementById('assignStartTime').value = '';
       document.getElementById('assignEndTime').value = '';
       
-      // Clear semester and academic year fields
+      // Clear semester, academic year, and max students fields
       document.getElementById('assignSemester').value = '';
       document.getElementById('assignAcademicYear').value = '';
+      document.getElementById('assignMaxStudents').value = '';
       
       // Load existing schedules and course info if teacher is assigned
       if (currentTeacherId && currentTeacherId != 0 && currentTeacherId != 'null') {
+        // Load students for the current teacher
+        loadTeacherStudents(currentTeacherId);
+        
         fetch('<?= base_url('admin/courses/get-schedules') ?>?course_id=' + courseId)
           .then(response => response.json())
           .then(data => {
-            // Load semester and academic year if available
+            // Load semester, academic year, and max_students if available
             if (data.course) {
               if (data.course.semester) {
                 document.getElementById('assignSemester').value = data.course.semester;
               }
               if (data.course.academic_year) {
                 document.getElementById('assignAcademicYear').value = data.course.academic_year;
+              }
+              if (data.course.max_students) {
+                document.getElementById('assignMaxStudents').value = data.course.max_students;
               }
             }
             
@@ -986,8 +1208,63 @@ x<?= $this->extend('template') ?>
       document.getElementById('assignEndTime').addEventListener('change', checkScheduleConflicts);
       
       // Add listener to teacher select
-      document.getElementById('assignTeacherSelect').addEventListener('change', checkScheduleConflicts);
+      document.getElementById('assignTeacherSelect').addEventListener('change', function() {
+        checkScheduleConflicts();
+        loadTeacherStudents(this.value);
+      });
     });
+    
+    // Function to load students assigned to teacher
+    function loadTeacherStudents(teacherId) {
+      const studentsSection = document.getElementById('teacherStudentsSection');
+      const studentsList = document.getElementById('teacherStudentsList');
+      const studentsCount = document.getElementById('studentsCount');
+      
+      if (!teacherId || teacherId === '') {
+        studentsSection.style.display = 'none';
+        return;
+      }
+      
+      studentsSection.style.display = 'block';
+      studentsList.innerHTML = '<div class="text-center text-muted py-3"><i class="fas fa-spinner fa-spin me-2"></i>Loading students...</div>';
+      
+      fetch('<?= base_url('admin/teacher') ?>/' + teacherId + '/students')
+        .then(response => response.json())
+        .then(data => {
+          if (data.success && data.students && data.students.length > 0) {
+            let html = '<div class="list-group list-group-flush">';
+            data.students.forEach(function(student) {
+              html += `
+                <div class="list-group-item border-0 px-0">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <h6 class="mb-1 fw-semibold">${student.name}</h6>
+                      <small class="text-muted">${student.email}</small>
+                      <div class="mt-2">
+                        <small class="text-muted">Enrolled in:</small>
+                        <div class="d-flex flex-wrap gap-1 mt-1">
+                          ${student.courses.map(course => `<span class="badge bg-info">${course}</span>`).join('')}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+            html += '</div>';
+            studentsList.innerHTML = html;
+            studentsCount.textContent = data.students.length;
+          } else {
+            studentsList.innerHTML = '<div class="text-center text-muted py-3"><i class="fas fa-user-slash me-2"></i>No students assigned to this teacher yet.</div>';
+            studentsCount.textContent = '0';
+          }
+        })
+        .catch(error => {
+          console.error('Error loading students:', error);
+          studentsList.innerHTML = '<div class="text-center text-danger py-3"><i class="fas fa-exclamation-circle me-2"></i>Error loading students.</div>';
+          studentsCount.textContent = '0';
+        });
+    }
     
     // Auto-fill course description based on selected title
     const courseTitleSelect = document.getElementById('courseTitle');
@@ -1160,6 +1437,30 @@ x<?= $this->extend('template') ?>
                                         <h6 class="card-title text-primary-custom fw-bold mb-2">
                                             <?= esc($course['title']) ?>
                                         </h6>
+                                        
+                                        <!-- Semester and Academic Year Info -->
+                                        <?php if (!empty($course['semester']) || !empty($course['academic_year'])): ?>
+                                            <div class="mb-2">
+                                                <?php if (!empty($course['semester'])): ?>
+                                                    <?php if ($course['semester'] === '2nd Semester'): ?>
+                                                        <span class="badge bg-warning text-dark me-1">
+                                                            <i class="fas fa-calendar-alt me-1"></i><?= esc($course['semester']) ?>
+                                                            <i class="fas fa-lock ms-1"></i>
+                                                        </span>
+                                                    <?php else: ?>
+                                                        <span class="badge bg-info me-1">
+                                                            <i class="fas fa-calendar-alt me-1"></i><?= esc($course['semester']) ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                                <?php if (!empty($course['academic_year'])): ?>
+                                                    <span class="badge bg-primary">
+                                                        <i class="fas fa-graduation-cap me-1"></i>AY <?= esc($course['academic_year']) ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        
                                         <p class="card-text text-muted small mb-3 flex-grow-1">
                                             <?= esc($course['description']) ?>
                                         </p>
@@ -1192,14 +1493,28 @@ x<?= $this->extend('template') ?>
                                                 <span class="badge bg-secondary">
                                                     <i class="fas fa-signal me-1"></i><?= ucfirst($course['level'] ?? 'beginner') ?>
                                                 </span>
+                                                <?php if (!empty($course['semester']) && $course['semester'] === '2nd Semester'): ?>
+                                                    <span class="badge bg-warning text-dark">
+                                                        <i class="fas fa-lock me-1"></i>Unavailable
+                                                    </span>
+                                                <?php endif; ?>
                                             </div>
                                             <div class="d-flex gap-2">
-                                                <a href="<?= base_url('materials/upload/' . $course['id']) ?>" class="btn btn-sm btn-outline-primary flex-fill">
-                                                    <i class="fas fa-upload me-1"></i>Upload Materials
-                                                </a>
-                                                <a href="<?= base_url('teacher/enrollments?course_id=' . $course['id']) ?>" class="btn btn-sm btn-primary">
-                                                    <i class="fas fa-users me-1"></i>Students
-                                                </a>
+                                                <?php if (!empty($course['semester']) && $course['semester'] === '2nd Semester'): ?>
+                                                    <button class="btn btn-sm btn-outline-secondary flex-fill" disabled title="Course is unavailable for 2nd Semester">
+                                                        <i class="fas fa-upload me-1"></i>Upload Materials
+                                                    </button>
+                                                    <button class="btn btn-sm btn-secondary" disabled title="Course is unavailable for 2nd Semester">
+                                                        <i class="fas fa-users me-1"></i>Students
+                                                    </button>
+                                                <?php else: ?>
+                                                    <a href="<?= base_url('materials/upload/' . $course['id']) ?>" class="btn btn-sm btn-outline-primary flex-fill">
+                                                        <i class="fas fa-upload me-1"></i>Upload Materials
+                                                    </a>
+                                                    <a href="<?= base_url('teacher/enrollments?course_id=' . $course['id']) ?>" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-users me-1"></i>Students
+                                                    </a>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -1484,6 +1799,53 @@ x<?= $this->extend('template') ?>
         </div>
       </div>
 
+      <!-- Unavailable Courses Section -->
+      <?php if (!empty($unavailable_courses ?? [])): ?>
+      <div class="card shadow-sm mb-4 border-warning">
+        <div class="card-header fw-semibold d-flex justify-content-between align-items-center bg-warning bg-opacity-10">
+          <span><i class="fas fa-lock me-2"></i>Unavailable Courses</span>
+          <span class="badge bg-warning text-dark"><?= count($unavailable_courses ?? []) ?></span>
+        </div>
+        <div class="card-body">
+          <div class="row g-3" id="studentUnavailableCoursesContainer">
+            <?php foreach ($unavailable_courses as $course): ?>
+              <div class="col-md-6 col-lg-4 student-unavailable-course-card">
+                <div class="card border-0 bg-light opacity-75">
+                  <div class="card-body">
+                    <h6 class="card-title text-muted"><?= esc($course['title']) ?></h6>
+                    <p class="card-text text-muted small"><?= esc($course['description']) ?></p>
+                    
+                    <!-- Semester and Academic Year Info -->
+                    <?php if (!empty($course['semester']) || !empty($course['academic_year'])): ?>
+                      <div class="mb-2">
+                        <span class="badge bg-warning text-dark me-1">
+                          <i class="fas fa-calendar-alt me-1"></i><?= esc($course['semester'] ?? 'TBA') ?>
+                        </span>
+                        <?php if (!empty($course['academic_year'])): ?>
+                          <span class="badge bg-secondary">
+                            <i class="fas fa-graduation-cap me-1"></i>AY <?= esc($course['academic_year']) ?>
+                          </span>
+                        <?php endif; ?>
+                      </div>
+                    <?php endif; ?>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                      <small class="text-muted">
+                        Instructor: <?= esc($course['instructor_name'] ?? 'TBA') ?>
+                      </small>
+                      <span class="badge bg-secondary">
+                        <i class="fas fa-lock me-1"></i>Unavailable
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          </div>
+        </div>
+      </div>
+      <?php endif; ?>
+
       <!-- Student Course Search Script - Same logic as user search -->
       <script>
       document.getElementById('studentCourseSearch').addEventListener('keyup', function() {
@@ -1501,27 +1863,105 @@ x<?= $this->extend('template') ?>
   <div class="row g-3">
     <div class="col-md-4">
       <div class="card shadow-sm h-100">
-        <div class="card-header fw-semibold">Upcoming Deadlines</div>
+        <div class="card-header fw-semibold">
+          <i class="fas fa-calendar-alt me-2"></i>Upcoming Deadlines
+        </div>
         <div class="card-body">
-          <p class="text-muted mb-0">No deadlines.</p>
+          <?php if (!empty($upcoming_deadlines ?? [])): ?>
+            <div class="list-group list-group-flush">
+              <?php foreach (array_slice($upcoming_deadlines, 0, 5) as $deadline): ?>
+                <div class="list-group-item px-0 border-0 border-bottom">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                      <h6 class="mb-1 fw-semibold" style="font-size: 0.9rem;"><?= esc($deadline['title']) ?></h6>
+                      <small class="text-muted d-block"><?= esc($deadline['course_title']) ?></small>
+                      <small class="text-danger d-block mt-1">
+                        <i class="fas fa-clock me-1"></i>
+                        Due: <?= date('M d, Y H:i', strtotime($deadline['due_date'])) ?>
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              <?php endforeach; ?>
+            </div>
+            <?php if (count($upcoming_deadlines) > 5): ?>
+              <div class="text-center mt-2">
+                <small class="text-muted">+<?= count($upcoming_deadlines) - 5 ?> more</small>
+              </div>
+            <?php endif; ?>
+          <?php else: ?>
+            <p class="text-muted mb-0">No deadlines.</p>
+          <?php endif; ?>
         </div>
       </div>
     </div>
     <div class="col-md-4">
       <div class="card shadow-sm h-100">
-        <div class="card-header fw-semibold">Recent Grades</div>
+        <div class="card-header fw-semibold">
+          <i class="fas fa-star me-2"></i>Recent Grades
+        </div>
         <div class="card-body">
-          <p class="text-muted mb-0">No grades available.</p>
+          <?php if (!empty($recent_grades ?? [])): ?>
+            <div class="list-group list-group-flush">
+              <?php foreach (array_slice($recent_grades, 0, 5) as $grade): ?>
+                <div class="list-group-item px-0 border-0 border-bottom">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                      <h6 class="mb-1 fw-semibold" style="font-size: 0.9rem;"><?= esc($grade['assignment_title']) ?></h6>
+                      <small class="text-muted d-block"><?= esc($grade['course_title']) ?></small>
+                      <div class="mt-2">
+                        <span class="badge <?= $grade['percentage'] >= 70 ? 'bg-success' : ($grade['percentage'] >= 50 ? 'bg-warning' : 'bg-danger') ?>">
+                          <?= number_format($grade['score'], 2) ?> / <?= number_format($grade['max_score'], 2) ?>
+                          (<?= number_format($grade['percentage'], 1) ?>%)
+                        </span>
+                        <small class="text-muted d-block mt-1">
+                          <i class="fas fa-calendar me-1"></i>
+                          <?= date('M d, Y', strtotime($grade['graded_at'])) ?>
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <?php endforeach; ?>
+            </div>
+            <?php if (count($recent_grades) > 5): ?>
+              <div class="text-center mt-2">
+                <small class="text-muted">+<?= count($recent_grades) - 5 ?> more</small>
+              </div>
+            <?php endif; ?>
+          <?php else: ?>
+            <p class="text-muted mb-0">No grades available.</p>
+          <?php endif; ?>
         </div>
       </div>
     </div>
     <div class="col-md-4">
       <div class="card shadow-sm h-100">
-        <div class="card-header fw-semibold">Overall Progress</div>
+        <div class="card-header fw-semibold">
+          <i class="fas fa-chart-line me-2"></i>Overall Progress
+        </div>
         <div class="card-body">
           <div class="text-center">
             <h4 class="text-primary mb-0"><?= number_format($overall_progress ?? 0, 1) ?>%</h4>
-            <small class="text-muted">Average completion</small>
+            <small class="text-muted">Assignment completion</small>
+            <?php if (!empty($recent_grades ?? [])): ?>
+              <?php
+                // Calculate average grade from recent grades
+                $totalPercentage = 0;
+                $gradeCount = 0;
+                foreach ($recent_grades as $grade) {
+                  $totalPercentage += $grade['percentage'];
+                  $gradeCount++;
+                }
+                $averageGrade = $gradeCount > 0 ? $totalPercentage / $gradeCount : 0;
+              ?>
+              <div class="mt-3 pt-3 border-top">
+                <small class="text-muted d-block">Average Grade</small>
+                <h5 class="mb-0 <?= $averageGrade >= 70 ? 'text-success' : ($averageGrade >= 50 ? 'text-warning' : 'text-danger') ?>">
+                  <?= number_format($averageGrade, 1) ?>%
+                </h5>
+              </div>
+            <?php endif; ?>
           </div>
         </div>
       </div>

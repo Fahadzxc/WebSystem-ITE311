@@ -1,0 +1,768 @@
+DEBUG - 2025-12-12 03:23:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:24:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:24:10 --> Auth Login - User Role: admin, Redirecting...
+DEBUG - 2025-12-12 03:24:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:24:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:24:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:24:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:24:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:24:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:25:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:25:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:26:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:26:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:27:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:28:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:29:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:30:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:30:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:30:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:30:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:30:58 --> Auth Login - User Role: teacher, Redirecting...
+DEBUG - 2025-12-12 03:31:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:31:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:31:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:31:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:31:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:31:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:31:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:31:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:32:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:32:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:32:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:32:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:33 --> Auth Login - User Role: student, Redirecting...
+DEBUG - 2025-12-12 03:33:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:34 --> Student 3 - All enrollments: [{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:33:34 --> Student 3 - Active: 1, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 03:33:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:33:57 --> Student 3 - All enrollments: [{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:33:57 --> Student 3 - Active: 1, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 03:33:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:34:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:34:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:34:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:34:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:34:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:34:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:34:57 --> Student 3 - All enrollments: [{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:34:57 --> Student 3 - Active: 1, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 03:34:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:35:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:35:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:36:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:36:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:36:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:36:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:36:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:36:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:36:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:36:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:36:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:36:34 --> Student 3 - All enrollments: [{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:36:34 --> Student 3 - Active: 1, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 03:36:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:36:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:36:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:36:49 --> Student 3 - All enrollments: [{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:36:49 --> Student 3 - Active: 1, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 03:36:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:37:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:37:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:37:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:37:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:37:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:37:14 --> Student 3 - All enrollments: [{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:37:14 --> Student 3 - Active: 1, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 03:37:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:37:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:37:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:37:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:37:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:38:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:38:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:38:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:39:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:39:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:39:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:39:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:39:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:40:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:40:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:40:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:40:13 --> Teacher enrollments - Teacher ID: 2
+DEBUG - 2025-12-12 03:40:13 --> Teacher enrollments - Course IDs: ["1"]
+DEBUG - 2025-12-12 03:40:13 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 03:40:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:40:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:40:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:40:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:40:52 --> EnrollmentModel::enrollUser() - Data: {"user_id":"3","course_id":"2","enrollment_date":"2025-12-12 03:40:52","status":"pending","progress":0}
+DEBUG - 2025-12-12 03:40:52 --> Enrollment created - ID: 3, User: 3, Course: 2, Status: pending
+DEBUG - 2025-12-12 03:40:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:40:53 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 03:40:52","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 03:40:52","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:40:53 --> Student 3 - Active: 1, Pending: 2, Rejected: 0
+DEBUG - 2025-12-12 03:40:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:05 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 03:40:52","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 03:40:52","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:41:05 --> Student 3 - Active: 1, Pending: 2, Rejected: 0
+DEBUG - 2025-12-12 03:41:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:09 --> Teacher enrollments - Teacher ID: 2
+DEBUG - 2025-12-12 03:41:09 --> Teacher enrollments - Course IDs: ["1"]
+DEBUG - 2025-12-12 03:41:09 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 03:41:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:50 --> Auth Login - User Role: teacher, Redirecting...
+DEBUG - 2025-12-12 03:41:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:41:59 --> Teacher enrollments - Teacher ID: 2
+DEBUG - 2025-12-12 03:41:59 --> Teacher enrollments - Course IDs: ["1"]
+DEBUG - 2025-12-12 03:41:59 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 03:42:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:42:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:42:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:42:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:42:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:42:14 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 03:42:14 --> Teacher enrollments - Course IDs: ["2","4"]
+DEBUG - 2025-12-12 03:42:14 --> Teacher enrollments - Pending count: 1
+DEBUG - 2025-12-12 03:42:14 --> Teacher enrollments - Pending data: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 03:40:52","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 03:40:52","student_name":"student","student_email":"student@gmail.com","course_title":"Database Management Systems","instructor_id":"4"}]
+DEBUG - 2025-12-12 03:42:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:42:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:42:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:42:24 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 03:42:24 --> Teacher enrollments - Course IDs: ["2","4"]
+DEBUG - 2025-12-12 03:42:24 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 03:42:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:42:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:42:28 --> Teacher enrollments - Teacher ID: 2
+DEBUG - 2025-12-12 03:42:28 --> Teacher enrollments - Course IDs: ["1"]
+DEBUG - 2025-12-12 03:42:28 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 03:42:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:42:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:42:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:42:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:43:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:43:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:43:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:43:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:43:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:43:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:43:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:44:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:44:04 --> Teacher enrollments - Teacher ID: 2
+DEBUG - 2025-12-12 03:44:04 --> Teacher enrollments - Course IDs: ["1"]
+DEBUG - 2025-12-12 03:44:04 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 03:44:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:44:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:44:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:44:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:44:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:44:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:44:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:44:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:44:41 --> Auth Login - User Role: student, Redirecting...
+DEBUG - 2025-12-12 03:44:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:44:43 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 03:40:52","status":"rejected","rejection_reason":"bastatstas","progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 03:42:21","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:44:43 --> Student 3 - Active: 1, Pending: 1, Rejected: 1
+DEBUG - 2025-12-12 03:44:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:45:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:45:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:45:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:45:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:45:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:45:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:45:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:45:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:45:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:45:52 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 03:40:52","status":"rejected","rejection_reason":"bastatstas","progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 03:42:21","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:45:52 --> Student 3 - Active: 1, Pending: 1, Rejected: 1
+DEBUG - 2025-12-12 03:45:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:46:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:46:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:46:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:46:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:46:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:46:50 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 03:46:50 --> Teacher enrollments - Course IDs: ["2","3","4"]
+DEBUG - 2025-12-12 03:46:50 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 03:46:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:46:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:47:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:47:07 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 03:40:52","status":"rejected","rejection_reason":"bastatstas","progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 03:42:21","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:47:07 --> Student 3 - Active: 1, Pending: 1, Rejected: 1
+DEBUG - 2025-12-12 03:47:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:47:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:47:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:48:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:48:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:48:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:49:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:49:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:49:13 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 03:49:13 --> Teacher enrollments - Course IDs: ["2","3","4"]
+DEBUG - 2025-12-12 03:49:13 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 03:49:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:49:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:49:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:49:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:49:35 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 03:40:52","status":"rejected","rejection_reason":"bastatstas","progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 03:42:21","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:49:35 --> Student 3 - Active: 1, Pending: 1, Rejected: 1
+DEBUG - 2025-12-12 03:49:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:49:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:49:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:50:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:50:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:50:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:51:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:51:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:51:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:52:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:52:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:52:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:52:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:52:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:52:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:52:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:12 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 03:40:52","status":"rejected","rejection_reason":"bastatstas","progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 03:42:21","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:53:12 --> Student 3 - Active: 1, Pending: 1, Rejected: 1
+DEBUG - 2025-12-12 03:53:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:53:37 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 03:40:52","status":"rejected","rejection_reason":"bastatstas","progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 03:42:21","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:53:37 --> Student 3 - Active: 1, Pending: 1, Rejected: 1
+DEBUG - 2025-12-12 03:53:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:54:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:54:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:54:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:54:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:55:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:55:17 --> Student 3 has no assignments. Checking enrollments...
+DEBUG - 2025-12-12 03:55:17 --> Student enrollments: 3
+DEBUG - 2025-12-12 03:55:17 --> Total published assignments: 0
+DEBUG - 2025-12-12 03:55:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:55:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:55:21 --> Student 3 has no assignments. Checking enrollments...
+DEBUG - 2025-12-12 03:55:21 --> Student enrollments: 3
+DEBUG - 2025-12-12 03:55:21 --> Total published assignments: 0
+DEBUG - 2025-12-12 03:55:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:55:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:55:24 --> Student 3 has no assignments. Checking enrollments...
+DEBUG - 2025-12-12 03:55:24 --> Student enrollments: 3
+DEBUG - 2025-12-12 03:55:24 --> Total published assignments: 0
+DEBUG - 2025-12-12 03:55:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:55:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:55:28 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 03:40:52","status":"rejected","rejection_reason":"bastatstas","progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 03:42:21","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:55:28 --> Student 3 - Active: 1, Pending: 1, Rejected: 1
+DEBUG - 2025-12-12 03:55:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:55:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:55:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:56:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:56:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:56:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:57:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:57:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:57:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:58:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:58:05 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 03:40:52","status":"rejected","rejection_reason":"bastatstas","progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 03:42:21","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 03:58:05 --> Student 3 - Active: 1, Pending: 1, Rejected: 1
+DEBUG - 2025-12-12 03:58:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:58:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:58:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:59:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:59:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:59:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:59:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 03:59:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:00:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:00:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:00:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:00:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:00:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:00:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:00:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:01:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:01:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:01:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:01:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:02:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:02:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:02:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:03:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:03:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:03:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:04:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:04:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:04:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:05:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:05:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:05:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:06:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:06:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:06:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:07:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:07:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:07:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:08:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:08:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:08:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:09:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:09:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:09:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:10:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:10:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:10:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:11:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:11:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:11:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:12:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:12:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:13:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:13:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:13:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:14:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:14:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:14:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:15:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:15:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:15:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:15:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:15:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:15:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:15:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:16:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:16:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:16:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:17:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:17:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:17:36 --> === ASSIGNMENT CREATE - POST DETECTED ===
+DEBUG - 2025-12-12 04:17:36 --> POST data: {"csrf_test_name":"9c7e944ff3f1c154c1653e3990db6c0d","course_id":"2","title":"basta","description":"basta","due_date":"2025-12-13T04:17","max_score":"10","status":"published","questions":{"2":{"question_type":"essay","question_text":"who is the greatest kuapl in the world","points":"10"}}}
+DEBUG - 2025-12-12 04:17:36 --> Course ID: 2, Title: basta
+DEBUG - 2025-12-12 04:17:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:17:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:17:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:17:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:17:53 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 03:40:52","status":"rejected","rejection_reason":"bastatstas","progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 03:42:21","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 04:17:53 --> Student 3 - Active: 1, Pending: 1, Rejected: 1
+DEBUG - 2025-12-12 04:17:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:18:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:18:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:18:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:18:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:18:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:18:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:18:59 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 04:18:59 --> Teacher enrollments - Course IDs: ["2","3","4"]
+DEBUG - 2025-12-12 04:18:59 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 04:19:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:19:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:19:07 --> EnrollmentModel::enrollUser() - Data: {"user_id":"3","course_id":"2","enrollment_date":"2025-12-12 04:19:07","status":"active","progress":0}
+DEBUG - 2025-12-12 04:19:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:19:09 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 04:19:09 --> Teacher enrollments - Course IDs: ["2","3","4"]
+DEBUG - 2025-12-12 04:19:09 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 04:19:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:19:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:19:17 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 04:19:07","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 04:19:07","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 04:19:17 --> Student 3 - Active: 2, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 04:19:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:19:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:19:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:19:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:19:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:19:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:19:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:19:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:19:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:20:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:20:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:20:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:20:37 --> === ASSIGNMENT SUBMIT - POST DETECTED ===
+DEBUG - 2025-12-12 04:20:37 --> POST data: {"csrf_test_name":"a5361854fc040a5640be8fe68c8f3837","essay_answers":{"1":"si mangchu known as akilla "},"submission_text":""}
+DEBUG - 2025-12-12 04:20:37 --> Submission inserted. ID: 1
+DEBUG - 2025-12-12 04:20:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:20:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:20:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:20:49 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 04:20:49 --> Teacher enrollments - Course IDs: ["2","3","4"]
+DEBUG - 2025-12-12 04:20:49 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 04:20:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:20:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:20:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:20:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:21:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:21:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:21:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:21:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:21:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:21:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:21:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:21:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:21:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:21:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:21:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:22:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:22:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:22:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:22 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 04:19:07","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 04:19:07","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 04:23:22 --> Student 3 - Active: 2, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 04:23:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:23:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:24:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:24:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:24:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:25:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:25:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:25:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:25:04 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 04:19:07","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 04:19:07","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 04:25:04 --> Student 3 - Active: 2, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 04:25:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:25:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:25:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:26:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:26:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:26:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:26:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:27:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:27:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:27:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:27:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:27:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:27:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:28:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:28:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:28:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:29:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:29:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:29:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:30:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:30:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:30:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:31:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:31:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:31:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:32:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:32:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:32:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:32:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:32:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:32:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:33:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:33:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:33:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:34:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:34:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:34:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:34:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:34:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:34:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:34:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:34:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:34:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:34:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:34:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:34:25 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 04:34:25 --> Teacher enrollments - Course IDs: ["2","3","4"]
+DEBUG - 2025-12-12 04:34:25 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 04:34:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:35:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:35:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:35:08 --> Creating user with role: student
+DEBUG - 2025-12-12 04:35:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:35:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:35:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:35:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:35:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:35:48 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 04:35:48 --> Teacher enrollments - Course IDs: ["2","3","4"]
+DEBUG - 2025-12-12 04:35:48 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 04:35:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:36:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:36:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:36:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:36:30 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 04:19:07","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 04:19:07","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 04:36:30 --> Student 3 - Active: 2, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 04:36:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:36:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:37:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:37:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:37:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:38:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:38:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:38:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:39:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:39:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:39:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:40:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:40:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:40:26 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 04:40:26 --> Teacher enrollments - Course IDs: ["2","3","4"]
+DEBUG - 2025-12-12 04:40:26 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 04:40:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:40:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:40:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:40:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:40:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:40:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:41:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:41:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:41:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:41:04 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 04:41:04 --> Teacher enrollments - Course IDs: ["2","3","4"]
+DEBUG - 2025-12-12 04:41:04 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 04:41:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:41:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:41:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:42:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:42:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:42:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:43:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:43:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:43:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:44:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:44:03 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 04:44:03 --> Teacher enrollments - Course IDs: ["2","3","4"]
+DEBUG - 2025-12-12 04:44:03 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 04:44:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:44:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:44:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:45:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:45:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:45:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:45:31 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 04:45:31 --> Teacher enrollments - Course IDs: ["2","3","4"]
+DEBUG - 2025-12-12 04:45:31 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 04:45:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:45:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:45:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:45:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:45:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:45:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:45:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:45:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:46:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:46:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:46:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:46:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:46:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:46:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:47:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:47:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:47:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-12-12 04:47:35 --> CodeIgniter\Exceptions\RuntimeException: View themes, no current section.
+[Method: GET, Route: assignment]
+in SYSTEMPATH\View\View.php on line 430.
+ 1 APPPATH\Views\teacher\assignments.php(86): CodeIgniter\View\View->endSection()
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\ITE311-ALALAWI\\app\\Views\\teacher\\assignments.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('teacher/assignments', [], true)
+ 5 APPPATH\Controllers\Assignment.php(56): view('teacher/assignments', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Assignment->index()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Assignment))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-12-12 04:47:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:47:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:47:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:48:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:48:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:48:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:48:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:48:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:48:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:48:31 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 04:19:07","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 04:19:07","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 04:48:31 --> Student 3 - Active: 2, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 04:48:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:48:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:49:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:49:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:49:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:50:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:50:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:50:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:51:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:51:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:51:21 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 04:19:07","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 04:19:07","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 04:51:21 --> Student 3 - Active: 2, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 04:51:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:51:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:51:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:52:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:52:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:52:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:52:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:53:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:53:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:53:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:54:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:54:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:54:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:54:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:54:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:54:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:54:37 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 04:19:07","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 04:19:07","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 04:54:37 --> Student 3 - Active: 2, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 04:54:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:55:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:55:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:55:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:56:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:56:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:56:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:57:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:57:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:57:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:57:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:57:58 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 04:19:07","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 04:19:07","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 04:57:58 --> Student 3 - Active: 2, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 04:58:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:58:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:58:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:58:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:58:31 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 04:19:07","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 04:19:07","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 04:58:31 --> Student 3 - Active: 2, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 04:58:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:58:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:58:43 --> Student 3 - All enrollments: [{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 04:19:07","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 04:19:07","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 04:58:43 --> Student 3 - Active: 2, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 04:58:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:59:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:59:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 04:59:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:00:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:00:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:00:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:01:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:01:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:01:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:02:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:02:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:02:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:02:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:02:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:02:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:03:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:03:09 --> EnrollmentModel::enrollUser() - Data: {"user_id":"3","course_id":"4","enrollment_date":"2025-12-12 05:03:09","status":"active","progress":0}
+DEBUG - 2025-12-12 05:03:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:03:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:03:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:03:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:03:18 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 05:03:18 --> Teacher enrollments - Course IDs: ["2","3","4"]
+DEBUG - 2025-12-12 05:03:18 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 05:03:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:03:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:03:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:03:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:03:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:03:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:04:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:04:07 --> Student 3 - All enrollments: [{"id":"4","user_id":"3","course_id":"4","enrollment_date":"2025-12-12 05:03:09","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 05:03:09","updated_at":"2025-12-12 05:03:09","course_title":"CodeIgniter Framework","course_description":"Learn to build web applications using the CodeIgniter PHP framework. Cover MVC architecture, routing, and best practices.","instructor_id":"4"},{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 04:19:07","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 04:19:07","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 05:04:07 --> Student 3 - Active: 3, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 05:04:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:04:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:04:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:04:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:05:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:05:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:05:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:06:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:06:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:06:10 --> Teacher enrollments - Teacher ID: 4
+DEBUG - 2025-12-12 05:06:10 --> Teacher enrollments - Course IDs: ["2","3","4"]
+DEBUG - 2025-12-12 05:06:10 --> Teacher enrollments - Pending count: 0
+DEBUG - 2025-12-12 05:06:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:06:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:06:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:06:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:07:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:07:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:07:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:08:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:08:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:08:19 --> Student 3 - All enrollments: [{"id":"4","user_id":"3","course_id":"4","enrollment_date":"2025-12-12 05:03:09","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 05:03:09","updated_at":"2025-12-12 05:03:09","course_title":"CodeIgniter Framework","course_description":"Learn to build web applications using the CodeIgniter PHP framework. Cover MVC architecture, routing, and best practices.","instructor_id":"4"},{"id":"3","user_id":"3","course_id":"2","enrollment_date":"2025-12-12 04:19:07","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-12 03:40:52","updated_at":"2025-12-12 04:19:07","course_title":"Database Management Systems","course_description":"Comprehensive course covering database design, SQL queries, and database administration. Learn to work with MySQL and other database systems.","instructor_id":"4"},{"id":"2","user_id":"3","course_id":"6","enrollment_date":"2025-12-11 18:00:20","status":"pending","rejection_reason":null,"progress":"0.00","created_at":"2025-12-11 18:00:20","updated_at":"2025-12-11 18:00:20","course_title":"HTML and CSS Basics","course_description":"Learn the building blocks of web development. Master HTML structure and CSS styling to create beautiful web pages.","instructor_id":"5"},{"id":"1","user_id":"3","course_id":"1","enrollment_date":"2025-12-10 15:23:34","status":"active","rejection_reason":null,"progress":"0.00","created_at":"2025-12-10 15:23:34","updated_at":"2025-12-10 15:23:34","course_title":"Introduction to Web Development","course_description":"Learn the fundamentals of web development including HTML, CSS, and JavaScript. Perfect for beginners who want to start their journey in web development.","instructor_id":"2"}]
+DEBUG - 2025-12-12 05:08:19 --> Student 3 - Active: 3, Pending: 1, Rejected: 0
+DEBUG - 2025-12-12 05:08:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:08:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:08:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:09:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:09:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:09:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:10:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:10:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:10:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:11:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:11:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:11:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:12:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:12:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:12:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:13:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:13:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:13:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:13:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:13:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:13:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:13:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:13:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:13:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:13:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:13:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:14:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:14:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:14:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:15:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:15:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:15:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:16:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:16:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-12-12 05:16:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

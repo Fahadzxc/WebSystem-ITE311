@@ -6,18 +6,24 @@ use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\CourseModel;
 use App\Models\CourseScheduleModel;
+use App\Models\EnrollmentModel;
+use App\Models\NotificationModel;
 
 class Admin extends BaseController
 { 
     protected $userModel;
     protected $courseModel;
     protected $scheduleModel;
+    protected $enrollmentModel;
+    protected $notificationModel;
 
     public function __construct()
     {
         $this->userModel = new UserModel();
         $this->courseModel = new CourseModel();
         $this->scheduleModel = new CourseScheduleModel();
+        $this->enrollmentModel = new EnrollmentModel();
+        $this->notificationModel = new NotificationModel();
     }
 
     /**
@@ -356,7 +362,8 @@ class Admin extends BaseController
             'schedules' => $schedules,
             'course' => [
                 'semester' => $course['semester'] ?? null,
-                'academic_year' => $course['academic_year'] ?? null
+                'academic_year' => $course['academic_year'] ?? null,
+                'max_students' => $course['max_students'] ?? null
             ]
         ]);
     }
@@ -528,12 +535,24 @@ class Admin extends BaseController
                     return redirect()->to(base_url('dashboard'));
                 }
 
-                // Assign teacher to course with semester and academic year
-                $this->courseModel->update($course_id, [
+                // Get max_students from POST
+                $max_students = $this->request->getPost('max_students');
+                $max_students = !empty($max_students) && $max_students > 0 ? (int)$max_students : null;
+
+                // Assign teacher to course with semester, academic year, and max_students
+                $updateData = [
                     'instructor_id' => $teacher_id,
                     'semester' => $semester,
                     'academic_year' => $academic_year
-                ]);
+                ];
+                
+                if ($max_students !== null) {
+                    $updateData['max_students'] = $max_students;
+                } else {
+                    $updateData['max_students'] = null;
+                }
+                
+                $this->courseModel->update($course_id, $updateData);
 
                 // Delete existing schedules for this course
                 $this->scheduleModel->deleteByCourse($course_id);
@@ -623,6 +642,307 @@ class Admin extends BaseController
         }
 
         return redirect()->to(base_url('dashboard'));
+    }
+
+    /**
+     * Get students enrolled in courses taught by a teacher
+     */
+    public function getTeacherStudents($teacher_id)
+    {
+        $auth = $this->checkAdminAuth();
+        if ($auth !== true) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Access denied.'
+            ])->setStatusCode(403);
+        }
+
+        // Get all courses taught by this teacher
+        $courses = $this->courseModel->where('instructor_id', $teacher_id)->findAll();
+        $courseIds = array_column($courses, 'id');
+
+        if (empty($courseIds)) {
+            return $this->response->setJSON([
+                'success' => true,
+                'students' => []
+            ]);
+        }
+
+        // Get all enrollments for these courses
+        $enrollmentModel = new \App\Models\EnrollmentModel();
+        $enrollments = $enrollmentModel->select('enrollments.*, users.name as student_name, users.email as student_email, courses.title as course_title')
+                                      ->join('users', 'users.id = enrollments.user_id')
+                                      ->join('courses', 'courses.id = enrollments.course_id')
+                                      ->whereIn('enrollments.course_id', $courseIds)
+                                      ->where('enrollments.status', 'active')
+                                      ->orderBy('users.name', 'ASC')
+                                      ->findAll();
+
+        // Group students by student (remove duplicates)
+        $studentsMap = [];
+        foreach ($enrollments as $enrollment) {
+            $studentId = $enrollment['user_id'];
+            if (!isset($studentsMap[$studentId])) {
+                $studentsMap[$studentId] = [
+                    'id' => $studentId,
+                    'name' => $enrollment['student_name'],
+                    'email' => $enrollment['student_email'],
+                    'courses' => []
+                ];
+            }
+            $studentsMap[$studentId]['courses'][] = $enrollment['course_title'];
+        }
+
+        return $this->response->setJSON([
+            'success' => true,
+            'students' => array_values($studentsMap)
+        ]);
+    }
+
+    /**
+     * Enroll a student in a course (Admin)
+     */
+    public function enrollStudent()
+    {
+        $auth = $this->checkAdminAuth();
+        if ($auth !== true) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Access denied.'
+            ])->setStatusCode(401);
+        }
+
+        $student_id = $this->request->getPost('student_id');
+        $course_id = $this->request->getPost('course_id');
+
+        if (!$student_id || !$course_id) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Student ID and Course ID are required.'
+            ])->setStatusCode(400);
+        }
+
+        // Verify course exists
+        $course = $this->courseModel->find($course_id);
+        if (!$course) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Course not found.'
+            ])->setStatusCode(404);
+        }
+
+        // Verify student exists and is a student
+        $student = $this->userModel->find($student_id);
+        if (!$student || $student['role'] !== 'student') {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Invalid student.'
+            ])->setStatusCode(400);
+        }
+
+        // Check if already enrolled
+        if ($this->enrollmentModel->isAlreadyEnrolled($student_id, $course_id)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Student is already enrolled in this course.'
+            ])->setStatusCode(400);
+        }
+
+        // Enroll student
+        $enrollmentData = [
+            'user_id' => $student_id,
+            'course_id' => $course_id,
+            'enrollment_date' => date('Y-m-d H:i:s'),
+            'status' => 'active',
+            'progress' => 0.00
+        ];
+
+        $enrollmentId = $this->enrollmentModel->enrollUser($enrollmentData);
+
+        if ($enrollmentId) {
+            // Get student name for notifications
+            $studentName = $student['name'];
+
+            // Create notification for student
+            try {
+                $message = "You have been enrolled in '{$course['title']}' by the administrator.";
+                $this->notificationModel->createNotification($student_id, $message);
+            } catch (\Exception $e) {
+                log_message('error', 'Failed to create enrollment notification: ' . $e->getMessage());
+            }
+
+            // Notify teacher if assigned
+            if (!empty($course['instructor_id'])) {
+                try {
+                    $teacherMessage = "New enrollment: {$studentName} has been enrolled in '{$course['title']}' by the administrator.";
+                    $this->notificationModel->createNotification($course['instructor_id'], $teacherMessage);
+                } catch (\Exception $e) {
+                    log_message('error', 'Failed to create teacher notification: ' . $e->getMessage());
+                }
+            }
+
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Student enrolled successfully!'
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Failed to enroll student. Please try again.'
+            ])->setStatusCode(500);
+        }
+    }
+
+    /**
+     * Unenroll a student from a course (Admin)
+     */
+    public function unenrollStudent()
+    {
+        $auth = $this->checkAdminAuth();
+        if ($auth !== true) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Access denied.'
+            ])->setStatusCode(401);
+        }
+
+        $enrollment_id = $this->request->getPost('enrollment_id');
+        $student_id = $this->request->getPost('student_id');
+        $course_id = $this->request->getPost('course_id');
+
+        if (!$enrollment_id || !$student_id || !$course_id) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Enrollment ID, Student ID, and Course ID are required.'
+            ])->setStatusCode(400);
+        }
+
+        // Get enrollment
+        $enrollment = $this->enrollmentModel->find($enrollment_id);
+        if (!$enrollment) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Enrollment not found.'
+            ])->setStatusCode(404);
+        }
+
+        // Verify enrollment belongs to the specified student and course
+        if ($enrollment['user_id'] != $student_id || $enrollment['course_id'] != $course_id) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Enrollment mismatch.'
+            ])->setStatusCode(400);
+        }
+
+        // Get course
+        $course = $this->courseModel->find($course_id);
+        if (!$course) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Course not found.'
+            ])->setStatusCode(404);
+        }
+
+        // Update enrollment status to 'dropped'
+        $updated = $this->enrollmentModel->update($enrollment_id, [
+            'status' => 'dropped'
+        ]);
+
+        if ($updated) {
+            // Get student name for notification
+            $student = $this->userModel->find($student_id);
+            $studentName = $student ? $student['name'] : 'Student';
+
+            // Create notification for student
+            try {
+                $message = "You have been unenrolled from '{$course['title']}' by the administrator.";
+                $this->notificationModel->createNotification($student_id, $message);
+            } catch (\Exception $e) {
+                log_message('error', 'Failed to create unenrollment notification: ' . $e->getMessage());
+            }
+
+            // Notify teacher if assigned
+            if (!empty($course['instructor_id'])) {
+                try {
+                    $teacherMessage = "Unenrollment: {$studentName} has been unenrolled from '{$course['title']}' by the administrator.";
+                    $this->notificationModel->createNotification($course['instructor_id'], $teacherMessage);
+                } catch (\Exception $e) {
+                    log_message('error', 'Failed to create teacher notification: ' . $e->getMessage());
+                }
+            }
+
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Student unenrolled successfully!'
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Failed to unenroll student. Please try again.'
+            ])->setStatusCode(500);
+        }
+    }
+
+    /**
+     * Get students for a course (Admin)
+     */
+    public function getCourseStudents($course_id)
+    {
+        $auth = $this->checkAdminAuth();
+        if ($auth !== true) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Access denied.'
+            ])->setStatusCode(401);
+        }
+
+        // Verify course exists
+        $course = $this->courseModel->find($course_id);
+        if (!$course) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Course not found.'
+            ])->setStatusCode(404);
+        }
+
+        // Get all students
+        $allStudents = $this->userModel->where('role', 'student')
+                                       ->where('is_deleted', 0)
+                                       ->orderBy('name', 'ASC')
+                                       ->findAll();
+
+        // Get enrolled students for this course
+        $enrollments = $this->enrollmentModel->getCourseEnrollments($course_id);
+        $enrolledStudentIds = array_column($enrollments, 'user_id');
+
+        // Prepare student list with enrollment status
+        $students = [];
+        foreach ($allStudents as $student) {
+            $isEnrolled = in_array($student['id'], $enrolledStudentIds);
+            $enrollment = null;
+            if ($isEnrolled) {
+                foreach ($enrollments as $enr) {
+                    if ($enr['user_id'] == $student['id']) {
+                        $enrollment = $enr;
+                        break;
+                    }
+                }
+            }
+
+            $students[] = [
+                'id' => $student['id'],
+                'name' => $student['name'],
+                'email' => $student['email'],
+                'is_enrolled' => $isEnrolled,
+                'enrollment' => $enrollment
+            ];
+        }
+
+        return $this->response->setJSON([
+            'success' => true,
+            'students' => $students,
+            'course' => $course
+        ]);
     }
 }
 

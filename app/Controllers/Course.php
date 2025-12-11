@@ -4,17 +4,23 @@ namespace App\Controllers;
 
 use App\Models\CourseModel;
 use App\Models\EnrollmentModel;
+use App\Models\UserModel;
+use App\Models\NotificationModel;
 use CodeIgniter\Controller;
 
 class Course extends Controller
 {
     protected $courseModel;
     protected $enrollmentModel;
+    protected $userModel;
+    protected $notificationModel;
 
     public function __construct()
     {
         $this->courseModel = new CourseModel();
         $this->enrollmentModel = new EnrollmentModel();
+        $this->userModel = new UserModel();
+        $this->notificationModel = new NotificationModel();
     }
 
     /**
@@ -142,15 +148,27 @@ class Course extends Controller
         $enrollmentId = $this->enrollmentModel->enrollUser($enrollmentData);
 
         if ($enrollmentId) {
+            // Get student name for notifications
+            $studentName = session()->get('name');
+            
             // Create notification for student (pending status)
             try {
-                $notificationModel = new \App\Models\NotificationModel();
                 $pendingMessage = "Your enrollment request for '{$course['title']}' is pending approval. You will be notified once the instructor reviews your request.";
-                $notificationModel->createNotification($user_id, $pendingMessage);
+                $this->notificationModel->createNotification($user_id, $pendingMessage);
                 
                 // Create notification for teacher
-                $teacherMessage = "New enrollment request: " . session()->get('name') . " wants to enroll in '{$course['title']}'.";
-                $notificationModel->createNotification($course['instructor_id'], $teacherMessage);
+                $teacherMessage = "New enrollment request: {$studentName} wants to enroll in '{$course['title']}'.";
+                $this->notificationModel->createNotification($course['instructor_id'], $teacherMessage);
+                
+                // Notify all admins about the enrollment request
+                $admins = $this->userModel->where('role', 'admin')
+                                         ->where('is_deleted', 0)
+                                         ->findAll();
+
+                foreach ($admins as $admin) {
+                    $adminMessage = "New enrollment request: {$studentName} wants to enroll in '{$course['title']}'. Waiting for instructor approval.";
+                    $this->notificationModel->createNotification($admin['id'], $adminMessage);
+                }
             } catch (\Exception $e) {
                 log_message('error', 'Failed to create enrollment notification: ' . $e->getMessage());
             }

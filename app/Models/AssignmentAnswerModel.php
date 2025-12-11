@@ -16,8 +16,12 @@ class AssignmentAnswerModel extends Model
         'submission_id',
         'question_id',
         'selected_answer',
+        'text_answer',
+        'file_path',
+        'file_name',
         'is_correct',
-        'points_earned'
+        'points_earned',
+        'teacher_feedback'
     ];
 
     protected $useTimestamps = true;
@@ -30,7 +34,7 @@ class AssignmentAnswerModel extends Model
      */
     public function getAnswersBySubmission($submission_id)
     {
-        return $this->select('assignment_answers.*, assignment_questions.question_text, assignment_questions.correct_answer, assignment_questions.points')
+        return $this->select('assignment_answers.*, assignment_questions.question_text, assignment_questions.question_type, assignment_questions.correct_answer, assignment_questions.points')
                     ->join('assignment_questions', 'assignment_questions.id = assignment_answers.question_id')
                     ->where('assignment_answers.submission_id', $submission_id)
                     ->orderBy('assignment_questions.order', 'ASC')

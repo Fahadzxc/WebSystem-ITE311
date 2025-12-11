@@ -14,6 +14,7 @@ class AssignmentQuestionModel extends Model
 
     protected $allowedFields = [
         'assignment_id',
+        'question_type',
         'question_text',
         'option_a',
         'option_b',

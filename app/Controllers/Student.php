@@ -7,6 +7,9 @@ use App\Models\EnrollmentModel;
 use App\Models\CourseModel;
 use App\Models\MaterialModel;
 use App\Models\NotificationModel;
+use App\Models\UserModel;
+use App\Models\AssignmentModel;
+use App\Models\AssignmentSubmissionModel;
 
 class Student extends BaseController
 {
@@ -14,6 +17,9 @@ class Student extends BaseController
     protected $courseModel;
     protected $materialModel;
     protected $notificationModel;
+    protected $userModel;
+    protected $assignmentModel;
+    protected $submissionModel;
 
     public function __construct()
     {
@@ -21,6 +27,9 @@ class Student extends BaseController
         $this->courseModel = new CourseModel();
         $this->materialModel = new MaterialModel();
         $this->notificationModel = new NotificationModel();
+        $this->userModel = new UserModel();
+        $this->assignmentModel = new AssignmentModel();
+        $this->submissionModel = new AssignmentSubmissionModel();
     }
 
     public function dashboard()
@@ -38,19 +47,129 @@ class Student extends BaseController
 
         // Get available courses (courses not enrolled in)
         $enrolled_course_ids = array_column($enrollments, 'course_id');
-        $available_courses = [];
+        $all_courses = [];
         
         if (!empty($enrolled_course_ids)) {
-            $available_courses = $this->courseModel->whereNotIn('id', $enrolled_course_ids)->findAll();
+            $all_courses = $this->courseModel->whereNotIn('id', $enrolled_course_ids)->findAll();
         } else {
-            $available_courses = $this->courseModel->findAll();
+            $all_courses = $this->courseModel->findAll();
+        }
+        
+        // Separate available and unavailable courses based on semester
+        $available_courses = [];
+        $unavailable_courses = [];
+        
+        foreach ($all_courses as $course) {
+            // If course is 2nd Semester, put it in unavailable
+            if (!empty($course['semester']) && $course['semester'] === '2nd Semester') {
+                $unavailable_courses[] = $course;
+            } else {
+                $available_courses[] = $course;
+            }
         }
 
-        // Calculate overall progress
-        $overall_progress = 0;
+        // Calculate assignment completion percentage
+        $assignment_completion = 0;
+        $user_id = session()->get('user_id');
+        if (!empty($enrolled_course_ids)) {
+            // Get all assignments for enrolled courses
+            $all_assignments = $this->assignmentModel
+                ->whereIn('course_id', $enrolled_course_ids)
+                ->findAll();
+            
+            $total_assignments = count($all_assignments);
+            
+            // Count how many have been submitted
+            $submitted_assignments = 0;
+            if ($total_assignments > 0) {
+                foreach ($all_assignments as $assignment) {
+                    $hasSubmission = $this->submissionModel
+                        ->where('assignment_id', $assignment['id'])
+                        ->where('student_id', $user_id)
+                        ->first();
+                    
+                    if ($hasSubmission) {
+                        $submitted_assignments++;
+                    }
+                }
+                
+                $assignment_completion = ($submitted_assignments / $total_assignments) * 100;
+            }
+        }
+        
+        // Also keep enrollment progress for reference
+        $enrollment_progress = 0;
         if (!empty($enrollments)) {
             $total_progress = array_sum(array_column($enrollments, 'progress'));
-            $overall_progress = $total_progress / count($enrollments);
+            $enrollment_progress = $total_progress / count($enrollments);
+        }
+
+        // Get upcoming deadlines (assignments with due dates in the future that haven't been submitted)
+        $upcoming_deadlines = [];
+        if (!empty($enrolled_course_ids)) {
+            $user_id = session()->get('user_id');
+            $now = date('Y-m-d H:i:s');
+            $assignments = $this->assignmentModel
+                ->select('assignments.*, courses.title as course_title')
+                ->join('courses', 'courses.id = assignments.course_id')
+                ->whereIn('assignments.course_id', $enrolled_course_ids)
+                ->where('assignments.due_date >', $now)
+                ->orderBy('assignments.due_date', 'ASC')
+                ->limit(10)
+                ->findAll();
+            
+            // Filter out assignments that have already been submitted
+            foreach ($assignments as $assignment) {
+                $hasSubmission = $this->submissionModel
+                    ->where('assignment_id', $assignment['id'])
+                    ->where('student_id', $user_id)
+                    ->first();
+                
+                // Only add if not submitted yet
+                if (!$hasSubmission) {
+                    $upcoming_deadlines[] = [
+                        'title' => $assignment['title'],
+                        'course_title' => $assignment['course_title'],
+                        'due_date' => $assignment['due_date'],
+                        'assignment_id' => $assignment['id']
+                    ];
+                    
+                    // Limit to 5 unsubmitted assignments
+                    if (count($upcoming_deadlines) >= 5) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Get recent grades (graded assignment submissions)
+        $recent_grades = [];
+        $user_id = session()->get('user_id');
+        $submissions = $this->submissionModel
+            ->select('assignment_submissions.*, assignments.title as assignment_title, assignments.max_score, courses.title as course_title')
+            ->join('assignments', 'assignments.id = assignment_submissions.assignment_id')
+            ->join('courses', 'courses.id = assignments.course_id')
+            ->where('assignment_submissions.student_id', $user_id)
+            ->where('assignment_submissions.status', 'graded')
+            ->where('assignment_submissions.score IS NOT NULL')
+            ->orderBy('assignment_submissions.updated_at', 'DESC')
+            ->limit(5)
+            ->findAll();
+        
+        foreach ($submissions as $submission) {
+            $percentage = $submission['max_score'] > 0 
+                ? ($submission['score'] / $submission['max_score']) * 100 
+                : 0;
+            
+            $recent_grades[] = [
+                'assignment_title' => $submission['assignment_title'],
+                'course_title' => $submission['course_title'],
+                'score' => $submission['score'],
+                'max_score' => $submission['max_score'],
+                'percentage' => $percentage,
+                'graded_at' => $submission['updated_at'],
+                'assignment_id' => $submission['assignment_id']
+            ];
         }
 
         return view('auth/dashboard', [
@@ -61,7 +180,11 @@ class Student extends BaseController
             ],
             'enrollments' => $enrollments,
             'available_courses' => $available_courses,
-            'overall_progress' => $overall_progress,
+            'unavailable_courses' => $unavailable_courses,
+            'overall_progress' => $assignment_completion, // Use assignment completion instead
+            'enrollment_progress' => $enrollment_progress, // Keep enrollment progress for reference
+            'upcoming_deadlines' => $upcoming_deadlines,
+            'recent_grades' => $recent_grades,
             'unread_count' => $this->data['unread_count'] ?? 0
         ]);
     }
@@ -144,14 +267,27 @@ class Student extends BaseController
                 $this->enrollmentModel->update($enrollmentId, ['status' => 'pending']);
             }
             
+            // Get student name for notifications
+            $studentName = session()->get('name');
+            
             // Create notification for student (pending status)
             try {
                 $pendingMessage = "Your enrollment request for '{$course['title']}' is pending approval. You will be notified once the instructor reviews your request.";
                 $this->notificationModel->createNotification($user_id, $pendingMessage);
                 
                 // Create notification for teacher
-                $teacherMessage = "New enrollment request: " . session()->get('name') . " wants to enroll in '{$course['title']}'.";
+                $teacherMessage = "New enrollment request: {$studentName} wants to enroll in '{$course['title']}'.";
                 $this->notificationModel->createNotification($course['instructor_id'], $teacherMessage);
+                
+                // Notify all admins about the enrollment request
+                $admins = $this->userModel->where('role', 'admin')
+                                         ->where('is_deleted', 0)
+                                         ->findAll();
+
+                foreach ($admins as $admin) {
+                    $adminMessage = "New enrollment request: {$studentName} wants to enroll in '{$course['title']}'. Waiting for instructor approval.";
+                    $this->notificationModel->createNotification($admin['id'], $adminMessage);
+                }
                 
                 // Debug log
                 log_message('debug', 'Enrollment created - ID: ' . $enrollmentId . ', User: ' . $user_id . ', Course: ' . $course_id . ', Status: ' . ($createdEnrollment['status'] ?? 'unknown'));

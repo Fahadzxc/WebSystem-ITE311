@@ -65,8 +65,9 @@
                                     <td><?= esc($enrollment['course_title']) ?></td>
                                     <td><?php 
                                         helper('date');
-                                        $date = new \DateTime($enrollment['enrollment_date'], new \DateTimeZone('UTC'));
-                                        $date->setTimezone(new \DateTimeZone('Asia/Manila'));
+                                        // Date is saved in server timezone (Asia/Manila), display as-is
+                                        // Create DateTime with app timezone to ensure correct display
+                                        $date = new \DateTime($enrollment['enrollment_date'], new \DateTimeZone('Asia/Manila'));
                                         echo $date->format('M d, Y g:i A');
                                     ?></td>
                                     <td class="text-center">
@@ -114,20 +115,39 @@
                                 <p class="mb-1 text-muted small">View all students and their enrollments</p>
                             </a>
                             <?php foreach ($courses as $course): ?>
+                                <?php 
+                                $is2ndSemester = !empty($course['semester']) && $course['semester'] === '2nd Semester';
+                                $courseClass = $is2ndSemester ? 'list-group-item course-item disabled opacity-50' : 'list-group-item list-group-item-action course-item';
+                                ?>
                                 <a href="#" 
-                                   class="list-group-item list-group-item-action course-item" 
+                                   class="<?= $courseClass ?>" 
                                    data-course-id="<?= $course['id'] ?>" 
-                                   data-course-title="<?= esc($course['title']) ?>">
+                                   data-course-title="<?= esc($course['title']) ?>"
+                                   <?= $is2ndSemester ? 'onclick="return false;" style="cursor: not-allowed;"' : '' ?>>
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1 fw-semibold"><?= esc($course['title']) ?></h6>
+                                        <h6 class="mb-1 fw-semibold">
+                                            <?= esc($course['title']) ?>
+                                            <?php if ($is2ndSemester): ?>
+                                                <span class="badge bg-warning text-dark ms-2">
+                                                    <i class="fas fa-lock me-1"></i>Unavailable
+                                                </span>
+                                            <?php endif; ?>
+                                        </h6>
                                     </div>
                                     <p class="mb-1 text-muted small"><?= esc($course['description']) ?></p>
                                     <?php if (!empty($course['semester']) || !empty($course['academic_year'])): ?>
                                         <div class="mt-2">
                                             <?php if (!empty($course['semester'])): ?>
-                                                <span class="badge bg-info me-1">
-                                                    <i class="fas fa-calendar-alt me-1"></i><?= esc($course['semester']) ?>
-                                                </span>
+                                                <?php if ($is2ndSemester): ?>
+                                                    <span class="badge bg-warning text-dark me-1">
+                                                        <i class="fas fa-calendar-alt me-1"></i><?= esc($course['semester']) ?>
+                                                        <i class="fas fa-lock ms-1"></i>
+                                                    </span>
+                                                <?php else: ?>
+                                                    <span class="badge bg-info me-1">
+                                                        <i class="fas fa-calendar-alt me-1"></i><?= esc($course['semester']) ?>
+                                                    </span>
+                                                <?php endif; ?>
                                             <?php endif; ?>
                                             <?php if (!empty($course['academic_year'])): ?>
                                                 <span class="badge bg-primary">
@@ -158,9 +178,13 @@
                             <i class="fas fa-users text-primary-custom me-2"></i>Students
                             <span id="selectedCourseTitle" class="text-muted small ms-2">(All Students)</span>
                         </h5>
-                        <?php if (!empty($students)): ?>
-                            <span class="badge bg-primary-custom"><?= count($students) ?> student<?= count($students) > 1 ? 's' : '' ?></span>
-                        <?php endif; ?>
+                        <span id="studentsBadge" class="badge bg-primary-custom">
+                            <?php if (!empty($students)): ?>
+                                <?= count($students) ?> student<?= count($students) > 1 ? 's' : '' ?>
+                            <?php else: ?>
+                                0 students
+                            <?php endif; ?>
+                        </span>
                     </div>
                 </div>
                 <div class="card-body">
@@ -224,6 +248,9 @@
                                         <div class="d-flex gap-2 flex-wrap">
                                             <?php foreach ($courses as $course): ?>
                                                 <?php 
+                                                // Check if course is 2nd semester
+                                                $is2ndSemester = !empty($course['semester']) && $course['semester'] === '2nd Semester';
+                                                
                                                 // Check if student is actively enrolled (only active status, not pending or rejected)
                                                 $isEnrolled = false;
                                                 $enrollmentId = null;
@@ -243,6 +270,10 @@
                                                             data-course-title="<?= esc($course['title']) ?>"
                                                             data-enrollment-id="<?= $enrollmentId ?>">
                                                         <i class="fas fa-user-minus me-1"></i>Unenroll from <?= esc($course['title']) ?>
+                                                    </button>
+                                                <?php elseif ($is2ndSemester): ?>
+                                                    <button class="btn btn-sm btn-secondary" disabled title="Course is unavailable for 2nd Semester">
+                                                        <i class="fas fa-lock me-1"></i>Unavailable (2nd Semester)
                                                     </button>
                                                 <?php else: ?>
                                                     <button class="btn btn-sm btn-primary enroll-btn" 
@@ -279,32 +310,68 @@
         }
         
         jQuery(document).ready(function($) {
-            // Handle course selection for filtering
-            $('.course-item').on('click', function(e) {
-                e.preventDefault();
-                $('.course-item').removeClass('active');
-                $(this).addClass('active');
-                
-                const courseId = $(this).data('course-id');
-                const courseTitle = $(this).data('course-title');
+            // Function to filter students by course
+            function filterStudentsByCourse(courseId, courseTitle) {
                 $('#selectedCourseTitle').text('(' + courseTitle + ')');
                 
                 if (courseId === 'all') {
                     // Show all students
                     $('.student-card').show();
+                    // Update badge count to show all students
+                    const totalStudents = $('.student-card').length;
+                    $('#studentsBadge').text(totalStudents + ' student' + (totalStudents !== 1 ? 's' : ''));
                 } else {
-                    // Filter students by course enrollment
+                    // Show ALL students (so teacher can enroll them)
+                    // Count how many are enrolled in this course
+                    let enrolledCount = 0;
                     $('.student-card').each(function() {
                         const $card = $(this);
-                        const hasEnrollment = $card.find('.enroll-btn[data-course-id="' + courseId + '"]').length === 0;
-                        if (hasEnrollment) {
-                            $card.show();
-                        } else {
-                            $card.hide();
+                        // Check if student has unenroll button for this course (meaning they are enrolled)
+                        const isEnrolled = $card.find('.unenroll-btn[data-course-id="' + courseId + '"]').length > 0;
+                        if (isEnrolled) {
+                            enrolledCount++;
                         }
+                        // Always show the student card so teacher can enroll them
+                        $card.show();
                     });
+                    
+                    const totalStudents = $('.student-card').length;
+                    // Update badge count to show enrolled vs total
+                    if (enrolledCount > 0) {
+                        $('#studentsBadge').text(enrolledCount + ' enrolled / ' + totalStudents + ' total');
+                    } else {
+                        $('#studentsBadge').text(totalStudents + ' student' + (totalStudents !== 1 ? 's' : '') + ' (0 enrolled)');
+                    }
                 }
+            }
+            
+            // Handle course selection for filtering
+            $('.course-item').on('click', function(e) {
+                e.preventDefault();
+                
+                // Don't allow clicking on disabled 2nd semester courses
+                if ($(this).hasClass('disabled')) {
+                    return false;
+                }
+                
+                $('.course-item').removeClass('active');
+                $(this).addClass('active');
+                
+                const courseId = $(this).data('course-id');
+                const courseTitle = $(this).data('course-title');
+                filterStudentsByCourse(courseId, courseTitle);
             });
+            
+            // Handle URL parameter for course_id
+            const urlParams = new URLSearchParams(window.location.search);
+            const courseIdParam = urlParams.get('course_id');
+            if (courseIdParam) {
+                // Find and click the course item
+                const $courseItem = $('.course-item[data-course-id="' + courseIdParam + '"]');
+                if ($courseItem.length > 0 && !$courseItem.hasClass('disabled')) {
+                    $courseItem.click();
+                }
+            }
 
             // Enroll student - use event delegation
             $(document).on('click', '.enroll-btn', function() {

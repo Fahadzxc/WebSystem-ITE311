@@ -232,12 +232,25 @@ class Auth extends Controller
                 
                 // Get available courses (exclude active, pending, and rejected)
                 $excluded_course_ids = array_merge($enrolled_course_ids, $pending_course_ids, $rejected_course_ids);
-                $available_courses = [];
+                $all_courses = [];
                 
                 if (!empty($excluded_course_ids)) {
-                    $available_courses = $courseModel->whereNotIn('id', $excluded_course_ids)->findAll();
+                    $all_courses = $courseModel->whereNotIn('id', $excluded_course_ids)->findAll();
                 } else {
-                    $available_courses = $courseModel->findAll();
+                    $all_courses = $courseModel->findAll();
+                }
+                
+                // Separate available and unavailable courses based on semester
+                $available_courses = [];
+                $unavailable_courses = [];
+                
+                foreach ($all_courses as $course) {
+                    // If course is 2nd Semester, put it in unavailable
+                    if (!empty($course['semester']) && $course['semester'] === '2nd Semester') {
+                        $unavailable_courses[] = $course;
+                    } else {
+                        $available_courses[] = $course;
+                    }
                 }
                 
                 // Add instructor names to available courses
@@ -255,11 +268,124 @@ class Auth extends Controller
                     }
                 }
                 
-                // Calculate progress only from active enrollments
-                $overall_progress = 0;
+                // Add instructor names to unavailable courses
+                foreach ($unavailable_courses as &$course) {
+                    if (!empty($course['instructor_id']) && $course['instructor_id'] != 0) {
+                        $instructor = $userModel->find($course['instructor_id']);
+                        if ($instructor && strtolower($instructor['role']) === 'teacher') {
+                            $course['instructor_name'] = $instructor['name'];
+                        } else {
+                            $course['instructor_name'] = 'Unassigned';
+                        }
+                    } else {
+                        $course['instructor_name'] = 'TBA';
+                    }
+                }
+                
+                // Calculate assignment completion percentage
+                $assignmentModel = new \App\Models\AssignmentModel();
+                $submissionModel = new \App\Models\AssignmentSubmissionModel();
+                $assignment_completion = 0;
+                if (!empty($enrolled_course_ids)) {
+                    // Get all assignments for enrolled courses
+                    $all_assignments = $assignmentModel
+                        ->whereIn('course_id', $enrolled_course_ids)
+                        ->findAll();
+                    
+                    $total_assignments = count($all_assignments);
+                    
+                    // Count how many have been submitted
+                    $submitted_assignments = 0;
+                    if ($total_assignments > 0) {
+                        foreach ($all_assignments as $assignment) {
+                            $hasSubmission = $submissionModel
+                                ->where('assignment_id', $assignment['id'])
+                                ->where('student_id', $user_id)
+                                ->first();
+                            
+                            if ($hasSubmission) {
+                                $submitted_assignments++;
+                            }
+                        }
+                        
+                        $assignment_completion = ($submitted_assignments / $total_assignments) * 100;
+                    }
+                }
+                
+                // Also keep enrollment progress for reference
+                $enrollment_progress = 0;
                 if (!empty($activeEnrollments)) {
                     $total_progress = array_sum(array_column($activeEnrollments, 'progress'));
-                    $overall_progress = $total_progress / count($activeEnrollments);
+                    $enrollment_progress = $total_progress / count($activeEnrollments);
+                }
+
+                // Get upcoming deadlines (assignments with due dates in the future that haven't been submitted)
+                $upcoming_deadlines = [];
+                if (!empty($enrolled_course_ids)) {
+                    $assignmentModel = new \App\Models\AssignmentModel();
+                    $submissionModel = new \App\Models\AssignmentSubmissionModel();
+                    $now = date('Y-m-d H:i:s');
+                    $assignments = $assignmentModel
+                        ->select('assignments.*, courses.title as course_title')
+                        ->join('courses', 'courses.id = assignments.course_id')
+                        ->whereIn('assignments.course_id', $enrolled_course_ids)
+                        ->where('assignments.due_date >', $now)
+                        ->orderBy('assignments.due_date', 'ASC')
+                        ->limit(10)
+                        ->findAll();
+                    
+                    // Filter out assignments that have already been submitted
+                    foreach ($assignments as $assignment) {
+                        $hasSubmission = $submissionModel
+                            ->where('assignment_id', $assignment['id'])
+                            ->where('student_id', $user_id)
+                            ->first();
+                        
+                        // Only add if not submitted yet
+                        if (!$hasSubmission) {
+                            $upcoming_deadlines[] = [
+                                'title' => $assignment['title'],
+                                'course_title' => $assignment['course_title'],
+                                'due_date' => $assignment['due_date'],
+                                'assignment_id' => $assignment['id']
+                            ];
+                            
+                            // Limit to 5 unsubmitted assignments
+                            if (count($upcoming_deadlines) >= 5) {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // Get recent grades (graded assignment submissions)
+                $recent_grades = [];
+                $submissionModel = new \App\Models\AssignmentSubmissionModel();
+                $submissions = $submissionModel
+                    ->select('assignment_submissions.*, assignments.title as assignment_title, assignments.max_score, courses.title as course_title')
+                    ->join('assignments', 'assignments.id = assignment_submissions.assignment_id')
+                    ->join('courses', 'courses.id = assignments.course_id')
+                    ->where('assignment_submissions.student_id', $user_id)
+                    ->where('assignment_submissions.status', 'graded')
+                    ->where('assignment_submissions.score IS NOT NULL')
+                    ->orderBy('assignment_submissions.updated_at', 'DESC')
+                    ->limit(5)
+                    ->findAll();
+                
+                foreach ($submissions as $submission) {
+                    $percentage = $submission['max_score'] > 0 
+                        ? ($submission['score'] / $submission['max_score']) * 100 
+                        : 0;
+                    
+                    $recent_grades[] = [
+                        'assignment_title' => $submission['assignment_title'],
+                        'course_title' => $submission['course_title'],
+                        'score' => $submission['score'],
+                        'max_score' => $submission['max_score'],
+                        'percentage' => $percentage,
+                        'graded_at' => $submission['updated_at'],
+                        'assignment_id' => $submission['assignment_id']
+                    ];
                 }
                 
                 return view('auth/dashboard', [
@@ -272,7 +398,11 @@ class Auth extends Controller
                     'pendingEnrollments' => array_values($pendingEnrollments), // Pending enrollments
                     'rejectedEnrollments' => array_values($rejectedEnrollments), // Rejected enrollments
                     'available_courses' => $available_courses,
-                    'overall_progress' => $overall_progress,
+                    'unavailable_courses' => $unavailable_courses,
+                    'overall_progress' => $assignment_completion, // Use assignment completion instead
+                    'enrollment_progress' => $enrollment_progress, // Keep enrollment progress for reference
+                    'upcoming_deadlines' => $upcoming_deadlines,
+                    'recent_grades' => $recent_grades,
                     'unread_count' => 0
                 ]);
                 

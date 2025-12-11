@@ -188,12 +188,29 @@ class Teacher extends BaseController
         $enrollmentId = $this->enrollmentModel->enrollUser($enrollmentData);
 
         if ($enrollmentId) {
+            // Get student name for notifications
+            $studentName = $student ? $student['name'] : 'Student';
+            
             // Create notification for student
             try {
                 $message = "You have been enrolled in '{$course['title']}' by your instructor. Welcome to the course!";
                 $this->notificationModel->createNotification($student_id, $message);
             } catch (\Exception $e) {
                 log_message('error', 'Failed to create enrollment notification: ' . $e->getMessage());
+            }
+
+            // Notify all admins about the enrollment
+            try {
+                $admins = $this->userModel->where('role', 'admin')
+                                         ->where('is_deleted', 0)
+                                         ->findAll();
+
+                foreach ($admins as $admin) {
+                    $adminMessage = "Enrollment: {$studentName} has been enrolled in '{$course['title']}' by the instructor.";
+                    $this->notificationModel->createNotification($admin['id'], $adminMessage);
+                }
+            } catch (\Exception $e) {
+                log_message('error', 'Failed to create admin enrollment notification: ' . $e->getMessage());
             }
 
             return $this->response->setJSON([
@@ -289,6 +306,20 @@ class Teacher extends BaseController
                 $this->notificationModel->createNotification($student_id, $message);
             } catch (\Exception $e) {
                 log_message('error', 'Failed to create unenrollment notification: ' . $e->getMessage());
+            }
+
+            // Notify all admins about the unenrollment
+            try {
+                $admins = $this->userModel->where('role', 'admin')
+                                         ->where('is_deleted', 0)
+                                         ->findAll();
+
+                foreach ($admins as $admin) {
+                    $adminMessage = "Unenrollment: {$studentName} has been unenrolled from '{$course['title']}' by the instructor.";
+                    $this->notificationModel->createNotification($admin['id'], $adminMessage);
+                }
+            } catch (\Exception $e) {
+                log_message('error', 'Failed to create admin unenrollment notification: ' . $e->getMessage());
             }
 
             return $this->response->setJSON([
@@ -402,12 +433,30 @@ class Teacher extends BaseController
         ]);
 
         if ($updated) {
+            // Get student info for admin notification
+            $student = $this->userModel->find($enrollment['user_id']);
+            $studentName = $student ? $student['name'] : 'Student';
+            
             // Create notification for student
             try {
                 $studentMessage = "Your enrollment request for '{$course['title']}' has been approved! Welcome to the course.";
                 $this->notificationModel->createNotification($enrollment['user_id'], $studentMessage);
             } catch (\Exception $e) {
                 log_message('error', 'Failed to create approval notification: ' . $e->getMessage());
+            }
+
+            // Notify all admins about the approval
+            try {
+                $admins = $this->userModel->where('role', 'admin')
+                                         ->where('is_deleted', 0)
+                                         ->findAll();
+
+                foreach ($admins as $admin) {
+                    $adminMessage = "Enrollment approved: {$studentName}'s enrollment request for '{$course['title']}' has been approved by the instructor.";
+                    $this->notificationModel->createNotification($admin['id'], $adminMessage);
+                }
+            } catch (\Exception $e) {
+                log_message('error', 'Failed to create admin approval notification: ' . $e->getMessage());
             }
 
             return $this->response->setJSON([
@@ -492,12 +541,30 @@ class Teacher extends BaseController
         ]);
 
         if ($updated) {
+            // Get student info for admin notification
+            $student = $this->userModel->find($enrollment['user_id']);
+            $studentName = $student ? $student['name'] : 'Student';
+            
             // Create notification for student with rejection reason
             try {
                 $studentMessage = "Your enrollment request for '{$course['title']}' has been rejected. Reason: {$rejection_reason}";
                 $this->notificationModel->createNotification($enrollment['user_id'], $studentMessage);
             } catch (\Exception $e) {
                 log_message('error', 'Failed to create rejection notification: ' . $e->getMessage());
+            }
+
+            // Notify all admins about the rejection
+            try {
+                $admins = $this->userModel->where('role', 'admin')
+                                         ->where('is_deleted', 0)
+                                         ->findAll();
+
+                foreach ($admins as $admin) {
+                    $adminMessage = "Enrollment rejected: {$studentName}'s enrollment request for '{$course['title']}' was rejected by the instructor. Reason: {$rejection_reason}";
+                    $this->notificationModel->createNotification($admin['id'], $adminMessage);
+                }
+            } catch (\Exception $e) {
+                log_message('error', 'Failed to create admin rejection notification: ' . $e->getMessage());
             }
 
             return $this->response->setJSON([

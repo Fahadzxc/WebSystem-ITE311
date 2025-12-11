@@ -26,7 +26,8 @@ class CourseModel extends Model
         'start_time',
         'end_time',
         'semester',
-        'academic_year'
+        'academic_year',
+        'max_students'
     ];
 
     protected $useTimestamps = true;

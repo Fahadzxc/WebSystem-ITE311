@@ -126,98 +126,161 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <?php foreach ($questions as $index => $question): ?>
-                            <div class="mb-4 pb-4 border-bottom">
-                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                    <h6 class="fw-bold mb-0" style="color: var(--bs-text-dark);">
-                                        Question <?= $index + 1 ?> (<?= number_format($question['points'], 2) ?> points)
-                                    </h6>
-                                    <?php if (isset($answers[$question['id']])): ?>
-                                        <?php 
-                                        $answer = $answers[$question['id']];
-                                        $isCorrect = strtolower($answer['selected_answer']) === strtolower($question['correct_answer']);
-                                        ?>
-                                        <span class="badge bg-<?= $isCorrect ? 'success' : 'danger' ?>">
-                                            <?= $isCorrect ? 'Correct' : 'Incorrect' ?>
-                                        </span>
+                        <form action="<?= base_url('assignment/grade/' . $submission['id']) ?>" method="POST" id="gradeForm">
+                            <?= csrf_field() ?>
+                            
+                            <?php foreach ($questions as $index => $question): ?>
+                                <?php 
+                                $answer = $answers[$question['id']] ?? null;
+                                $questionType = $question['question_type'] ?? 'multiple_choice';
+                                ?>
+                                <div class="mb-4 pb-4 border-bottom">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div>
+                                            <h6 class="fw-bold mb-0" style="color: var(--bs-text-dark);">
+                                                Question <?= $index + 1 ?> (<?= number_format($question['points'], 2) ?> points)
+                                            </h6>
+                                            <?php if ($questionType === 'essay'): ?>
+                                                <span class="badge bg-success">Essay / Long Answer</span>
+                                            <?php elseif ($questionType === 'file_upload'): ?>
+                                                <span class="badge bg-info">File Upload</span>
+                                            <?php else: ?>
+                                                <span class="badge bg-primary">Multiple Choice</span>
+                                            <?php endif; ?>
+                                        </div>
+                                        <?php if ($answer): ?>
+                                            <?php if ($questionType === 'multiple_choice'): ?>
+                                                <?php 
+                                                $isCorrect = strtolower($answer['selected_answer'] ?? '') === strtolower($question['correct_answer'] ?? '');
+                                                ?>
+                                                <span class="badge bg-<?= $isCorrect ? 'success' : 'danger' ?>">
+                                                    <?= $isCorrect ? 'Correct (+' . number_format($answer['points_earned'], 2) . ')' : 'Incorrect (0)' ?>
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="badge bg-<?= $answer['points_earned'] > 0 ? 'success' : 'warning text-dark' ?>">
+                                                    <?= $answer['points_earned'] > 0 ? 'Graded: ' . number_format($answer['points_earned'], 2) : 'Pending Grading' ?>
+                                                </span>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                    <p class="mb-3"><?= esc($question['question_text']) ?></p>
+                                    
+                                    <?php if ($questionType === 'multiple_choice'): ?>
+                                        <div class="ms-3">
+                                            <?php 
+                                            $options = [
+                                                'a' => $question['option_a'],
+                                                'b' => $question['option_b'],
+                                                'c' => $question['option_c'],
+                                                'd' => $question['option_d']
+                                            ];
+                                            $correctAnswer = strtolower($question['correct_answer'] ?? '');
+                                            $selectedAnswer = $answer ? strtolower($answer['selected_answer'] ?? '') : null;
+                                            ?>
+                                            <?php foreach ($options as $key => $option): ?>
+                                                <div class="form-check mb-2 p-2 rounded <?= $key === $correctAnswer ? 'bg-success bg-opacity-10 border border-success' : ($key === $selectedAnswer && $key !== $correctAnswer ? 'bg-danger bg-opacity-10 border border-danger' : '') ?>">
+                                                    <input class="form-check-input" type="radio" disabled <?= $key === $selectedAnswer ? 'checked' : '' ?>>
+                                                    <label class="form-check-label">
+                                                        <strong><?= strtoupper($key) ?>.</strong> <?= esc($option) ?>
+                                                        <?php if ($key === $correctAnswer): ?>
+                                                            <span class="badge bg-success ms-2">Correct Answer</span>
+                                                        <?php endif; ?>
+                                                        <?php if ($key === $selectedAnswer && $key !== $correctAnswer): ?>
+                                                            <span class="badge bg-danger ms-2">Student's Answer</span>
+                                                        <?php endif; ?>
+                                                    </label>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php elseif ($questionType === 'essay' && $answer): ?>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Student's Answer:</label>
+                                            <div class="border rounded p-3 bg-light" style="min-height: 100px;">
+                                                <?= nl2br(esc($answer['text_answer'] ?? 'No answer provided')) ?>
+                                            </div>
+                                            
+                                            <div class="row mt-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Points Earned (out of <?= number_format($question['points'], 2) ?>)</label>
+                                                    <input type="number" 
+                                                           class="form-control" 
+                                                           name="question_scores[<?= $question['id'] ?>]" 
+                                                           value="<?= $answer['points_earned'] ?? 0 ?>" 
+                                                           min="0" 
+                                                           max="<?= $question['points'] ?>" 
+                                                           step="0.01">
+                                                </div>
+                                            </div>
+                                            <div class="mt-2">
+                                                <label class="form-label">Feedback (Optional)</label>
+                                                <textarea class="form-control" 
+                                                          name="question_feedback[<?= $question['id'] ?>]" 
+                                                          rows="3" 
+                                                          placeholder="Enter feedback for this answer..."><?= esc($answer['teacher_feedback'] ?? '') ?></textarea>
+                                            </div>
+                                        </div>
+                                    <?php elseif ($questionType === 'file_upload' && $answer): ?>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Student's Uploaded File:</label>
+                                            <?php if (!empty($answer['file_path'])): ?>
+                                                <div class="border rounded p-3 bg-light mb-3">
+                                                    <i class="fas fa-file me-2"></i>
+                                                    <a href="<?= base_url('assignment/downloadAnswer/' . $answer['id']) ?>" target="_blank" class="text-decoration-none">
+                                                        <?= esc($answer['file_name'] ?? 'Download File') ?>
+                                                    </a>
+                                                    <a href="<?= base_url('assignment/downloadAnswer/' . $answer['id']) ?>" class="btn btn-sm btn-primary ms-2" target="_blank">
+                                                        <i class="fas fa-download me-1"></i>Download
+                                                    </a>
+                                                </div>
+                                            <?php else: ?>
+                                                <div class="border rounded p-3 bg-light text-muted mb-3">No file uploaded</div>
+                                            <?php endif; ?>
+                                            
+                                            <div class="row mt-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Points Earned (out of <?= number_format($question['points'], 2) ?>)</label>
+                                                    <input type="number" 
+                                                           class="form-control" 
+                                                           name="question_scores[<?= $question['id'] ?>]" 
+                                                           value="<?= $answer['points_earned'] ?? 0 ?>" 
+                                                           min="0" 
+                                                           max="<?= $question['points'] ?>" 
+                                                           step="0.01">
+                                                </div>
+                                            </div>
+                                            <div class="mt-2">
+                                                <label class="form-label">Feedback (Optional)</label>
+                                                <textarea class="form-control" 
+                                                          name="question_feedback[<?= $question['id'] ?>]" 
+                                                          rows="3" 
+                                                          placeholder="Enter feedback for this answer..."><?= esc($answer['teacher_feedback'] ?? '') ?></textarea>
+                                            </div>
+                                        </div>
                                     <?php endif; ?>
                                 </div>
-                                <p class="mb-3"><?= esc($question['question_text']) ?></p>
-                                
-                                <div class="ms-3">
-                                    <?php 
-                                    $options = [
-                                        'a' => $question['option_a'],
-                                        'b' => $question['option_b'],
-                                        'c' => $question['option_c'],
-                                        'd' => $question['option_d']
-                                    ];
-                                    $correctAnswer = strtolower($question['correct_answer']);
-                                    $selectedAnswer = isset($answers[$question['id']]) ? strtolower($answers[$question['id']]['selected_answer']) : null;
-                                    ?>
-                                    <?php foreach ($options as $key => $option): ?>
-                                        <div class="form-check mb-2 p-2 rounded <?= $key === $correctAnswer ? 'bg-success bg-opacity-10 border border-success' : ($key === $selectedAnswer && $key !== $correctAnswer ? 'bg-danger bg-opacity-10 border border-danger' : '') ?>">
-                                            <input class="form-check-input" type="radio" disabled <?= $key === $selectedAnswer ? 'checked' : '' ?>>
-                                            <label class="form-check-label">
-                                                <strong><?= strtoupper($key) ?>.</strong> <?= esc($option) ?>
-                                                <?php if ($key === $correctAnswer): ?>
-                                                    <span class="badge bg-success ms-2">Correct Answer</span>
-                                                <?php endif; ?>
-                                                <?php if ($key === $selectedAnswer && $key !== $correctAnswer): ?>
-                                                    <span class="badge bg-danger ms-2">Student's Answer</span>
-                                                <?php endif; ?>
-                                            </label>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
+                            <?php endforeach; ?>
+                            
+                            <div class="mb-3">
+                                <label for="overall_feedback" class="form-label">Overall Feedback (Optional)</label>
+                                <textarea class="form-control" 
+                                          id="overall_feedback" 
+                                          name="feedback" 
+                                          rows="4" 
+                                          placeholder="Enter overall feedback for the student..."><?= esc($submission['feedback'] ?? '') ?></textarea>
                             </div>
-                        <?php endforeach; ?>
+                            
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Save Grades
+                                </button>
+                                <a href="<?= base_url('assignment/view/' . $assignment['id']) ?>" class="btn btn-secondary">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             <?php endif; ?>
-
-            <!-- Grade Submission Form -->
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-white border-bottom">
-                    <h5 class="mb-0 fw-bold">
-                        <i class="fas fa-check-circle me-2"></i>Grade Submission
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <form action="<?= base_url('assignment/grade/' . $submission['id']) ?>" method="POST">
-                        <?= csrf_field() ?>
-                        <div class="mb-3">
-                            <label for="score" class="form-label">Score</label>
-                            <input type="number" 
-                                   class="form-control" 
-                                   id="score" 
-                                   name="score" 
-                                   step="0.01" 
-                                   min="0" 
-                                   max="<?= $assignment['max_score'] ?>" 
-                                   value="<?= $submission['score'] ?? '' ?>" 
-                                   required>
-                            <small class="text-muted">Max score: <?= number_format($assignment['max_score'], 2) ?></small>
-                        </div>
-                        <div class="mb-3">
-                            <label for="feedback" class="form-label">Feedback (Optional)</label>
-                            <textarea class="form-control" 
-                                      id="feedback" 
-                                      name="feedback" 
-                                      rows="4" 
-                                      placeholder="Enter feedback for the student..."><?= esc($submission['feedback'] ?? '') ?></textarea>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Save Grade
-                            </button>
-                            <a href="<?= base_url('assignment/view/' . $assignment['id']) ?>" class="btn btn-secondary">
-                                Cancel
-                            </a>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 </div>

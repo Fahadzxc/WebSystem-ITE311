@@ -33,12 +33,6 @@
                             <a class="nav-link" href="<?= base_url('dashboard'); ?>">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('student/announcement'); ?>">Announcements</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('student/enrollments'); ?>">My Enrollments</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="<?= base_url('student/materials'); ?>">All Materials</a>
                         </li>
                         <li class="nav-item">
