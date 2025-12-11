@@ -103,18 +103,32 @@ class Student extends BaseController
             return redirect()->to('dashboard');
         }
 
-        // Check if user is already enrolled
+        // Check if user is already enrolled (active or pending)
         if ($this->enrollmentModel->isAlreadyEnrolled($user_id, $course_id)) {
-            session()->setFlashdata('error', 'You are already enrolled in this course.');
+            // Get the enrollment to check status
+            $existingEnrollment = $this->enrollmentModel->getEnrollment($user_id, $course_id);
+            if ($existingEnrollment) {
+                if ($existingEnrollment['status'] === 'pending') {
+                    session()->setFlashdata('error', 'You already have a pending enrollment request for this course. Please wait for instructor approval.');
+                } else {
+                    session()->setFlashdata('error', 'You are already enrolled in this course.');
+                }
+            }
             return redirect()->to('dashboard');
         }
 
-        // Prepare enrollment data
+        // Check if course has an instructor assigned
+        if (empty($course['instructor_id']) || $course['instructor_id'] == 0 || $course['instructor_id'] == null) {
+            session()->setFlashdata('error', 'This course does not have an instructor assigned yet. Please contact the administrator.');
+            return redirect()->to('dashboard');
+        }
+
+        // Prepare enrollment data with pending status
         $enrollmentData = [
             'user_id' => $user_id,
             'course_id' => $course_id,
             'enrollment_date' => date('Y-m-d H:i:s'),
-            'status' => 'active',
+            'status' => 'pending',
             'progress' => 0.00
         ];
 
@@ -122,26 +136,55 @@ class Student extends BaseController
         $enrollmentId = $this->enrollmentModel->enrollUser($enrollmentData);
 
         if ($enrollmentId) {
-            // Create notification for successful enrollment
+            // Verify the enrollment was created with pending status
+            $createdEnrollment = $this->enrollmentModel->find($enrollmentId);
+            if ($createdEnrollment && $createdEnrollment['status'] !== 'pending') {
+                log_message('error', 'Enrollment created with wrong status. ID: ' . $enrollmentId . ', Status: ' . ($createdEnrollment['status'] ?? 'null'));
+                // Try to update it to pending
+                $this->enrollmentModel->update($enrollmentId, ['status' => 'pending']);
+            }
+            
+            // Create notification for student (pending status)
             try {
-                $enrollmentMessage = "You have been successfully enrolled in '{$course['title']}'. Welcome to the course!";
-                $this->notificationModel->createNotification($user_id, $enrollmentMessage);
+                $pendingMessage = "Your enrollment request for '{$course['title']}' is pending approval. You will be notified once the instructor reviews your request.";
+                $this->notificationModel->createNotification($user_id, $pendingMessage);
                 
-                // Also create a welcome notification with course details
-                $welcomeMessage = "Welcome to {$course['title']}! You can now access course materials, assignments, and participate in discussions.";
-                $this->notificationModel->createNotification($user_id, $welcomeMessage);
+                // Create notification for teacher
+                $teacherMessage = "New enrollment request: " . session()->get('name') . " wants to enroll in '{$course['title']}'.";
+                $this->notificationModel->createNotification($course['instructor_id'], $teacherMessage);
                 
-                // Create a getting started notification
-                $gettingStartedMessage = "Getting started with {$course['title']}: Check out the course materials and don't forget to introduce yourself to your classmates!";
+                // Debug log
+                log_message('debug', 'Enrollment created - ID: ' . $enrollmentId . ', User: ' . $user_id . ', Course: ' . $course_id . ', Status: ' . ($createdEnrollment['status'] ?? 'unknown'));
             } catch (\Exception $e) {
                 // Log error but don't fail the enrollment
                 log_message('error', 'Failed to create enrollment notification: ' . $e->getMessage());
             }
             
-            session()->setFlashdata('success', 'Successfully enrolled in ' . $course['title'] . '!');
+            session()->setFlashdata('success', 'Enrollment request submitted for ' . $course['title'] . '! Waiting for instructor approval.');
             return redirect()->to('dashboard');
         } else {
-            session()->setFlashdata('error', 'Failed to enroll in course. Please try again.');
+            // Get more specific error information
+            $errors = $this->enrollmentModel->errors();
+            $errorMessage = 'Failed to submit enrollment request.';
+            
+            if (!empty($errors)) {
+                $errorMessage .= ' ' . implode(' ', $errors);
+            } else {
+                // Check if user is already enrolled with a different status
+                $existingEnrollment = $this->enrollmentModel->getEnrollment($user_id, $course_id);
+                if ($existingEnrollment) {
+                    if ($existingEnrollment['status'] === 'completed') {
+                        $errorMessage = 'You have already completed this course.';
+                    } else {
+                        $errorMessage = 'Enrollment request could not be processed. Please contact support.';
+                    }
+                } else {
+                    $errorMessage = 'Failed to submit enrollment request. The course may not be available for enrollment.';
+                }
+            }
+            
+            log_message('error', 'Enrollment failed for user ' . $user_id . ' in course ' . $course_id . '. Errors: ' . json_encode($errors));
+            session()->setFlashdata('error', $errorMessage);
             return redirect()->to('dashboard');
         }
     }

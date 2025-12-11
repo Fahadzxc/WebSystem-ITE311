@@ -92,18 +92,24 @@ class Course extends Controller
 
         // User ID already obtained above
 
-        // Check if user is already enrolled
+        // Check if user is already enrolled (active or pending)
         if ($this->enrollmentModel->isAlreadyEnrolled($user_id, $course_id)) {
-            session()->setFlashdata('error', 'You are already enrolled in this course.');
+            session()->setFlashdata('error', 'You already have a pending or active enrollment in this course.');
             return redirect()->to('dashboard');
         }
 
-        // Prepare enrollment data
+        // Check if course has an instructor assigned
+        if (empty($course['instructor_id'])) {
+            session()->setFlashdata('error', 'This course does not have an instructor assigned yet. Please contact the administrator.');
+            return redirect()->to('dashboard');
+        }
+
+        // Prepare enrollment data with pending status
         $enrollmentData = [
             'user_id' => $user_id,
             'course_id' => $course_id,
             'enrollment_date' => date('Y-m-d H:i:s'),
-            'status' => 'active',
+            'status' => 'pending',
             'progress' => 0.00
         ];
 
@@ -111,10 +117,23 @@ class Course extends Controller
         $enrollmentId = $this->enrollmentModel->enrollUser($enrollmentData);
 
         if ($enrollmentId) {
-            session()->setFlashdata('success', 'Successfully enrolled in ' . $course['title'] . '!');
+            // Create notification for student (pending status)
+            try {
+                $notificationModel = new \App\Models\NotificationModel();
+                $pendingMessage = "Your enrollment request for '{$course['title']}' is pending approval. You will be notified once the instructor reviews your request.";
+                $notificationModel->createNotification($user_id, $pendingMessage);
+                
+                // Create notification for teacher
+                $teacherMessage = "New enrollment request: " . session()->get('name') . " wants to enroll in '{$course['title']}'.";
+                $notificationModel->createNotification($course['instructor_id'], $teacherMessage);
+            } catch (\Exception $e) {
+                log_message('error', 'Failed to create enrollment notification: ' . $e->getMessage());
+            }
+            
+            session()->setFlashdata('success', 'Enrollment request submitted for ' . $course['title'] . '! Waiting for instructor approval.');
             return redirect()->to('dashboard');
         } else {
-            session()->setFlashdata('error', 'Failed to enroll in course. Please try again.');
+            session()->setFlashdata('error', 'Failed to submit enrollment request. Please try again.');
             return redirect()->to('dashboard');
         }
     }

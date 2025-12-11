@@ -4,14 +4,20 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\UserModel;
+use App\Models\CourseModel;
+use App\Models\CourseScheduleModel;
 
 class Admin extends BaseController
 { 
     protected $userModel;
+    protected $courseModel;
+    protected $scheduleModel;
 
     public function __construct()
     {
         $this->userModel = new UserModel();
+        $this->courseModel = new CourseModel();
+        $this->scheduleModel = new CourseScheduleModel();
     }
 
     /**
@@ -74,6 +80,19 @@ class Admin extends BaseController
             $password = $this->request->getPost('password');
             $role = $this->request->getPost('role');
 
+            // Validate role is provided and is valid
+            if (empty($role)) {
+                session()->setFlashdata('error', 'Please select a role.');
+                return redirect()->to(base_url('dashboard'));
+            }
+
+            // Validate role is one of the allowed values
+            $allowedRoles = ['student', 'teacher', 'admin'];
+            if (!in_array(strtolower($role), $allowedRoles)) {
+                session()->setFlashdata('error', 'Invalid role selected.');
+                return redirect()->to(base_url('dashboard'));
+            }
+
             // Validate name - only letters and spaces allowed
             if (!preg_match('/^[a-zA-Z\s]+$/', $name)) {
                 session()->setFlashdata('error', 'Name contains invalid characters.');
@@ -105,18 +124,34 @@ class Admin extends BaseController
                 return redirect()->to(base_url('dashboard'));
             }
 
-            // Create user
+            // Create user - ensure role is lowercase and valid
             $data = [
-                'name' => $name,
-                'email' => $email,
+                'name' => trim($name),
+                'email' => trim($email),
                 'password' => password_hash($password, PASSWORD_DEFAULT),
-                'role' => $role
+                'role' => strtolower(trim($role)) // Ensure role is lowercase
             ];
 
-            if ($this->userModel->insert($data)) {
-                session()->setFlashdata('success', 'User created successfully.');
+            // Debug: Log the data being inserted
+            log_message('debug', 'Creating user with role: ' . $data['role']);
+
+            $insertedId = $this->userModel->insert($data);
+            if ($insertedId) {
+                // Verify the role was saved correctly
+                $createdUser = $this->userModel->find($insertedId);
+                if ($createdUser && $createdUser['role'] !== $data['role']) {
+                    log_message('error', 'Role mismatch! Requested: ' . $data['role'] . ', Saved: ' . ($createdUser['role'] ?? 'null'));
+                    session()->setFlashdata('error', 'User created but role may not have been saved correctly.');
+                } else {
+                    session()->setFlashdata('success', 'User created successfully with role: ' . ucfirst($data['role']) . '.');
+                }
             } else {
-                session()->setFlashdata('error', 'Failed to create user.');
+                $errors = $this->userModel->errors();
+                $errorMsg = 'Failed to create user.';
+                if (!empty($errors)) {
+                    $errorMsg .= ' ' . implode(', ', $errors);
+                }
+                session()->setFlashdata('error', $errorMsg);
             }
         }
 
@@ -296,7 +331,261 @@ class Admin extends BaseController
         }
 
         session()->setFlashdata('success', "Removed {$removedCount} expired enrollment(s).");
-        return redirect()->to(base_url('admin/users'));
+        return redirect()->to(base_url('dashboard'));
+    }
+
+    /**
+     * Get schedules for a course
+     */
+    public function getSchedules()
+    {
+        $auth = $this->checkAdminAuth();
+        if ($auth !== true) {
+            return $this->response->setJSON(['schedules' => []]);
+        }
+
+        $course_id = $this->request->getGet('course_id');
+        if (!$course_id) {
+            return $this->response->setJSON(['schedules' => []]);
+        }
+
+        $schedules = $this->scheduleModel->getSchedulesByCourse($course_id);
+        return $this->response->setJSON(['schedules' => $schedules]);
+    }
+
+    /**
+     * Check for schedule conflicts
+     */
+    public function checkConflict()
+    {
+        $auth = $this->checkAdminAuth();
+        if ($auth !== true) {
+            return $this->response->setJSON(['has_conflict' => false, 'message' => 'Unauthorized']);
+        }
+
+        if ($this->request->getMethod() === 'POST') {
+            $json = $this->request->getJSON(true);
+            $teacher_id = $json['teacher_id'] ?? null;
+            $schedules = $json['schedules'] ?? [];
+            $course_id = $json['course_id'] ?? null;
+
+            if (!$teacher_id || empty($schedules)) {
+                return $this->response->setJSON(['has_conflict' => false]);
+            }
+
+            // Check each schedule for conflicts
+            foreach ($schedules as $schedule) {
+                $day_of_week = $schedule['day_of_week'] ?? null;
+                $start_time = $schedule['start_time'] ?? null;
+                $end_time = $schedule['end_time'] ?? null;
+
+                if (!$day_of_week || !$start_time || !$end_time) {
+                    continue;
+                }
+
+                // Check if end time is after start time
+                if ($end_time <= $start_time) {
+                    return $this->response->setJSON([
+                        'has_conflict' => true,
+                        'message' => 'End time must be after start time for all schedules.'
+                    ]);
+                }
+
+                // Get existing schedules for this teacher on this day
+                $existingSchedules = $this->scheduleModel->getSchedulesByTeacherAndDay($teacher_id, $day_of_week, $course_id);
+
+                // Check for time overlaps
+                foreach ($existingSchedules as $existingSchedule) {
+                    // Conflict if: new_start < existing_end AND new_end > existing_start
+                    if ($start_time < $existingSchedule['end_time'] && $end_time > $existingSchedule['start_time']) {
+                        $conflictCourse = $this->courseModel->find($existingSchedule['course_id']);
+                        return $this->response->setJSON([
+                            'has_conflict' => true,
+                            'message' => "Schedule conflict! This teacher already has '{$conflictCourse['title']}' scheduled at " . 
+                                        date('g:i A', strtotime($existingSchedule['start_time'])) . " - " . 
+                                        date('g:i A', strtotime($existingSchedule['end_time'])) . " on {$day_of_week}."
+                        ]);
+                    }
+                }
+            }
+
+            return $this->response->setJSON(['has_conflict' => false]);
+        }
+
+        return $this->response->setJSON(['has_conflict' => false]);
+    }
+
+    /**
+     * Assign teacher to course with multiple schedules
+     */
+    public function assignTeacher()
+    {
+        $auth = $this->checkAdminAuth();
+        if ($auth !== true) return $auth;
+
+        if ($this->request->getMethod() === 'POST') {
+            $course_id = $this->request->getPost('course_id');
+            $teacher_id = $this->request->getPost('teacher_id');
+            $schedulesJson = $this->request->getPost('schedules');
+
+            if (!$course_id) {
+                session()->setFlashdata('error', 'Course ID is required.');
+                return redirect()->to(base_url('dashboard'));
+            }
+
+            // Validate course exists
+            $course = $this->courseModel->find($course_id);
+            if (!$course) {
+                session()->setFlashdata('error', 'Course not found.');
+                return redirect()->to(base_url('dashboard'));
+            }
+
+            // If teacher_id is provided, validate teacher exists and is a teacher
+            if ($teacher_id) {
+                $teacher = $this->userModel->find($teacher_id);
+                if (!$teacher) {
+                    session()->setFlashdata('error', 'Teacher not found.');
+                    return redirect()->to(base_url('dashboard'));
+                }
+
+                if (strtolower($teacher['role']) !== 'teacher') {
+                    session()->setFlashdata('error', 'Selected user is not a teacher.');
+                    return redirect()->to(base_url('dashboard'));
+                }
+
+                // Check if teacher is deleted
+                if (isset($teacher['is_deleted']) && $teacher['is_deleted'] == 1) {
+                    session()->setFlashdata('error', 'Cannot assign a deleted teacher.');
+                    return redirect()->to(base_url('dashboard'));
+                }
+
+                // Parse schedules
+                $schedules = json_decode($schedulesJson, true);
+                if (empty($schedules) || !is_array($schedules)) {
+                    session()->setFlashdata('error', 'Please provide at least one schedule.');
+                    return redirect()->to(base_url('dashboard'));
+                }
+
+                // Validate all schedules
+                foreach ($schedules as $schedule) {
+                    $day_of_week = $schedule['day_of_week'] ?? null;
+                    $start_time = $schedule['start_time'] ?? null;
+                    $end_time = $schedule['end_time'] ?? null;
+
+                    if (empty($day_of_week) || empty($start_time) || empty($end_time)) {
+                        session()->setFlashdata('error', 'All schedules must have day, start time, and end time.');
+                        return redirect()->to(base_url('dashboard'));
+                    }
+
+                    // Validate end time is after start time
+                    if ($end_time <= $start_time) {
+                        session()->setFlashdata('error', 'End time must be after start time for all schedules.');
+                        return redirect()->to(base_url('dashboard'));
+                    }
+                }
+
+                // Check for schedule conflicts
+                foreach ($schedules as $schedule) {
+                    $existingSchedules = $this->scheduleModel->getSchedulesByTeacherAndDay($teacher_id, $schedule['day_of_week'], $course_id);
+
+                    foreach ($existingSchedules as $existingSchedule) {
+                        if ($schedule['start_time'] < $existingSchedule['end_time'] && $schedule['end_time'] > $existingSchedule['start_time']) {
+                            $conflictCourse = $this->courseModel->find($existingSchedule['course_id']);
+                            session()->setFlashdata('error', "Schedule conflict! This teacher already has '{$conflictCourse['title']}' scheduled at " . 
+                                        date('g:i A', strtotime($existingSchedule['start_time'])) . " - " . 
+                                        date('g:i A', strtotime($existingSchedule['end_time'])) . " on {$schedule['day_of_week']}.");
+                            return redirect()->to(base_url('dashboard'));
+                        }
+                    }
+                }
+
+                // Assign teacher to course
+                $this->courseModel->update($course_id, ['instructor_id' => $teacher_id]);
+
+                // Delete existing schedules for this course
+                $this->scheduleModel->deleteByCourse($course_id);
+
+                // Insert new schedules
+                foreach ($schedules as $schedule) {
+                    $this->scheduleModel->insert([
+                        'course_id' => $course_id,
+                        'day_of_week' => $schedule['day_of_week'],
+                        'start_time' => $schedule['start_time'],
+                        'end_time' => $schedule['end_time']
+                    ]);
+                }
+
+                session()->setFlashdata('success', 'Teacher assigned to course with schedule(s) successfully.');
+            } else {
+                // Remove teacher assignment (set to 0 for unassigned)
+                $this->courseModel->update($course_id, ['instructor_id' => 0]);
+                $this->scheduleModel->deleteByCourse($course_id);
+                session()->setFlashdata('success', 'Teacher assignment removed successfully.');
+            }
+        }
+
+        return redirect()->to(base_url('dashboard'));
+    }
+
+    /**
+     * Create new course
+     */
+    public function createCourse()
+    {
+        $auth = $this->checkAdminAuth();
+        if ($auth !== true) return $auth;
+
+        if ($this->request->getMethod() === 'POST') {
+            $title = $this->request->getPost('title');
+            $description = $this->request->getPost('description');
+            $category = $this->request->getPost('category');
+            $level = $this->request->getPost('level');
+            $status = $this->request->getPost('status') ?? 'draft';
+
+            // Validate required fields
+            if (empty($title) || empty($description)) {
+                session()->setFlashdata('error', 'Course title and description are required.');
+                return redirect()->to(base_url('dashboard'));
+            }
+
+            // Check for duplicate course title (case-insensitive)
+            if ($this->courseModel->isTitleExists($title)) {
+                session()->setFlashdata('error', 'A course with this title already exists. Please use a different title.');
+                return redirect()->to(base_url('dashboard'));
+            }
+
+            // Prepare course data
+            // Note: instructor_id is required by database, so we'll use 0 to represent "unassigned"
+            // This can be updated later when a teacher is assigned
+            $courseData = [
+                'title' => $title,
+                'description' => $description,
+                'category' => $category ?? null,
+                'level' => $level ?? 'beginner',
+                'status' => $status,
+                'instructor_id' => 0 // 0 represents unassigned (will be updated when teacher is assigned)
+            ];
+
+            // Insert course (skip validation for fields we don't need)
+            try {
+                $courseId = $this->courseModel->insert($courseData);
+                if ($courseId) {
+                    session()->setFlashdata('success', 'Course created successfully! You can now assign a teacher to this course.');
+                } else {
+                    $errors = $this->courseModel->errors();
+                    $errorMsg = 'Failed to create course.';
+                    if (!empty($errors)) {
+                        $errorMsg .= ' ' . implode(', ', $errors);
+                    }
+                    session()->setFlashdata('error', $errorMsg);
+                }
+            } catch (\Exception $e) {
+                log_message('error', 'Course creation failed: ' . $e->getMessage());
+                session()->setFlashdata('error', 'Failed to create course: ' . $e->getMessage());
+            }
+        }
+
+        return redirect()->to(base_url('dashboard'));
     }
 }
 

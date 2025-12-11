@@ -38,6 +38,12 @@ $routes->get('admin/users/restore/(:num)', 'Admin::restoreUser/$1');
 $routes->get('admin/users/get/(:num)', 'Admin::getUser/$1');
 $routes->get('admin/users/cleanup-enrollments', 'Admin::cleanupExpiredEnrollments');
 
+// Admin Course Management Routes
+$routes->post('admin/courses/create', 'Admin::createCourse');
+$routes->post('admin/courses/assign-teacher', 'Admin::assignTeacher');
+$routes->post('admin/courses/check-conflict', 'Admin::checkConflict');
+$routes->get('admin/courses/get-schedules', 'Admin::getSchedules');
+
 
 // Student Routes
 $routes->post('student/enroll', 'Student::enroll');
@@ -75,7 +81,10 @@ $routes->post('teacher/course/(:num)/materials', 'Materials::upload/$1');
 // Teacher Enrollment Routes
 $routes->get('teacher/enrollments', 'Teacher::enrollments');
 $routes->post('teacher/enrollStudent', 'Teacher::enrollStudent');
+$routes->post('teacher/unenrollStudent', 'Teacher::unenrollStudent');
 $routes->get('teacher/getCourseStudents/(:num)', 'Teacher::getCourseStudents/$1');
+$routes->post('teacher/enrollments/approve', 'Teacher::approveEnrollment');
+$routes->post('teacher/enrollments/reject', 'Teacher::rejectEnrollment');
 
 // Announcements Routes
 $routes->get('announcements', 'Announcement::index');

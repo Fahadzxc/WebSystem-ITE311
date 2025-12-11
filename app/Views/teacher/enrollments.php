@@ -31,6 +31,67 @@
         </div>
     <?php endif; ?>
 
+    <!-- Pending Enrollment Requests -->
+    <div class="card shadow-sm border-0 mb-4 <?= empty($pendingEnrollments) ? 'border-warning' : '' ?>">
+        <div class="card-header <?= !empty($pendingEnrollments) ? 'bg-warning bg-opacity-10' : 'bg-white' ?> border-bottom">
+            <h5 class="mb-0 fw-bold" style="color: var(--bs-text-dark);">
+                <i class="fas fa-clock text-warning me-2"></i>Pending Enrollment Requests
+                <?php if (!empty($pendingEnrollments)): ?>
+                    <span class="badge bg-warning text-dark ms-2"><?= count($pendingEnrollments) ?></span>
+                <?php else: ?>
+                    <span class="badge bg-secondary ms-2">0</span>
+                <?php endif; ?>
+            </h5>
+        </div>
+        <div class="card-body">
+            <?php if (!empty($pendingEnrollments)): ?>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Course</th>
+                                <th>Request Date</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($pendingEnrollments as $enrollment): ?>
+                                <tr>
+                                    <td>
+                                        <strong><?= esc($enrollment['student_name']) ?></strong><br>
+                                        <small class="text-muted"><?= esc($enrollment['student_email']) ?></small>
+                                    </td>
+                                    <td><?= esc($enrollment['course_title']) ?></td>
+                                    <td><?php 
+                                        helper('date');
+                                        $date = new \DateTime($enrollment['enrollment_date'], new \DateTimeZone('UTC'));
+                                        $date->setTimezone(new \DateTimeZone('Asia/Manila'));
+                                        echo $date->format('M d, Y g:i A');
+                                    ?></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-success me-2" onclick="approveEnrollment(<?= $enrollment['id'] ?>)">
+                                            <i class="fas fa-check me-1"></i>Approve
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="rejectEnrollment(<?= $enrollment['id'] ?>, '<?= esc($enrollment['course_title']) ?>')">
+                                            <i class="fas fa-times me-1"></i>Reject
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php else: ?>
+                <div class="text-center py-4">
+                    <i class="fas fa-check-circle text-success mb-3" style="font-size: 3rem; opacity: 0.5;"></i>
+                    <p class="text-muted mb-0">No pending enrollment requests.</p>
+                    <p class="text-muted small">All enrollment requests have been processed.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
     <div class="row g-4">
         <!-- Courses Column -->
         <div class="col-lg-4">
@@ -109,17 +170,29 @@
                                                 </p>
                                             </div>
                                             <span class="badge bg-info">
-                                                <?= count($studentData['enrollments']) ?> enrolled
+                                                <?php 
+                                                // Count only active enrollments
+                                                $activeCount = count(array_filter($studentData['enrollments'], function($e) {
+                                                    return $e['status'] === 'active';
+                                                }));
+                                                echo $activeCount;
+                                                ?> enrolled
                                             </span>
                                         </div>
                                         
-                                        <?php if (!empty($studentData['enrollments'])): ?>
+                                        <?php 
+                                        // Filter to show only active enrollments
+                                        $activeEnrollments = array_filter($studentData['enrollments'], function($e) {
+                                            return $e['status'] === 'active';
+                                        });
+                                        ?>
+                                        <?php if (!empty($activeEnrollments)): ?>
                                             <div class="mb-3">
                                                 <small class="text-muted d-block mb-2">
                                                     <i class="fas fa-book me-1"></i><strong>Enrolled Courses:</strong>
                                                 </small>
                                                 <div class="d-flex flex-wrap gap-2">
-                                                    <?php foreach ($studentData['enrollments'] as $enrollment): ?>
+                                                    <?php foreach ($activeEnrollments as $enrollment): ?>
                                                         <span class="badge bg-success">
                                                             <i class="fas fa-check-circle me-1"></i><?= esc($enrollment['course_title']) ?>
                                                         </span>
@@ -137,17 +210,25 @@
                                         <div class="d-flex gap-2 flex-wrap">
                                             <?php foreach ($courses as $course): ?>
                                                 <?php 
+                                                // Check if student is actively enrolled (only active status, not pending or rejected)
                                                 $isEnrolled = false;
+                                                $enrollmentId = null;
                                                 foreach ($studentData['enrollments'] as $enrollment) {
-                                                    if ($enrollment['course_id'] == $course['id']) {
+                                                    if ($enrollment['course_id'] == $course['id'] && $enrollment['status'] === 'active') {
                                                         $isEnrolled = true;
+                                                        $enrollmentId = $enrollment['id'];
                                                         break;
                                                     }
                                                 }
                                                 ?>
                                                 <?php if ($isEnrolled): ?>
-                                                    <button class="btn btn-sm btn-success" disabled>
-                                                        <i class="fas fa-check me-1"></i><?= esc($course['title']) ?>
+                                                    <button class="btn btn-sm btn-danger unenroll-btn" 
+                                                            data-student-id="<?= $studentData['id'] ?>" 
+                                                            data-student-name="<?= esc($studentData['name']) ?>"
+                                                            data-course-id="<?= $course['id'] ?>"
+                                                            data-course-title="<?= esc($course['title']) ?>"
+                                                            data-enrollment-id="<?= $enrollmentId ?>">
+                                                        <i class="fas fa-user-minus me-1"></i>Unenroll from <?= esc($course['title']) ?>
                                                     </button>
                                                 <?php else: ?>
                                                     <button class="btn btn-sm btn-primary enroll-btn" 
@@ -252,9 +333,115 @@
                     }
                 });
             });
+
+            // Unenroll student - use event delegation
+            $(document).on('click', '.unenroll-btn', function() {
+                const studentId = $(this).data('student-id');
+                const studentName = $(this).data('student-name');
+                const courseId = $(this).data('course-id');
+                const courseTitle = $(this).data('course-title');
+                const enrollmentId = $(this).data('enrollment-id');
+
+                if (!confirm('Unenroll ' + studentName + ' from "' + courseTitle + '"? This action cannot be undone.')) {
+                    return;
+                }
+
+                const $btn = $(this);
+                const originalHtml = $btn.html();
+                $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span>Unenrolling...');
+
+                $.ajax({
+                    url: '<?= base_url('teacher/unenrollStudent') ?>',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        <?= csrf_token() ?>: '<?= csrf_hash() ?>',
+                        enrollment_id: enrollmentId,
+                        student_id: studentId,
+                        course_id: courseId
+                    },
+                    success: function(response) {
+                        if (response && response.success) {
+                            // Reload page to refresh enrollments
+                            location.reload();
+                        } else {
+                            alert('Error: ' + (response && response.message ? response.message : 'Unknown error'));
+                            $btn.prop('disabled', false).html(originalHtml);
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Unenrollment error:', xhr);
+                        const response = xhr.responseJSON || {};
+                        alert('Error: ' + (response.message || 'Failed to unenroll student. Please try again.'));
+                        $btn.prop('disabled', false).html(originalHtml);
+                    }
+                });
+            });
         });
     }
     initEnrollments();
+
+    // Approve enrollment
+    window.approveEnrollment = function(enrollmentId) {
+        if (!confirm('Are you sure you want to approve this enrollment request?')) {
+            return;
+        }
+
+        $.ajax({
+            url: '<?= base_url('teacher/enrollments/approve') ?>',
+            method: 'POST',
+            data: {
+                enrollment_id: enrollmentId,
+                <?= csrf_token() ?>: '<?= csrf_hash() ?>'
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('Enrollment approved successfully!');
+                    location.reload();
+                } else {
+                    alert('Error: ' + (response.message || 'Failed to approve enrollment.'));
+                }
+            },
+            error: function() {
+                alert('Error: Failed to approve enrollment. Please try again.');
+            }
+        });
+    };
+
+    // Reject enrollment
+    window.rejectEnrollment = function(enrollmentId, courseTitle) {
+        const reason = prompt('Please provide a reason for rejecting this enrollment request:\n\nCourse: ' + courseTitle);
+        
+        if (reason === null) {
+            return; // User cancelled
+        }
+        
+        if (reason.trim() === '') {
+            alert('Rejection reason is required.');
+            return;
+        }
+
+        $.ajax({
+            url: '<?= base_url('teacher/enrollments/reject') ?>',
+            method: 'POST',
+            data: {
+                enrollment_id: enrollmentId,
+                rejection_reason: reason.trim(),
+                <?= csrf_token() ?>: '<?= csrf_hash() ?>'
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('Enrollment rejected successfully!');
+                    location.reload();
+                } else {
+                    alert('Error: ' + (response.message || 'Failed to reject enrollment.'));
+                }
+            },
+            error: function() {
+                alert('Error: Failed to reject enrollment. Please try again.');
+            }
+        });
+    };
 })();
 </script>
 <?= $this->endSection() ?>

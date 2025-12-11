@@ -85,7 +85,11 @@ class Assignment extends BaseController
             return redirect()->to(base_url('login'));
         }
 
-        $courses = $this->courseModel->where('status', 'published')->findAll();
+        $teacher_id = session()->get('user_id');
+        // Get only courses assigned to this teacher
+        $courses = $this->courseModel->where('instructor_id', $teacher_id)
+                                    ->where('status', 'published')
+                                    ->findAll();
 
         // Check if POST request - SIMPLE CHECK
         $method = strtolower($this->request->getMethod());

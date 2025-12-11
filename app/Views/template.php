@@ -298,41 +298,58 @@
             listContainer.html(html);
         }
         
-        // Function to format time ago
+        // Function to format time ago (Philippine Time)
         function formatTimeAgo(dateString) {
             if (!dateString) return 'Just now';
             
-            // Parse MySQL datetime format (YYYY-MM-DD HH:MM:SS) properly
-            // MySQL datetime is stored without timezone, so we need to parse it as local time
-            let date;
-            if (dateString.includes(' ')) {
-                // MySQL datetime format: "2025-11-21 13:40:00"
-                // Split into date and time parts
-                const parts = dateString.split(' ');
-                const datePart = parts[0]; // "2025-11-21"
-                const timePart = parts[1]; // "13:40:00"
+            try {
+                // Parse MySQL datetime format (YYYY-MM-DD HH:MM:SS)
+                // Assume the datetime is stored in UTC, convert to Philippine time
+                let date;
+                if (dateString.includes(' ')) {
+                    // MySQL datetime format: "2025-12-09 10:26:00"
+                    // Treat as UTC and convert to Philippine time (UTC+8)
+                    const parts = dateString.split(' ');
+                    const datePart = parts[0];
+                    const timePart = parts[1];
+                    
+                    // Create date object treating the input as UTC
+                    const utcDate = new Date(datePart + 'T' + timePart + 'Z');
+                    
+                    // Convert to Philippine time (UTC+8)
+                    // Philippine time is 8 hours ahead of UTC
+                    const phTime = new Date(utcDate.getTime() + (8 * 60 * 60 * 1000));
+                    date = phTime;
+                } else {
+                    date = new Date(dateString);
+                }
                 
-                // Create date object using local time (not UTC)
-                // Format: new Date(year, month, day, hour, minute, second)
-                const [year, month, day] = datePart.split('-').map(Number);
-                const [hour, minute, second] = timePart.split(':').map(Number);
-                date = new Date(year, month - 1, day, hour, minute, second || 0);
-            } else {
-                date = new Date(dateString);
-            }
-            
-            const now = new Date();
-            const diffInSeconds = Math.floor((now - date) / 1000);
-            
-            // Handle negative differences (future dates) or invalid dates
-            if (isNaN(date.getTime()) || diffInSeconds < 0) {
+                // Get current time in Philippine timezone
+                const now = new Date();
+                const nowPh = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Manila"}));
+                const datePh = new Date(date.toLocaleString("en-US", {timeZone: "Asia/Manila"}));
+                
+                const diffInSeconds = Math.floor((nowPh - datePh) / 1000);
+                
+                // Handle negative differences (future dates) or invalid dates
+                if (isNaN(datePh.getTime()) || diffInSeconds < 0) {
+                    return 'Just now';
+                }
+                
+                if (diffInSeconds < 60) return 'Just now';
+                if (diffInSeconds < 3600) {
+                    const mins = Math.floor(diffInSeconds / 60);
+                    return mins + ' minute' + (mins > 1 ? 's' : '') + ' ago';
+                }
+                if (diffInSeconds < 86400) {
+                    const hrs = Math.floor(diffInSeconds / 3600);
+                    return hrs + ' hour' + (hrs > 1 ? 's' : '') + ' ago';
+                }
+                const days = Math.floor(diffInSeconds / 86400);
+                return days + ' day' + (days > 1 ? 's' : '') + ' ago';
+            } catch (e) {
                 return 'Just now';
             }
-            
-            if (diffInSeconds < 60) return 'Just now';
-            if (diffInSeconds < 3600) return Math.floor(diffInSeconds / 60) + ' minutes ago';
-            if (diffInSeconds < 86400) return Math.floor(diffInSeconds / 3600) + ' hours ago';
-            return Math.floor(diffInSeconds / 86400) + ' days ago';
         }
         
         // Global function to mark notification as read

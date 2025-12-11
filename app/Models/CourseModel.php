@@ -21,7 +21,10 @@ class CourseModel extends Model
         'duration',
         'price',
         'thumbnail',
-        'status'
+        'status',
+        'day_of_week',
+        'start_time',
+        'end_time'
     ];
 
     protected $useTimestamps = true;
@@ -32,11 +35,9 @@ class CourseModel extends Model
     protected $validationRules = [
         'title' => 'required|min_length[3]|max_length[255]',
         'description' => 'required|min_length[10]',
-        'instructor_id' => 'required|integer',
-        'start_date' => 'required|valid_date',
-        'end_date' => 'required|valid_date',
-        'status' => 'in_list[active,inactive,completed]',
-        'max_students' => 'integer|greater_than[0]'
+        'instructor_id' => 'permit_empty|integer',
+        'status' => 'in_list[draft,published,archived]',
+        'level' => 'in_list[beginner,intermediate,advanced]'
     ];
 
     protected $validationMessages = [
@@ -126,5 +127,33 @@ class CourseModel extends Model
         return $this->where('instructor_id', $instructor_id)
                     ->orderBy('created_at', 'DESC')
                     ->findAll();
+    }
+
+    /**
+     * Check if course title already exists (case-insensitive)
+     * @param string $title Course title to check
+     * @param int|null $excludeId Course ID to exclude from check (for updates)
+     * @return bool True if title exists, false otherwise
+     */
+    public function isTitleExists($title, $excludeId = null)
+    {
+        $titleLower = strtolower(trim($title));
+        
+        // Get all courses and check in PHP for case-insensitive comparison
+        $courses = $this->findAll();
+        
+        foreach ($courses as $course) {
+            // Skip if this is the course we're updating
+            if ($excludeId !== null && $course['id'] == $excludeId) {
+                continue;
+            }
+            
+            // Case-insensitive comparison
+            if (strtolower(trim($course['title'])) === $titleLower) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }

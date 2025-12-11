@@ -17,7 +17,8 @@ class EnrollmentModel extends Model
         'course_id',
         'enrollment_date',
         'status',
-        'progress'
+        'progress',
+        'rejection_reason'
     ];
 
     protected $useTimestamps = true;
@@ -29,7 +30,7 @@ class EnrollmentModel extends Model
         'user_id' => 'required|integer',
         'course_id' => 'required|integer',
         'enrollment_date' => 'required|valid_date',
-        'status' => 'in_list[active,completed,dropped,suspended]',
+        'status' => 'in_list[pending,active,completed,dropped,suspended,rejected]',
         'progress' => 'decimal'
     ];
 
@@ -47,7 +48,7 @@ class EnrollmentModel extends Model
             'valid_date' => 'Enrollment date must be a valid date'
         ],
         'status' => [
-            'in_list' => 'Status must be one of: active, completed, dropped, suspended'
+            'in_list' => 'Status must be one of: pending, active, completed, dropped, suspended, rejected'
         ]
     ];
 
@@ -59,17 +60,78 @@ class EnrollmentModel extends Model
      */
     public function enrollUser($data)
     {
-        // Set default values
-        $data['enrollment_date'] = $data['enrollment_date'] ?? date('Y-m-d H:i:s');
-        $data['status'] = $data['status'] ?? 'active';
-        $data['progress'] = $data['progress'] ?? 0.00;
+        // Set default values (but don't override if explicitly set)
+        if (!isset($data['enrollment_date'])) {
+            $data['enrollment_date'] = date('Y-m-d H:i:s');
+        }
+        if (!isset($data['status'])) {
+            $data['status'] = 'active';
+        }
+        if (!isset($data['progress'])) {
+            $data['progress'] = 0.00;
+        }
+        
+        // Debug: Log the data being inserted
+        log_message('debug', 'EnrollmentModel::enrollUser() - Data: ' . json_encode($data));
 
-        // Check if user is already enrolled
+        // Check if user is already enrolled (active or pending)
         if ($this->isAlreadyEnrolled($data['user_id'], $data['course_id'])) {
             return false; // User already enrolled
         }
 
-        return $this->insert($data);
+        // Check if there's ANY existing enrollment (regardless of status) to avoid duplicate entry error
+        $existingEnrollment = $this->where('user_id', $data['user_id'])
+                                  ->where('course_id', $data['course_id'])
+                                  ->first();
+
+        if ($existingEnrollment) {
+            // If status is rejected, dropped, or suspended, update it to pending
+            if (in_array($existingEnrollment['status'], ['rejected', 'dropped', 'suspended'])) {
+                $updateData = [
+                    'status' => $data['status'],
+                    'enrollment_date' => $data['enrollment_date'],
+                    'rejection_reason' => null, // Clear rejection reason
+                    'progress' => $data['progress']
+                ];
+                
+                if ($this->update($existingEnrollment['id'], $updateData)) {
+                    return $existingEnrollment['id']; // Return existing ID
+                }
+                return false;
+            }
+            
+            // If status is something else (like 'completed'), return false
+            return false;
+        }
+
+        // No existing enrollment, insert new one
+        try {
+            $result = $this->insert($data);
+            if ($result === false) {
+                $errors = $this->errors();
+                log_message('error', 'EnrollmentModel::enrollUser() - Insert failed. Data: ' . json_encode($data) . ' Errors: ' . json_encode($errors));
+                
+                // Check if the error is related to status ENUM
+                if (!empty($errors)) {
+                    foreach ($errors as $field => $error) {
+                        if (strpos(strtolower($error), 'status') !== false || strpos(strtolower($error), 'enum') !== false) {
+                            log_message('error', 'ENUM ERROR: The status column may not include "pending". Please run the migration or update the database manually.');
+                        }
+                    }
+                }
+            } else {
+                // Verify the insert was successful by checking the actual saved data
+                $saved = $this->find($result);
+                if ($saved && $saved['status'] !== $data['status']) {
+                    log_message('error', 'EnrollmentModel::enrollUser() - Status mismatch! Requested: ' . $data['status'] . ', Saved: ' . ($saved['status'] ?? 'null'));
+                }
+            }
+            return $result;
+        } catch (\Exception $e) {
+            log_message('error', 'EnrollmentModel::enrollUser() - Exception: ' . $e->getMessage());
+            log_message('error', 'EnrollmentModel::enrollUser() - Exception trace: ' . $e->getTraceAsString());
+            return false;
+        }
     }
 
     /**
@@ -86,7 +148,23 @@ class EnrollmentModel extends Model
         return $this->select('enrollments.*, courses.title as course_title, courses.description as course_description, courses.instructor_id')
                     ->join('courses', 'courses.id = enrollments.course_id', 'left')
                     ->where('enrollments.user_id', $user_id)
-                    ->where('enrollments.status', 'active')
+                    ->whereIn('enrollments.status', ['active', 'pending', 'rejected'])
+                    ->orderBy('enrollments.enrollment_date', 'DESC')
+                    ->findAll();
+    }
+    
+    /**
+     * Get pending enrollments for a course
+     * 
+     * @param int $course_id Course ID
+     * @return array Array of pending enrollment records
+     */
+    public function getPendingEnrollments($course_id)
+    {
+        return $this->select('enrollments.*, users.name as student_name, users.email as student_email')
+                    ->join('users', 'users.id = enrollments.user_id')
+                    ->where('enrollments.course_id', $course_id)
+                    ->where('enrollments.status', 'pending')
                     ->orderBy('enrollments.enrollment_date', 'DESC')
                     ->findAll();
     }
@@ -174,16 +252,17 @@ class EnrollmentModel extends Model
     }
 
     /**
-     * Check if a user is already enrolled in a specific course
+     * Check if a user is already enrolled in a specific course (active or pending)
      * 
      * @param int $user_id User ID
      * @param int $course_id Course ID
-     * @return bool True if already enrolled, false otherwise
+     * @return bool True if already enrolled (active or pending), false otherwise
      */
     public function isAlreadyEnrolled($user_id, $course_id)
     {
         $enrollment = $this->where('user_id', $user_id)
                           ->where('course_id', $course_id)
+                          ->whereIn('status', ['active', 'pending'])
                           ->first();
 
         return $enrollment !== null;

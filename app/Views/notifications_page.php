@@ -32,7 +32,12 @@
                                                     <p class="mb-2"><?= esc($notification['message']) ?></p>
                                                     <small class="text-muted">
                                                         <i class="fas fa-clock"></i> 
-                                                        <?= date('M j, Y \a\t g:i A', strtotime($notification['created_at'])) ?>
+                                                        <?php 
+                                                            helper('date');
+                                                            $date = new \DateTime($notification['created_at'], new \DateTimeZone('UTC'));
+                                                            $date->setTimezone(new \DateTimeZone('Asia/Manila'));
+                                                            echo $date->format('M j, Y \a\t g:i A');
+                                                        ?>
                                                     </small>
                                                 </div>
                                                 <div class="notification-actions">
